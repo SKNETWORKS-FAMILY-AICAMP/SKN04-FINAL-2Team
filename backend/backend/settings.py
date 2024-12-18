@@ -87,7 +87,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",  # Django 템플릿 엔진 사용
-        "DIRS": [],  # 템플릿 디렉토리 목록 (비어있음)
+        "DIRS": [BASE_DIR/"templates"],  # 템플릿 디렉토리 목록
         "APP_DIRS": True,  # 앱 디렉토리에서 템플릿 검색 활성화
         "OPTIONS": {
             "context_processors": [
