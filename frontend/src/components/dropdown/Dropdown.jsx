@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Dropdown.css";
 
 const Dropdown = () => {
@@ -11,8 +12,8 @@ const Dropdown = () => {
       </button>
       {isOpen && (
         <div className="dropdown-menu">
-          <a href="/user-management">회원관리</a>
-          <a href="/admin-page">관리 페이지</a>
+          <Link to="/user-management">회원관리</Link>
+          <Link to="/admin-page">관리 페이지</Link>
         </div>
       )}
     </div>
