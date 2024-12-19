@@ -6,10 +6,10 @@ from django.db import models
 class Profile(models.Model):
     profile_id = models.AutoField(primary_key=True)  # 프로필 ID, 기본 키로 설정
     name = models.CharField(max_length=100)  # 이름
-    email = models.EmailField(max_length=255)  # 이메일
-    phone = models.CharField(max_length=15)  # 전화번호
-    address = models.CharField(max_length=255)  # 주소
-    birth_date = models.DateField()  # 생년월일
+    email = models.EmailField(max_length=255, blank=True, null=True)  # 이메일
+    phone = models.CharField(max_length=15, blank=True, null=True)  # 전화번호
+    address = models.CharField(max_length=255, blank=True, null=True)  # 주소
+    birth_date = models.DateField(blank=True, null=True)  # 생년월일
 
     def __str__(self):
         return self.name  # 프로필 이름으로 문자열 반환
@@ -39,11 +39,11 @@ class Skill(models.Model):
 
 class Career(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='careers')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'careers' 지정
-    company_name = models.CharField(max_length=100)  # 회사명
-    position = models.CharField(max_length=100)      # 직위
-    start_date = models.DateField()                 # 시작일
-    end_date = models.DateField(null=True, blank=True)  # 종료일 (현재 재직중일 수 있음), 빈 문자열 허용
-    description = models.TextField(blank=True)       # 추가 설명, 빈 문자열 허용
+    company_name = models.CharField(max_length=100, blank=True, null=True)  # 회사명
+    position = models.CharField(max_length=100, blank=True, null=True)      # 직위
+    start_date = models.DateField(blank=True, null=True)                 # 시작일
+    end_date = models.DateField(blank=True, null=True)  # 종료일 (현재 재직중일 수 있음)
+    description = models.TextField(blank=True, null=True)       # 추가 설명
     
     class Meta:
         db_table = 'career'  # 데이터베이스 테이블 이름
@@ -60,22 +60,16 @@ class Activity(models.Model):
         db_table = 'activity'  # 데이터베이스 테이블 이름
 
 class AcademicBackground(models.Model):
-    GRADUATION_STATUS_CHOICES = [
-        ('attending', '재학중'),
-        ('graduated', '졸업'),
-        ('leave', '휴학'),
-        ('dropout', '중퇴'),
-    ]
     
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='educations')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'educations' 지정
-    school_name = models.CharField(max_length=100)   # 학교명
-    major = models.CharField(max_length=100)         # 전공
-    status = models.CharField(                       # 졸업상태
+    school_name = models.CharField(max_length=100, blank=True)   # 학교명
+    major = models.CharField(max_length=100, blank=True)         # 전공
+    status = models.CharField(                                   # 졸업상태
         max_length=20,
-        choices=GRADUATION_STATUS_CHOICES,
-        default='graduated'
+        default='graduated',
+        blank=True
     )
-    start_date = models.DateField()                 # 입학일
+    start_date = models.DateField(blank=True, null=True)                 # 입학일
     end_date = models.DateField(null=True, blank=True)  # 졸업일, 빈 문자열 허용
     
     class Meta:
@@ -87,9 +81,9 @@ class AcademicBackground(models.Model):
 
 class Certificate(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='certificates')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'certificates' 지정
-    name = models.CharField(max_length=100)          # 자격증명
-    acquisition_date = models.DateField()           # 취득일
-    issuing_org = models.CharField(max_length=100)   # 발급기관
+    name = models.CharField(max_length=100, blank=True, null=True)          # 자격증명
+    acquisition_date = models.DateField(blank=True, null=True)           # 취득일
+    issuing_org = models.CharField(max_length=100, blank=True, null=True)   # 발급기관
     
     class Meta:
         db_table = 'certificate'  # 데이터베이스 테이블 이름
@@ -100,21 +94,23 @@ class Certificate(models.Model):
 
 class EducationContent(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='education_contents')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'education_contents' 지정
-    description = models.CharField(max_length=100)  # 교육 이수 내용
+    education_name = models.CharField(max_length=100, blank=True, null=True)  # 이수 교육명
+    description = models.CharField(max_length=100, blank=True, null=True)      # 교육 내용
+    
     
     class Meta:
         db_table = 'education_content'  # 데이터베이스 테이블 이름
 
 class URL(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='urls')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'urls' 지정
-    link = models.CharField(max_length=100)  # URL 링크
+    link = models.CharField(max_length=100, blank=True, null=True)  # URL 링크
     
     class Meta:
         db_table = 'url'  # 데이터베이스 테이블 이름
 
 class Language(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='languages')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'languages' 지정
-    description = models.CharField(max_length=100)  # 언어 능력
+    description = models.CharField(max_length=100, blank=True, null=True)  # 언어 능력
     
     class Meta:
         db_table = 'language' 
