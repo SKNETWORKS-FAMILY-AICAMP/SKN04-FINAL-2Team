@@ -186,7 +186,7 @@ yarn-error.log*
 
 # frontend
 # dependencies
-/frontend/react-app/node_modules
+/frontend/react-app/node_modules/
 /.pnp
 .pnp.js
 

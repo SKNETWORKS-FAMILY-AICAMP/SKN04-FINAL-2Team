@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Sidebar.css";
-import HostLogin from "../management/HostLogin"; // Host 로그인 폼 컴포넌트
+import Login from "../management/Login"; // Host 로그인 폼 컴포넌트
 
 const Sidebar = () => {
   const [activeMenu, setActiveMenu] = useState("");
@@ -60,7 +60,7 @@ const Sidebar = () => {
       {/* 로그인 폼 표시 */}
       {loginType === "Host" && (
         <div className="login-overlay">
-          <HostLogin onClose={() => setLoginType("")} />
+          <Login onClose={() => setLoginType("")} />
         </div>
       )}
     </>

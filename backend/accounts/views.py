@@ -5,7 +5,11 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
 from .serializers import RegisterSerializer, UserProfileSerializer, UserUpdateSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
 
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 # 사용자 등록을 위한 API 뷰
 class RegisterAPIView(generics.CreateAPIView):
