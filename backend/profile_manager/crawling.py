@@ -12,6 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from tqdm import tqdm
 
 url = "https://www.rallit.com/"
 response = requests.get(url, headers={'User-Agent': 'Mozilla 5.0'})
@@ -21,13 +22,13 @@ urls = ''.join([url,languages[2].attrs.get('href').split('/')[1]])
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 driver.get(urls)
 
-Resume = []
-for i in range(1, 37):
+resume = []
+for i in tqdm(range(1, 37)):
     try:
         driver.find_element(By.XPATH, f'/html/body/div[1]/main/section/div[4]/div/div[2]/section/ul/li[{i}]/a/article').click()
         time.sleep(4)
         bs = BeautifulSoup(driver.page_source, 'lxml')
-        Resume.append(bs.select('div.css-1799hu')[0].text)
+        resume.append(bs.select('div.css-1799hu')[0].text)
         time.sleep(5)
         driver.get(urls)
         time.sleep(9)
