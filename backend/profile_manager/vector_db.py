@@ -27,8 +27,7 @@ class ProfileVectorDB:
         return {
             "content": f"기술스택: {skill.name}",
             "metadata": {
-                "id": skill.id,
-                "profile_id": skill.profile.profile.profile_id,
+                "profile_id": skill.profile.profile_id,
                 "table": "skill",
                 "type": "skill"
             }
@@ -36,18 +35,21 @@ class ProfileVectorDB:
 
     def vectorize_career(self, career):
         """Career 테이블의 각 행을 벡터화"""
+        content = f"""
+        회사명: {career.company_name or ''}
+        직위: {career.position or ''}
+        근무형태: {career.employment_type or ''}
+        담당업무: {career.responsibilities or ''}
+        설명: {career.description or ''}
+        기간: {career.start_date or ''} ~ {career.end_date or '현재'}
+        """
+        # 비어있는 항목의 키와 항목을 제외
+        content = " ".join([line for line in content.splitlines() if line.strip()])
         return {
-            "content": f"""
-            회사명: {career.company_name or ''}
-            직위: {career.position or ''}
-            근무형태: {career.employment_type or ''}
-            담당업무: {career.responsibilities or ''}
-            설명: {career.description or ''}
-            기간: {career.start_date or ''} ~ {career.end_date or '현재'}
-            """,
+            "content": content,
             "metadata": {
                 "id": career.id,
-                "profile_id": career.profile.profile.profile_id,
+                "profile_id": career.profile.profile_id,
                 "table": "career",
                 "type": "experience"
             }
@@ -55,16 +57,19 @@ class ProfileVectorDB:
 
     def vectorize_activity(self, activity):
         """Activity 테이블의 각 행을 벡터화"""
+        content = f"""
+        활동명: {activity.activity_name or ''}
+        기관명: {activity.organization_name or ''}
+        활동내용: {activity.description or ''}
+        활동연도: {activity.activity_year or ''}
+        """
+        # 비어있는 항목의 키와 항목을 제외
+        content = " ".join([line for line in content.splitlines() if line.strip()])
         return {
-            "content": f"""
-            활동명: {activity.activity_name or ''}
-            기관명: {activity.organization_name or ''}
-            활동내용: {activity.description or ''}
-            활동연도: {activity.activity_year or ''}
-            """,
+            "content": content,
             "metadata": {
                 "id": activity.id,
-                "profile_id": activity.profile.profile.profile_id,
+                "profile_id": activity.profile.profile_id,
                 "table": "activity",
                 "type": "activity"
             }
