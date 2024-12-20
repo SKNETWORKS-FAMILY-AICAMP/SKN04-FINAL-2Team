@@ -21,14 +21,33 @@ const SignUp = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    // 회원가입 로직 추가
     if (!formData.username || !formData.password || !formData.email) {
       setError("모든 필드를 입력해주세요.");
       return;
     }
 
-    console.log("회원가입 완료:", formData);
-    onClose();
+    try {
+      const response = await fetch('http://localhost:8000/auth/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "회원가입 중 오류가 발생했습니다.");
+        return;
+      }
+
+      console.log("회원가입 완료:", data);
+      onClose();
+    } catch (error) {
+      setError("서버 연결 중 오류가 발생했습니다.");
+      console.error("회원가입 오류:", error);
+    }
   };
 
   return (

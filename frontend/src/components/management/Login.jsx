@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import authService from "./authService";
 import "./LoginForm.css";
 
 const Login = ({ onClose }) => {
@@ -23,20 +22,55 @@ const Login = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    const result = await authService.login(formData.username, formData.password);
+    // 입력값 검증
+    if (!formData.username || !formData.password) {
+      setError("아이디와 비밀번호를 모두 입력해주세요.");
+      return;
+    }
 
-    if (result.success) {
-      navigate("/"); // 로그인 성공 시 메인 페이지로 리다이렉션
-      onClose();
-    } else {
-      setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+    try {
+      const response = await fetch('http://localhost:8000/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "로그인에 실패했습니다.");
+        return;
+      }
+
+      // 로그인 성공 처리
+      if (data.token) {
+        // JWT 토큰 저장
+        localStorage.setItem('accessToken', data.token.access);
+        localStorage.setItem('refreshToken', data.token.refresh);
+        
+        // 사용자 정보 저장
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+
+        // 메인 검색 페이지로 이동
+        navigate("/");
+        onClose();
+      } else {
+        setError("로그인 처리 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError("서버 연결 중 오류가 발생했습니다.");
     }
   };
 
   return (
     <div className="login-overlay">
       <div className="login-form-container">
-        <button className="login-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
+        <button className="login-close-button" onClick={onClose}>×</button>
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="login-form-group">
