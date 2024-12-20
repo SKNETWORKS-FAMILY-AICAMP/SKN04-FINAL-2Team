@@ -19,8 +19,8 @@ class Profile_Detail(models.Model):
     """
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='detail')  # Profile 모델과 1:1 관계, related_name으로 'detail' 지정  
     # Profile과 1:1 관계로 변경하고 related_name 추가
-    brief_introduction = models.TextField(blank=True)  # 간단소개, 빈 문자열 허용
-    introduction = models.TextField(blank=True)  # 자기소개는 하나만 있으면 되므로 유지, 빈 문자열 허용
+    brief_introduction = models.TextField(blank=True, null=True)  # 간단소개, 빈 문자열 허용
+    introduction = models.TextField(blank=True, null=True)  # 자기소개는 하나만 있으면 되므로 유지, 빈 문자열 허용
     created_at = models.DateTimeField(auto_now_add=True)  # 생성일, 자동으로 현재 시간으로 설정
     updated_at = models.DateTimeField(auto_now=True)      # 수정일, 자동으로 현재 시간으로 설정
 
@@ -32,7 +32,7 @@ class Profile_Detail(models.Model):
 
 class Skill(models.Model):
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='skills')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'skills' 지정
-    name = models.CharField(max_length=100)  # 기술명
+    name = models.CharField(max_length=100, blank=True, null=True)  # 기술명
     
     class Meta:
         db_table = 'skill'  # 데이터베이스 테이블 이름
@@ -67,12 +67,13 @@ class Activity(models.Model): # 대외활동
 
 class AcademicBackground(models.Model): # 학력
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='educations')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'educations' 지정
-    school_name = models.CharField(max_length=100, blank=True)   # 학교명
-    major = models.CharField(max_length=100, blank=True)         # 전공
+    school_name = models.CharField(max_length=100, blank=True, null=True)   # 학교명
+    major = models.CharField(max_length=100, blank=True, null=True)         # 전공
     status = models.CharField(                                   # 졸업상태
         max_length=20,
         default='graduated',
-        blank=True
+        blank=True,
+        null=True
     )
     start_date = models.DateField(blank=True, null=True)                 # 입학일
     end_date = models.DateField(null=True, blank=True)  # 졸업일, 빈 문자열 허용
@@ -112,7 +113,6 @@ class EducationContent(models.Model): # 교육이수
     profile = models.ForeignKey('Profile_Detail', on_delete=models.CASCADE, related_name='education_contents')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'education_contents' 지정
     education_name = models.CharField(max_length=100, blank=True, null=True)  # 이수 교육명
     description = models.CharField(max_length=100, blank=True, null=True)      # 교육 내용
-    
     
     class Meta:
         db_table = 'education_content'  # 데이터베이스 테이블 이름

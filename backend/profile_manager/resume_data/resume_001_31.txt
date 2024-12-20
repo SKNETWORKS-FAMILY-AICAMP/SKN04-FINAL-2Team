@@ -139,7 +139,7 @@ Vite, React, TypeScript, Redux Toolkit, React Query, Styled Components
 프로젝트에 대한 정리글
 기술 스택
 기술 스택
-TypeScript, React, GitHub, Figma, JIRA, TailWindCSS, styled-components
+TypeScript, React, GitHub, TailWindCSS, styled-components
 포트폴리오
 URL
 link
