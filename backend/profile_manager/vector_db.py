@@ -17,7 +17,6 @@ class ProfileVectorDB:
             "metadata": {
                 "id": detail.id,
                 "profile_id": detail.profile.profile_id,
-                "table": "profile_detail",
                 "type": "introduction"
             }
         }
@@ -28,7 +27,6 @@ class ProfileVectorDB:
             "content": f"기술스택: {skill.name}",
             "metadata": {
                 "profile_id": skill.profile.profile_id,
-                "table": "skill",
                 "type": "skill"
             }
         }
@@ -50,7 +48,6 @@ class ProfileVectorDB:
             "metadata": {
                 "id": career.id,
                 "profile_id": career.profile.profile_id,
-                "table": "career",
                 "type": "experience"
             }
         }
@@ -70,7 +67,6 @@ class ProfileVectorDB:
             "metadata": {
                 "id": activity.id,
                 "profile_id": activity.profile.profile_id,
-                "table": "activity",
                 "type": "activity"
             }
         }
