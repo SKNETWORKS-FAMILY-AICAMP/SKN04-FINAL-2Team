@@ -1,0 +1,17 @@
+.search-results-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 화면 맨 위에 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    background-color: #f8f9fa; /* 배경색 */
+    padding-top: 60px; /* 상단 여백 */
+  }
+  
+  .search-results-content {
+    width: 800px; /* 고정된 넓이 */
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
