@@ -6,6 +6,7 @@ import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
 import Sidebar from "./components/sidebar/Sidebar";
 import MainSearch from "./components/search/MainSearch"; // MainSearch 컴포넌트 임포트
+import SearchResults from "./components/search/SearchResults"; // SearchResults 컴포넌트 임포트
 
 const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -61,7 +62,7 @@ const App = () => {
 
 const MainContent = () => {
   const location = useLocation();
-  const showSidebar = location.pathname !== "/";
+  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results";
 
   return (
     <div style={{ display: "flex" }}>
@@ -71,6 +72,7 @@ const MainContent = () => {
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/admin-page" element={<AdminPage />} />
           <Route path="/" element={<MainSearch />} /> {/* MainSearch 컴포넌트 사용 */}
+          <Route path="/search-results" element={<SearchResults />} /> {/* SearchResults 컴포넌트 추가 */}
         </Routes>
       </div>
     </div>

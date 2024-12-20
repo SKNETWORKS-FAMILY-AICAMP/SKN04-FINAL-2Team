@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MainSearch.css";
 
 const MainSearch = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -10,8 +12,8 @@ const MainSearch = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 검색 로직 추가
-    console.log("검색어:", query);
+    // 검색 결과 페이지로 이동
+    navigate(`/search-results?query=${query}`);
   };
 
   const handleKeyDown = (e) => {
