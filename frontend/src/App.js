@@ -5,7 +5,7 @@ import Dropdown from "./components/dropdown/Dropdown";
 import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
 import Sidebar from "./components/sidebar/Sidebar";
-
+import MainSearch from "./components/search/MainSearch"; // MainSearch 컴포넌트 임포트
 
 const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -70,16 +70,9 @@ const MainContent = () => {
         <Routes>
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/admin-page" element={<AdminPage />} />
-          <Route path="/" element={<MainScreen />} />
+          <Route path="/" element={<MainSearch />} /> {/* MainSearch 컴포넌트 사용 */}
         </Routes>
       </div>
-    </div>
-  );
-};
-
-const MainScreen = () => {
-  return (
-    <div>
     </div>
   );
 };
