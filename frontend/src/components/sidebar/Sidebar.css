@@ -1,0 +1,111 @@
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 260px;
+    padding: 16px;
+    background-color: hsl(0, 0%, 12%);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease, width 0.4s;
+  }
+  
+  .sidebar header {
+    display: flex;
+    align-items: center;
+    color: white;
+    height: auto;
+  }
+  
+  .sidebar header img {
+    height: 44px;
+  }
+  
+  .sidebar input {
+    display: none;   
+  }
+  
+  .sidebar li button,
+  .sidebar li label {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: calc(100% - 32px);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold; /* Match navbar design */
+    line-height: auto;
+    padding: 12px;
+    color: #999999; /* Match navbar link color */
+  }
+  
+  .sidebar label p:nth-child(2) {
+     flex-grow:1; 
+  }
+  
+  .sidebar input:not(:checked) ~ label:hover,
+  .sidebar button:hover {
+      background-color: #363b3d; /* Match hover effect from navbar */
+      color: white; /* Ensure text is visible */
+      cursor: pointer; /* Indicate interactivity */
+  }
+  
+  .sidebar input:checked + label {
+      background-color: #363b3d; /* Active state color */
+      color: white; /* Ensure active text is visible */
+  }
+  
+  .sub-menu {
+      overflow: hidden;
+      height: auto; /* Allow dynamic height for submenus */
+      transition: all 0.5s ease-in-out; /* Smooth transition for submenu expansion */
+  }
+  
+  .sub-menu ul {
+      display: flex; /* Match navbar's link layout */
+      flex-direction: column; /* Stack submenu items vertically */
+      gap: 8px; /* Add spacing between items */
+  }
+
+  .sub-menu ul li {
+    padding-left: 20px; /* Indent submenu items */
+  }
+  
+  .sub-menu ul li a:hover {
+    color: #ffffff; /* Highlight submenu links on hover */
+  }
+  
+  .sub-menu button {
+      padding-left: calc(16px + (24 / var(--scale))); /* Consistent padding with navbar links */
+  }
+  
+  .sub-menu button:hover {
+      background-color:#ffffff ;color:#000;}
+
+.user-deletion-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-deletion .modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+  
