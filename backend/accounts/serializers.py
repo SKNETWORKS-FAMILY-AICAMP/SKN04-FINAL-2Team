@@ -8,6 +8,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         user = self.user
         
+        default_page = '/search'  # 기본 검색 페이지
+        
         # 토큰에 사용자 권한 정보 추가
         data.update({
             'is_host': user.is_host,
