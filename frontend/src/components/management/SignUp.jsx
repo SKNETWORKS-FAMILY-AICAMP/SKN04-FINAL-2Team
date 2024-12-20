@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import authService from "./authService";
-import "./LoginForm.css";
+import "./SignUpForm.css";
 
-const Login = ({ onClose }) => {
+const SignUp = ({ onClose }) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    email: "",
   });
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -23,23 +21,23 @@ const Login = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    const result = await authService.login(formData.username, formData.password);
-
-    if (result.success) {
-      navigate("/"); // 로그인 성공 시 메인 페이지로 리다이렉션
-      onClose();
-    } else {
-      setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+    // 회원가입 로직 추가
+    if (!formData.username || !formData.password || !formData.email) {
+      setError("모든 필드를 입력해주세요.");
+      return;
     }
+
+    console.log("회원가입 완료:", formData);
+    onClose();
   };
 
   return (
-    <div className="login-overlay">
-      <div className="login-form-container">
-        <button className="login-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2>Login</h2>
+    <div className="signup-overlay">
+      <div className="signup-form-container">
+        <button className="signup-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
+        <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
-          <div className="login-form-group">
+          <div className="signup-form-group">
             <label htmlFor="host-username">ID</label>
             <input
               type="text"
@@ -51,7 +49,7 @@ const Login = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          <div className="login-form-group">
+          <div className="signup-form-group">
             <label htmlFor="host-password">Password</label>
             <input
               type="password"
@@ -63,12 +61,24 @@ const Login = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          {error && <div className="login-error-message">{error}</div>}
-          <button type="submit" className="login-button">로그인</button>
+          <div className="signup-form-group">
+            <label htmlFor="host-email">Email</label>
+            <input
+              type="email"
+              id="host-email"
+              placeholder="이메일 입력"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className={error ? "error" : ""}
+            />
+          </div>
+          {error && <div className="signup-error-message">{error}</div>}
+          <button type="submit" className="signup-button">회원등록</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;
