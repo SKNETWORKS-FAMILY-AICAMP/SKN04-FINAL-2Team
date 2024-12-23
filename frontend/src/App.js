@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
-import "./App.css";
 import Dropdown from "./components/dropdown/Dropdown";
+import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
 import Sidebar from "./components/sidebar/Sidebar";
 import MainSearch from "./components/search/MainSearch"; // MainSearch 컴포넌트 임포트
 import SearchResults from "./components/search/SearchResults"; // SearchResults 컴포넌트 임포트
+import "./App.css";
 
 const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  // const [isDropdownVisible, setIsDropdownVisible] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,11 +28,12 @@ const App = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos]);
+
+  const hideDropdown = () => {
+    // setIsDropdownVisible(false);
+  };
 
   return (
     <Router>
@@ -46,14 +49,20 @@ const App = () => {
           </div>
           <div className="menu">
             <div className="menu-links">
-              <a href="#">History</a>
+              <Link to="#">History</Link>
+              <Link to="/login">Login</Link> {/* Link 컴포넌트로 변경 */}
             </div>
-            <Dropdown />
+            <Dropdown hideDropdown={hideDropdown} />
           </div>
           <div className="menu-btn">
             <i className="fa-solid fa-bars"></i>
           </div>
         </nav>
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/login" element={<Login onClose={() => window.history.back()} />} /> {/* Login 라우트 추가 */}
+          {/* 다른 라우트들도 여기에 추가할 수 있습니다 */}
+        </Routes>
         <MainContent />
       </div>
     </Router>
@@ -62,10 +71,10 @@ const App = () => {
 
 const MainContent = () => {
   const location = useLocation();
-  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results";
+  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results" && location.pathname !== "/login";
 
   return (
-    <div style={{ display: "flex" }}>
+    <div>
       {showSidebar && <Sidebar />}
       <div style={{ flex: 1, padding: "20px" }}>
         <Routes>
@@ -78,5 +87,6 @@ const MainContent = () => {
     </div>
   );
 };
+
 
 export default App;
