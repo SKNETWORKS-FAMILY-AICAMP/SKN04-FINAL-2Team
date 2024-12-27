@@ -8,6 +8,8 @@ const SearchResults = () => {
   const query = new URLSearchParams(location.search).get("query");
   const [resumes, setResumes] = useState([]);
   const [keywords, setKeywords] = useState([]);
+  const [viewedResumes, setViewedResumes] = useState([]);
+  const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
 
   useEffect(() => {
     console.log("Fetching resumes for query:", query); // 로그 추가
@@ -26,21 +28,38 @@ const SearchResults = () => {
 
       setResumes(data);
       // Mock 키워드 데이터
-      const keywordData = ["React", "Node.js", "Python", "Django"];
+      const keywordData = ["React", "Node.js", "Python", "Django", "React", "Node.js", "Python", "Django", "Django", "React", "Node.js"];
       setKeywords(keywordData);
     };
 
     fetchResumes();
   }, [query]);
 
+  const handleViewDetails = (resume) => {
+    // PDF 열기 로직 추가 (나중에 백엔드와 연결)
+    // 예: window.open(resume.pdfUrl, "_blank");
+
+    // 열람했던 이력서 리스트에 추가
+    setViewedResumes((prevViewedResumes) => {
+      if (!prevViewedResumes.some((r) => r.name === resume.name)) {
+        return [...prevViewedResumes, resume];
+      }
+      return prevViewedResumes;
+    });
+  };
+
+  const toggleHiddenBar = () => {
+    setIsHiddenBarOpen(!isHiddenBarOpen);     // 상태 토글
+  };
+
   return (
     <div className="search-results-container">
       <MainSearch initialQuery={query} />
       <div className="keywords-container">
         {keywords.map((keyword, index) => (
-          <div key={index} className="keyword-box">
+          <span key={index} className="keyword">
             {keyword}
-          </div>
+          </span>
         ))}
       </div>
       <div className="search-results-content">
@@ -56,10 +75,29 @@ const SearchResults = () => {
             </div>
             <div className="resume-buttons">
               <button className="bookmark-button">Bookmark</button>
-              <button className="details-button">상세보기</button>
+              <button className="details-button" onClick={() => handleViewDetails(resume)}>상세보기</button>
             </div>
           </div>
         ))}
+      </div>
+      <div className="search-results-container">
+        <div className={`hidden-bar ${isHiddenBarOpen ? 'open' : ''}`}>
+          <ul>
+            {viewedResumes.map((resume, index) => (
+              <div key={index} className="hidden-bar-resume-box">
+                <p>이름: {resume.name}</p>
+                <p>직군: {resume.occupation}</p>
+                <p>경력: {resume.career}</p>
+              </div>
+            ))}
+          </ul>
+        </div>
+        <button 
+          className={`toggle-hidden-bar-button ${isHiddenBarOpen ? 'open' : ''}`} 
+          onClick={toggleHiddenBar}
+        >
+          {isHiddenBarOpen ? "▷" : "◁"}
+        </button>
       </div>
     </div>
   );

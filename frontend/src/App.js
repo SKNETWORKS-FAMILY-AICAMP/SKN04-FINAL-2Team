@@ -12,7 +12,7 @@ import "./App.css";
 const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
-  // const [isDropdownVisible, setIsDropdownVisible] = useState(true);
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,10 +58,6 @@ const App = () => {
             <i className="fa-solid fa-bars"></i>
           </div>
         </nav>
-        <Routes>
-          <Route path="/" element={<MainContent />} />
-          <Route path="/login" element={<Login onClose={() => window.history.back()} />} /> {/* Login 라우트 추가 */}
-        </Routes>
         <MainContent />
       </div>
     </Router>
@@ -81,11 +77,11 @@ const MainContent = () => {
           <Route path="/admin-page" element={<AdminPage />} />
           <Route path="/" element={<MainSearch />} /> {/* MainSearch 컴포넌트 사용 */}
           <Route path="/search-results" element={<SearchResults />} /> {/* SearchResults 컴포넌트 추가 */}
+          <Route path="/login" element={<Login onClose={() => window.history.back()} />} /> {/* Login 라우트 추가 */}
         </Routes>
       </div>
     </div>
   );
 };
-
 
 export default App;

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* 화면 전체 높이 */
+  height: 90vh; /* 화면 전체 높이 */
 }
 
 .main-search-bar {
@@ -20,7 +20,38 @@
   overflow-y: auto; /*내용이 넘칠 경우 세로 스크롤 추가*/
   margin-right: 8px;
 }
+.main-search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* 검색창을 아래로 이동 */
+}
 
+.main-search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
 .main-search-button {
   padding: 8px 16px;
   border: none;

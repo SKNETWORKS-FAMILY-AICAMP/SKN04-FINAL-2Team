@@ -4,7 +4,8 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding-top: 20px;
+  padding-top: 80px;
+  /* position: ; */
 }
 
 .main-search-container {
@@ -19,13 +20,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 15px;
+  justify-content: center; /* 중앙 배열 */
 }
-
-.keyword-box {
+.keyword {
+  background-color: #f0f0f0;
   padding: 5px 10px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
+  border-radius: 5px;
+  margin: 5px;
 }
 
 .search-results-content {
@@ -81,10 +83,79 @@
 
 .bookmark-button {
   background-color: #ffcc00;
+  border-radius: 8px;
   color: white;
 }
 
 .details-button {
   background-color: #007bff;
+  border-radius: 8px;
   color: white;
 }
+
+.toggle-hidden-bar-button {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 8px;
+  background-color: hsl(0, 0%, 12%);
+  color: white;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  height: 100px;
+  z-index: 1000;
+  transition: right 0.3s ease; /*부드럽게 이동*/
+}
+
+.hidden-bar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: hsl(0, 0%, 12%);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);  /* 기본적으로 화면 밖으로 숨김 */
+  transition: transform 0.3s ease;  /* 부드럽게 열림/닫힘 */
+  z-index: 1000;
+}
+
+.hidden-bar.open {
+  transform: translateX(0);
+}
+
+/* 토글 버튼 스타일 */
+.toggle-hidden-bar-button {
+  position: fixed;
+  right: 0; /* 기본적으로 화면 오른쪽에 붙음 */
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 8px;
+  color: white;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  height: 60px;
+  z-index: 1001;
+  transition: right 0.3s ease;
+}
+
+/* 숨겨진 바가 열렸을 때 토글 버튼의 위치 조정 */
+.hidden-bar.open ~ .toggle-hidden-bar-button {
+  right: 340px; /* 숨겨진 바의 너비만큼 이동 */
+}
+
+.hidden-bar-resume-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+
