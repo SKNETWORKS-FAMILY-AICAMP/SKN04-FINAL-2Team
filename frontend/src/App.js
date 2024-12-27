@@ -49,7 +49,7 @@ const App = () => {
           </div>
           <div className="menu">
             <div className="menu-links">
-              <Link to="#">History</Link>
+              <Link to="#">Bookmark</Link>
               <Link to="/login">Login</Link> {/* Link 컴포넌트로 변경 */}
             </div>
             <Dropdown hideDropdown={hideDropdown} />
@@ -61,7 +61,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="/login" element={<Login onClose={() => window.history.back()} />} /> {/* Login 라우트 추가 */}
-          {/* 다른 라우트들도 여기에 추가할 수 있습니다 */}
         </Routes>
         <MainContent />
       </div>
