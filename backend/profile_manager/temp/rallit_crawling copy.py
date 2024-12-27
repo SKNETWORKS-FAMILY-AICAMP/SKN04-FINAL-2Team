@@ -8,7 +8,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import os
-from datetime import datetime
 import time
 from tqdm import tqdm
 
@@ -39,24 +38,26 @@ def crawl_resumes(url):
     folder = "resume_data"
     if not os.path.exists(folder):
         os.makedirs(folder)
-    
-    current_date = datetime.now().strftime("%Y%m%d")
 
     try:
         driver.get(url)
-        count = 1
-        while True:
+        # 테스트용으로 1페이지만 크롤링 (95 페이지 까지 가능)
+        for page in tqdm(range(1, 2)):
             # 페이지의 이력서 항목들 크롤링
-            for j in tqdm(range(1, 1)):
-                count += 1
+            for item in tqdm(range(1, 37)):
                 try:
-                    resume_xpath = f'/html/body/div[1]/main/section/div[4]/div/div[2]/section/ul/li[{j}]/a/article'
+                    resume_xpath = f'/html/body/div[1]/main/section/div[4]/div/div[2]/section/ul/li[{item}]/a/article'
                     resume_element = wait.until(EC.element_to_be_clickable((By.XPATH, resume_xpath)))
+                    
+                    # 파일이 이미 존재하는지 확인
+                    filename = os.path.join(folder, f"resume_{page:03d}_{item:02d}.txt")
+                    if os.path.exists(filename):
+                        continue
+                        
                     resume_element.click()
                     
                     if text := get_resume_text(driver, wait):
                         # 이력서를 즉시 파일로 저장
-                        filename = os.path.join(folder, f"resume_{current_date}_{j}.txt")
                         with open(filename, "w", encoding='utf-8') as file:
                             file.write(text)
                     
@@ -65,27 +66,14 @@ def crawl_resumes(url):
                     
                 except (TimeoutException, NoSuchElementException):
                     continue
-            # 다음 페이지 버튼 처리
-            next_button = wait.until(EC.presence_of_element_located(
-                (By.XPATH, "/html/body/div[1]/main/section/div[4]/div/div[2]/section/div/div/button[7]")))
-            
-            if next_button.get_attribute("disabled") == 'true':
-                break
+            # 다음 페이지로 이동
                 
-            next_button.click()
-            time.sleep(3)  # 페이지 전환 대기
-            # 마지막 페이지 번호로 이동
-            # https://www.rallit.com/hub?pageNumber=85 
+            next_url = f"https://www.rallit.com/hub?pageNumber={page}"
+            driver.get(next_url)
+            time.sleep(3)  # 페이지 로딩 대기
     finally:
         driver.quit()
-
-# 크롤링한 이력서를 파일로 저장하는 함수
-# def save_resumes(resumes, filename="list.txt"):
-#     with open(filename, "w", encoding='utf-8') as file:
-#         for item in resumes:
-#             file.write(item + "\n")
 
 if __name__ == "__main__":
     url = "https://www.rallit.com/hub"
     resumes = crawl_resumes(url)
-    # save_resumes(resumes)
