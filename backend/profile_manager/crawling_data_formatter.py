@@ -54,7 +54,7 @@ class ResumePreprocessor:
                     ],
                     "Certificate": [
                         {
-                        "name": "자격증 이름 (예: 정보처리기사, ADsP, 빅데이터 분석기사, 외국어 관련 자격증은 제외하고 외국어 description에 표현해줘)"
+                        "name": "자격증 이름 (예: 정보처리기사, ADsP, 빅데이터 분석기사, 외국어 관련 자격증은 제외해줘)"
                         }
                     ],
                     "Language": [

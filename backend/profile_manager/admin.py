@@ -1,13 +1,18 @@
 from django.contrib import admin
-from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language
+from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language, ProfileData
+from django.core.management import call_command
+from django.contrib import messages
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('profile_id', 'name', 'job_category', 'career_year')
     search_fields = ('name', 'job_category')
     list_filter = ('job_category',)
-    # 리스트 페이지에서 선택한 항목들을 삭제할 수 있는 액션 활성화
-    actions = ['delete_selected']
+
+@admin.register(ProfileData)
+class ProfileDataAdmin(admin.ModelAdmin):
+    list_display = ('profile', 'original_data', 'processed_data', 'pdf_data')
+    search_fields = ('profile__name',)
 
 @admin.register(TechStack)
 class TechStackAdmin(admin.ModelAdmin):
@@ -37,3 +42,4 @@ class LanguageAdmin(admin.ModelAdmin):
     list_display = ('profile', 'language_name', 'description')
     search_fields = ('language_name',)
     list_filter = ('language_name',)
+

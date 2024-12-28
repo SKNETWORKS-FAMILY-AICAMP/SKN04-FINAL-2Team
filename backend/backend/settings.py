@@ -1,6 +1,10 @@
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+import boto3
 
+load_dotenv()
 # 프로젝트 기본 경로 설정: BASE_DIR / 'subdir' 형태로 경로 생성
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     # 추가 기능
     "corsheaders",                # CORS 지원
     "django_extensions",          # Django 확장 기능
+    "storages",
     
     # 커스텀 앱
     "accounts",                   # 계정 관리 앱
@@ -106,10 +111,34 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # 데이터베이스 설정
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",  # SQLite3 사용
-        "NAME": BASE_DIR / "db.sqlite3",        # 데이터베이스 파일 위치
+        "ENGINE": os.getenv('DB_ENGINE'),  # PostgreSQL 사용
+        "NAME": os.getenv('DB_NAME'),               # 데이터베이스 이름
+        "USER": os.getenv('DB_USER'),               # 데이터베이스 사용자
+        "PASSWORD": os.getenv('DB_PASSWORD'),       # 데이터베이스 비밀번호
+        "HOST": os.getenv('DB_HOST'),               # 데이터베이스 호스트 (로컬일 경우 'localhost')
+        "PORT": os.getenv('DB_PORT'),               # 데이터베이스 포트 (기본값: 5432)
     }
 }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv('AWS_ACCESS_KEY_ID'),
+            "secret_key": os.getenv('AWS_SECRET_ACCESS_KEY'),
+            "bucket_name": os.getenv('AWS_STORAGE_BUCKET_NAME'),
+            "region_name": os.getenv('AWS_S3_REGION_NAME'),
+            "custom_domain": f"{os.getenv('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com",
+            "file_overwrite": True,
+            "querystring_auth": False,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+# 미디어 파일 URL
+MEDIA_URL = f'https://{os.getenv("AWS_STORAGE_BUCKET_NAME")}.s3.amazonaws.com/'
 
 # 비밀번호 검증 설정
 AUTH_PASSWORD_VALIDATORS = [

@@ -1,38 +1,43 @@
 import os
-import django
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 from django.conf import settings
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
-django.setup()
+from django.core.exceptions import ValidationError
 
 from django.db import transaction
 from .models import (
     Profile, Career, AcademicRecord, Certificate, 
-    Language, TechStack
+    Language, TechStack, ProfileData
 )
 
+
 class ProfileCreator:
-    def __init__(self, origin_data, pdf_data, json_data):
-        self.origin_data = origin_data
-        self.pdf_data = pdf_data
+    def __init__(self, page_id, resume_id, json_data:dict):
+        self.page_id = page_id
+        self.resume_id = resume_id
         self.json_data = json_data
         self.profile = None
 
+    # 예외 처리 데코레이터
+    def exception_handler(func):
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                print(f"{func.__name__} 오류: {str(e)}")
+        return wrapper
+    
+    # 트랜잭션 처리
     @transaction.atomic
     def create_profile(self):
         """프로필 및 관련 정보를 생성하는 메인 메서드"""
-        print("ProfileCreator 시작")
         self._create_base_profile()
-        print("self._create_base_profile() 완료")
+        self._create_profile_data()
         self._create_tech_stacks()
-        print("self._create_tech_stacks() 완료")
         self._create_careers()
-        print("self._create_careers() 완료")
         self._create_academic_records()
-        print("self._create_academic_records() 완료")
         self._create_certificates()
-        print("self._create_certificates() 완료")
         self._create_languages()
-        print("self._create_languages() 완료")
         return self.profile
 
     def _create_base_profile(self):
@@ -41,14 +46,28 @@ class ProfileCreator:
         self.profile = Profile.objects.create(
             name=profile_data.get('name'),
             job_category=profile_data.get('job_category'),
-            career_year=profile_data.get('career_year'),
-            original_data=str(self.origin_data),  # 원본 데이터 저장
-            processed_data=str(self.json_data)   # 처리된 데이터 저장
+            career_year=profile_data.get('career_year')
+        )
+
+    def _create_profile_data(self):
+        """프로필 데이터 생성"""
+        # S3 경로 설정
+        original_data_path = 'txt/resume_{:03}_{:02}.txt'.format(self.page_id, self.resume_id)
+        processed_data_path = 'processed_json/resume_{:03}_{:02}.json'.format(self.page_id, self.resume_id)
+        pdf_data_path = 'pdf/pdf_resume_{:03}_{:02}.pdf'.format(self.page_id, self.resume_id)
+
+        # 파일 경로를 직접 할당
+        ProfileData.objects.create(
+            profile=self.profile,
+            original_data=original_data_path,
+            processed_data=processed_data_path,
+            pdf_data=pdf_data_path
         )
 
     def _create_tech_stacks(self):
         """기술 스택 정보 생성"""
-        for tech_data in self.json_data.get('TechStack', []):
+        tech_datas = self.json_data.get('TechStack') or []
+        for tech_data in tech_datas:
             TechStack.objects.create(
                 profile=self.profile,
                 tech_stack_name=tech_data.get('tech_stack_name')
@@ -56,7 +75,8 @@ class ProfileCreator:
 
     def _create_careers(self):
         """경력 정보 생성"""
-        for career_data in self.json_data.get('Career', []):
+        career_datas = self.json_data.get('Career') or []
+        for career_data in career_datas:
             Career.objects.create(
                 profile=self.profile,
                 company_name=career_data.get('company_name'),
@@ -70,7 +90,8 @@ class ProfileCreator:
 
     def _create_academic_records(self):
         """학력 정보 생성"""
-        for academic_data in self.json_data.get('AcademicRecord', []):
+        academic_datas = self.json_data.get('AcademicRecord') or []
+        for academic_data in academic_datas:
             AcademicRecord.objects.create(
                 profile=self.profile,
                 school_name=academic_data.get('school_name'),
@@ -82,7 +103,8 @@ class ProfileCreator:
 
     def _create_certificates(self):
         """자격증 정보 생성"""
-        for cert_data in self.json_data.get('Certificate', []):
+        certificate_datas = self.json_data.get('Certificate') or []
+        for cert_data in certificate_datas:
             Certificate.objects.create(
                 profile=self.profile,
                 name=cert_data.get('name')
@@ -90,14 +112,15 @@ class ProfileCreator:
 
     def _create_languages(self):
         """언어 능력 정보 생성"""
-        for lang_data in self.json_data.get('Language', []):
+        language_datas = self.json_data.get('Language') or []
+        for lang_data in language_datas:
             Language.objects.create(
                 profile=self.profile,
                 language_name=lang_data.get('language_name'),
                 description=lang_data.get('description')
             )
 
-def create_profile_from_json(json_data):
+def create_profile_from_json(page_id, resume_id, json_data):
     """JSON 데이터를 받아서 프로필 및 관련 정보를 생성하는 함수"""
-    creator = ProfileCreator(json_data)
+    creator = ProfileCreator(page_id, resume_id, json_data)
     return creator.create_profile()
