@@ -1,17 +1,163 @@
 .search-results-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 화면 맨 위에 정렬 */
-    height: 100vh; /* 화면 전체 높이 */
-    background-color: #f8f9fa; /* 배경색 */
-    padding-top: 60px; /* 상단 여백 */
-  }
-  
-  .search-results-content {
-    width: 800px; /* 고정된 넓이 */
-    text-align: center;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding-top: 80px;
+  /* position: ; */
+}
+
+.main-search-container {
+  width: 100%;
+  margin: 0; /* 여백 제거 */
+  justify-content: center;
+  padding-top: 0;
+  align-items: center;
+}
+
+.keywords-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center; /* 중앙 배열 */
+  max-width: 600px;
+}
+.keyword {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  text-align: center;
+}
+
+.search-results-content {
+  width: 900px;
+  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.resume-box-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.resume-box {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.resume-details {
+  text-align: center;
+}
+
+.ai-analysis {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.resume-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+
+.bookmark-button,
+.details-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bookmark-button {
+  background-color: #ffcc00;
+  border-radius: 8px;
+  color: white;
+}
+
+.details-button {
+  background-color: #007bff;
+  border-radius: 8px;
+  color: white;
+}
+
+.toggle-hidden-bar-button {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 8px;
+  background-color: hsl(0, 0%, 12%);
+  color: white;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  height: 100px;
+  z-index: 1000;
+  transition: right 0.3s ease; /*부드럽게 이동*/
+}
+
+.hidden-bar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: hsl(0, 0%, 12%);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);  /* 기본적으로 화면 밖으로 숨김 */
+  transition: transform 0.3s ease;  /* 부드럽게 열림/닫힘 */
+  z-index: 1000;
+}
+
+.hidden-bar.open {
+  transform: translateX(0);
+}
+
+/* 토글 버튼 스타일 */
+.toggle-hidden-bar-button {
+  position: fixed;
+  right: 0; /* 기본적으로 화면 오른쪽에 붙음 */
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 8px;
+  color: white;
+  border: none;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  height: 60px;
+  z-index: 1001;
+  transition: right 0.3s ease;
+}
+
+/* 숨겨진 바가 열렸을 때 토글 버튼의 위치 조정 */
+.hidden-bar.open ~ .toggle-hidden-bar-button {
+  right: 340px; /* 숨겨진 바의 너비만큼 이동 */
+}
+
+.hidden-bar-resume-box {
+  padding: 10px;
+  border: 1px solid #ccc;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+

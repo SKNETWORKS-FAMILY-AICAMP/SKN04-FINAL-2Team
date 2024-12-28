@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainSearch.css";
 
-const MainSearch = () => {
-  const [query, setQuery] = useState("");
+const MainSearch = ({ initialQuery = "" }) => {
+  const [query, setQuery] = useState(initialQuery);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -12,7 +12,6 @@ const MainSearch = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 검색 결과 페이지로 이동
     navigate(`/search-results?query=${query}`);
   };
 
@@ -27,7 +26,7 @@ const MainSearch = () => {
     <div className="main-search-container">
       <form className="main-search-bar" onSubmit={handleSubmit}>
         <textarea
-          placeholder="검색어 입력"
+          placeholder="회사 요구사항 입력"
           value={query}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
