@@ -5,14 +5,15 @@ import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
 import Sidebar from "./components/sidebar/Sidebar";
-import MainSearch from "./components/search/MainSearch"; // MainSearch 컴포넌트 임포트
-import SearchResults from "./components/search/SearchResults"; // SearchResults 컴포넌트 임포트
+import MainSearch from "./components/search/MainSearch";
+import SearchResults from "./components/search/SearchResults";
+import BookmarkPage from "./components/navbar/BookmarkPage";
 import "./App.css";
 
 const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
-  
+  const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +36,14 @@ const App = () => {
     // setIsDropdownVisible(false);
   };
 
+  const addBookmark = (resume) => {
+    setBookmarks((prevBookmarks) => [...prevBookmarks, resume]);
+  };
+
+  const removeBookmark = (resume) => {
+    setBookmarks((prevBookmarks) => prevBookmarks.filter((b) => b !== resume));
+  };
+
   return (
     <Router>
       <div>
@@ -49,8 +58,8 @@ const App = () => {
           </div>
           <div className="menu">
             <div className="menu-links">
-              <Link to="#">Bookmark</Link>
-              <Link to="/login">Login</Link> {/* Link 컴포넌트로 변경 */}
+              <Link to="/bookmarks">Bookmark</Link>
+              <Link to="/login">Login</Link>
             </div>
             <Dropdown hideDropdown={hideDropdown} />
           </div>
@@ -58,15 +67,15 @@ const App = () => {
             <i className="fa-solid fa-bars"></i>
           </div>
         </nav>
-        <MainContent />
+        <MainContent bookmarks={bookmarks} removeBookmark={removeBookmark} addBookmark={addBookmark} />
       </div>
     </Router>
   );
 };
 
-const MainContent = () => {
+const MainContent = ({ bookmarks, removeBookmark, addBookmark }) => {
   const location = useLocation();
-  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results" && location.pathname !== "/login";
+  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results" && location.pathname !== "/login" && location.pathname !== "/bookmarks";
 
   return (
     <div>
@@ -75,9 +84,10 @@ const MainContent = () => {
         <Routes>
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/admin-page" element={<AdminPage />} />
-          <Route path="/" element={<MainSearch />} /> {/* MainSearch 컴포넌트 사용 */}
-          <Route path="/search-results" element={<SearchResults />} /> {/* SearchResults 컴포넌트 추가 */}
-          <Route path="/login" element={<Login onClose={() => window.history.back()} />} /> {/* Login 라우트 추가 */}
+          <Route path="/" element={<MainSearch />} />
+          <Route path="/search-results" element={<SearchResults addBookmark={addBookmark} />} />
+          <Route path="/login" element={<Login onClose={() => window.history.back()} />} />
+          <Route path="/bookmarks" element={<BookmarkPage bookmarks={bookmarks} removeBookmark={removeBookmark} />} />
         </Routes>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import MainSearch from "./MainSearch";
 import "./SearchResults.css";
 
-const SearchResults = () => {
+const SearchResults = ({ addBookmark }) => {
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("query");
   const [resumes, setResumes] = useState([]);
@@ -12,7 +12,7 @@ const SearchResults = () => {
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
 
   useEffect(() => {
-    console.log("Fetching resumes for query:", query); // 로그 추가
+    console.log("Fetching resumes for query:", query);
 
     const fetchResumes = async () => {
       // 실제 API 호출 시 아래 코드를 사용하세요.
@@ -36,10 +36,6 @@ const SearchResults = () => {
   }, [query]);
 
   const handleViewDetails = (resume) => {
-    // PDF 열기 로직 추가 (나중에 백엔드와 연결)
-    // 예: window.open(resume.pdfUrl, "_blank");
-
-    // 열람했던 이력서 리스트에 추가
     setViewedResumes((prevViewedResumes) => {
       if (!prevViewedResumes.some((r) => r.name === resume.name)) {
         return [...prevViewedResumes, resume];
@@ -49,7 +45,7 @@ const SearchResults = () => {
   };
 
   const toggleHiddenBar = () => {
-    setIsHiddenBarOpen(!isHiddenBarOpen);     // 상태 토글
+    setIsHiddenBarOpen(!isHiddenBarOpen);
   };
 
   return (
@@ -74,7 +70,7 @@ const SearchResults = () => {
               </div>
             </div>
             <div className="resume-buttons">
-              <button className="bookmark-button">Bookmark</button>
+              <button className="bookmark-button" onClick={() => addBookmark(resume)}>Bookmark</button>
               <button className="details-button" onClick={() => handleViewDetails(resume)}>상세보기</button>
             </div>
           </div>

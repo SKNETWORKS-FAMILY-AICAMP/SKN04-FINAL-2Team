@@ -60,59 +60,45 @@ const UserDeletion = ({ onClose }) => {
     <div className="user-deletion-overlay">
       <div className="user-deletion-container">
         <button className="user-deletion-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2>회원 삭제</h2>
-        <div className="user-deletion-form-group">
-          <label htmlFor="search">사용자 검색</label>
-          <input
-            type="text"
-            id="search"
-            placeholder="사용자 ID 입력"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
-            className={error && !user ? "error" : ""}
-          />
-          <button onClick={handleSearch} className="user-deletion-button">검색</button>
-          {error && !user && <div className="user-deletion-error-message">{error}</div>}
-        </div>
+        <h2>사용자 삭제</h2>
+        <input
+          type="text"
+          placeholder="사용자 ID 검색"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
+          className="user-deletion-input"
+        />
+        <button onClick={handleSearch} className="user-deletion-button">검색</button>
         {user && (
-          <div className="user-info">
-            <p>사용자: {user.name}</p>
-            <label>
-              <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={handleCheckboxChange}
-              />
-              삭제 확인
-            </label>
+          <div className="user-box">
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={handleCheckboxChange}
+              className="user-checkbox"
+            />
+            <div className="user-info">
+              <p>{user.name}</p>
+            </div>
           </div>
         )}
-        <div className="user-deletion-form-group">
-          <label htmlFor="admin-id">관리자 ID</label>
-          <input
-            type="text"
-            id="admin-id"
-            placeholder="관리자 ID 입력"
-            value={adminId}
-            onChange={(e) => setAdminId(e.target.value)}
-            className={error && !adminId ? "error" : ""}
-          />
-          {error && !adminId && <div className="user-deletion-error-message">{error}</div>}
-        </div>
-        <div className="user-deletion-form-group">
-          <label htmlFor="admin-password">관리자 비밀번호</label>
-          <input
-            type="password"
-            id="admin-password"
-            placeholder="관리자 비밀번호 입력"
-            value={adminPassword}
-            onChange={(e) => setAdminPassword(e.target.value)}
-            className={error && !adminPassword ? "error" : ""}
-          />
-          {error && !adminPassword && <div className="user-deletion-error-message">{error}</div>}
-        </div>
+        <input
+          type="text"
+          placeholder="관리자 ID"
+          value={adminId}
+          onChange={(e) => setAdminId(e.target.value)}
+          className="user-deletion-input"
+        />
+        <input
+          type="password"
+          placeholder="관리자 비밀번호"
+          value={adminPassword}
+          onChange={(e) => setAdminPassword(e.target.value)}
+          className="user-deletion-input"
+        />
         <button onClick={handleDelete} className="user-deletion-button">삭제</button>
+        {error && <div className="user-deletion-error-message">{error}</div>}
       </div>
     </div>
   );
