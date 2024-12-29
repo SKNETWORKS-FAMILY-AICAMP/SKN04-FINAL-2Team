@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // axios 라이브러리 사용
 import "./MainSearch.css";
 
 const MainSearch = ({ initialQuery = "" }) => {
@@ -12,7 +13,14 @@ const MainSearch = ({ initialQuery = "" }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search-results?query=${query}`);
+    try {
+      // API 요청 보내기
+      const response = await axios.get(`/api/search/?query=${query}`);
+      console.log(response.data); // 응답 데이터 처리
+      navigate(`/search-results?query=${query}`); // 검색 결과 페이지로 이동
+    } catch (error) {
+      console.error("검색 중 오류 발생:", error);
+    }
   };
 
   const handleKeyDown = (e) => {

@@ -71,7 +71,7 @@ class AcademicRecord(models.Model): # 학력
 
 class Certificate(models.Model): # 자격증
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='certificates')
-    name = models.CharField(max_length=50, blank=True, null=True)          # 자격증명
+    name = models.CharField(max_length=100, blank=True, null=True)          # 자격증명
     
     class Meta:
         db_table = 'certificate'  # 데이터베이스 테이블 이름
