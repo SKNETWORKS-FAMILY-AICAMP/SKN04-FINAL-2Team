@@ -24,7 +24,7 @@ class ResumePreprocessor:
                 {
                     "Profile": {
                         "name": "프로필 이름 (예: 김철수)",
-                        "job_category": "직업 카테고리 (예: 소프트웨어 엔지니어, 데이터 사이언티스트)",
+                        "job_category": "직업 카테고리 (예: 소프트웨어 엔지니어, 데이터 사이언티스트 )",
                         "career_year": "경력 연수 (정수 값, 예: 5, 직업 카테고리로 쌓인 경력만을 활용해줘)"
                     },
                     "TechStack": [

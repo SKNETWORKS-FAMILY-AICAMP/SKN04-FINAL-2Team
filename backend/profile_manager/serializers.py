@@ -53,15 +53,63 @@ class ProfileSerializer(serializers.ModelSerializer):
             'languages'
         ]
 
+import random
+# 프론트와의 통신을 위한 테스트용 데이터 생성
 class SimpleProfileSerializer(serializers.ModelSerializer):
-    pdf_data = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
+    job_category = serializers.SerializerMethodField()
+    career_year = serializers.SerializerMethodField()
+    ai_analysis = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['profile_id', 'name', 'job_category', 'career_year', 'pdf_data']
+        fields = ['profile_id', 'name', 'job_category', 'career_year', 'ai_analysis']
+        
 
-    def get_pdf_data(self, obj):
-        # ProfileData가 존재할 경우 pdf_data를 반환
-        if hasattr(obj, 'profile_data'):
-            return obj.profile_data.pdf_data.url if obj.profile_data.pdf_data else None
-        return None
+    def get_name(self, obj):
+        # 테스트용 임의 이름 반환
+        test_names = ['김철수', '이영희', '박지민', '정민수']
+        return random.choice(test_names)
+
+    def get_job_category(self, obj):
+        # 테스트용 직무 카테고리 반환
+        test_categories = ['백엔드 개발자', '프론트엔드 개발자', '데이터 엔지니어', 'DevOps']
+        return random.choice(test_categories)
+
+    def get_career_year(self, obj):
+        # 테스트용 경력 년수 반환
+        return random.randint(0, 10)
+    
+    def get_ai_analysis(self, obj):
+        # 테스트용 AI 분석 결과 반환
+        test_analysis = ['AI 분석 결과 1', 'AI 분석 결과 2', 'AI 분석 결과 3', 'AI 분석 결과 4']
+        return random.choice(test_analysis)
+    
+
+class BookmarkedProfileSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+    job_category = serializers.SerializerMethodField()
+    career_year = serializers.SerializerMethodField()
+    is_bookmarked = serializers.SerializerMethodField()    
+    
+    class Meta:
+        model = Profile
+        fields = ['profile_id', 'name', 'job_category', 'career_year', 'is_bookmarked']
+
+    def get_bookmarked_profiles(self):
+        # return Profile.objects.filter(is_bookmarked=True)
+        return True
+    
+    def get_name(self, obj):
+        # 테스트용 임의 이름 반환
+        test_names = ['김철수', '이영희', '박지민', '정민수']
+        return random.choice(test_names)
+
+    def get_job_category(self, obj):
+        # 테스트용 직무 카테고리 반환
+        test_categories = ['백엔드 개발자', '프론트엔드 개발자', '데이터 엔지니어', 'DevOps']
+        return random.choice(test_categories)
+
+    def get_career_year(self, obj):
+        # 테스트용 경력 년수 반환
+        return random.randint(0, 10)

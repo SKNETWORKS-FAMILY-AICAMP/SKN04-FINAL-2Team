@@ -6,6 +6,7 @@ class Profile(models.Model):
     name = models.CharField(max_length=50)           # 이름
     job_category = models.CharField(max_length=50, blank=True, null=True)  # 직업
     career_year = models.IntegerField(blank=True, null=True)  # 경력 연수
+    # is_bookmarked = models.BooleanField(default=False)  # 책갈피 여부
 
     class Meta:
         db_table = 'profile'  # 데이터베이스 테이블 이름

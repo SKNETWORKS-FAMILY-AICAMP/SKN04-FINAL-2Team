@@ -23,8 +23,22 @@ def process_resumes(start_index=0):
     bucket_name = 'talentbucket01'
     prefix = 'txt/'
 
-    response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
-    resume_files = [obj['Key'] for obj in response.get('Contents', []) if not obj['Key'].endswith('/')]
+    resume_files = []
+    continuation_token = None
+
+    # 페이지네이션을 통해 모든 객체를 가져오기
+    while True:
+        if continuation_token:
+            response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix, ContinuationToken=continuation_token)
+        else:
+            response = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+
+        resume_files.extend([obj['Key'] for obj in response.get('Contents', []) if not obj['Key'].endswith('/')])
+
+        if response.get('IsTruncated'):  # 더 많은 객체가 있는지 확인
+            continuation_token = response.get('NextContinuationToken')
+        else:
+            break
 
     if not resume_files:
         print("이력서 파일이 없습니다.")
