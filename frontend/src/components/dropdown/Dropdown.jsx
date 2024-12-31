@@ -1,17 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import "./Dropdown.css";
 
-const Dropdown = ({ hideDropdown }) => {
+const Dropdown = ({ hideDropdown, user }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    // is_superuser 혹은 is_staff 만 드롭다운 열기 가능
+    if (user === "is_superuser" || user === "is_staff") {
+      setIsOpen(!isOpen);
+    } else {
+      alert("해당 기능은 관리자만 접속이 가능합니다.");
+    }
+    // setIsOpen(!isOpen);
   };
 
-  const handleLinkClick = () => {
+  const handleLinkClick = (path) => {
+    if (path === "/user-management" && user !== "is_superuser") {
+      // 관리 페이지 접근 제한
+      alert("해당 기능은 관리자만 접속이 가능합니다.");
+      return; 
+    }
     setIsOpen(false);
-    hideDropdown(); // 드롭다운 메뉴 숨기기
+    hideDropdown(); // 드롭다운 닫기
+    navigate(path);
   };
 
   return (

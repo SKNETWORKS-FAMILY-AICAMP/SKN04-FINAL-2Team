@@ -14,6 +14,7 @@ const App = () => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [bookmarks, setBookmarks] = useState([]);
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,25 +62,34 @@ const App = () => {
               <Link to="/bookmarks">Bookmark</Link>
               <Link to="/login">Login</Link>
             </div>
-            <Dropdown hideDropdown={hideDropdown} />
+            <Dropdown hideDropdown={hideDropdown} userRole={user}/>
           </div>
           <div className="menu-btn">
             <i className="fa-solid fa-bars"></i>
           </div>
         </nav>
-        <MainContent bookmarks={bookmarks} removeBookmark={removeBookmark} addBookmark={addBookmark} />
+        <MainContent
+        bookmarks={bookmarks}
+        removeBookmark={removeBookmark}
+        addBookmark={addBookmark}
+        user={user}
+        />
       </div>
     </Router>
   );
 };
 
-const MainContent = ({ bookmarks, removeBookmark, addBookmark }) => {
+const MainContent = ({ bookmarks, removeBookmark, addBookmark, user}) => {
   const location = useLocation();
-  const showSidebar = location.pathname !== "/" && location.pathname !== "/search-results" && location.pathname !== "/login" && location.pathname !== "/bookmarks";
+  const showSidebar =
+    location.pathname !== "/" &&
+    location.pathname !== "/search-results" &&
+    location.pathname !== "/login" &&
+    location.pathname !== "/bookmarks";
 
   return (
     <div>
-      {showSidebar && <Sidebar />}
+      {showSidebar && <Sidebar user={user} />}
       <div style={{ flex: 1, padding: "20px" }}>
         <Routes>
           <Route path="/user-management" element={<UserManagement />} />
