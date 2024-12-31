@@ -4,7 +4,7 @@ import UserDeletion from "../management/UserDeletion"; // 회원삭제 컴포넌
 import SignUp from "../management/SignUp"; // 회원가입 컴포넌트
 import AdminPage from "../admin/AdminPage"; // AdminPage 임포트
 
-const Sidebar = () => {
+const Sidebar = (user) => {
   const [activeMenu, setActiveMenu] = useState("");
   const [isDeletingUser, setIsDeletingUser] = useState(false); // 회원삭제 모달 상태
   const [showSignUp, setShowSignUp] = useState(false); // 회원가입 폼 표시 상태
@@ -20,7 +20,12 @@ const Sidebar = () => {
   };
   
   const handleAdminPageClick = () => {
+    if (user === "is_superuser") {
+      // superuser 사용자만 관리 페이지 표시
     setShowAdminPage(true); // 관리 페이지 표시
+    } else {
+      alert("해당 기능은 관리자만 접속이 가능합니다.");
+    }
   };
 
   const toggleUserManagement = () => {
@@ -88,7 +93,7 @@ const Sidebar = () => {
         </div>
       )}
 
-      {/* 회원가입 폼 표시 */}
+      {/* 회원가입 모달 표시 */}
       {showSignUp && (
         <div className="login-overlay">
           <SignUp onClose={() => setShowSignUp(false)} />

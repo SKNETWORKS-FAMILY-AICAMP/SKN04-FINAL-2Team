@@ -60,7 +60,7 @@ const AdminPage = ({ onClose }) => {
     <div className="admin-page-overlay">
       <div className="admin-page-container">
         <button className="admin-page-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2 className="admin-page-header">사용자 권한 부여</h2>
+        <h2 className="admin-page-header">권리자 권한 부여</h2>
         <input
           type="text"
           placeholder="사용자 ID 검색"
