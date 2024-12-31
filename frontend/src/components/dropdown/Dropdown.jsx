@@ -8,7 +8,7 @@ const Dropdown = ({ hideDropdown, user }) => {
 
   const toggleDropdown = () => {
     // is_superuser 혹은 is_staff 만 드롭다운 열기 가능
-    if (user === "is_superuser" || user === "is_staff") {
+    if (user && (user.is_superuser || user.is_staff)) {
       setIsOpen(!isOpen);
     } else {
       alert("해당 기능은 관리자만 접속이 가능합니다.");
@@ -17,7 +17,7 @@ const Dropdown = ({ hideDropdown, user }) => {
   };
 
   const handleLinkClick = (path) => {
-    if (path === "/user-management" && user !== "is_superuser") {
+    if (path === "/user-management" && !user?.is_superuser) {
       // 관리 페이지 접근 제한
       alert("해당 기능은 관리자만 접속이 가능합니다.");
       return; 
@@ -34,8 +34,8 @@ const Dropdown = ({ hideDropdown, user }) => {
       </button>
       {isOpen && (
         <div className="dropdown-menu">
-          <Link to="/user-management" onClick={handleLinkClick}>관리 페이지</Link>
-          <Link to="/admin-page" onClick={handleLinkClick}>회원관리</Link>
+          <div onClick={() => handleLinkClick("/user-management")}>관리 페이지</div>
+          <div onClick={() => handleLinkClick("/admin-page")}>회원관리</div>
         </div>
       )}
     </div>

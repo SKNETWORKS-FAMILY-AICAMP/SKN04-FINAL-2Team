@@ -27,11 +27,14 @@ const SearchResults = ({ addBookmark }) => {
         });
 
         const data = await response.json();
-        const { keywords, results } = data;
+        // const { keywords, results } = data;
+        const { results } = data;
 
         console.log("Fetched data:", data);
 
         // 키워드 데이터 업데이트
+        // 테스트용 더미데이터 
+        const keywords = ["React", "Node.js", "Python", "Django"];
         setKeywords(keywords);
 
         // 이력서 데이터 업데이트

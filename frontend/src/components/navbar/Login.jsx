@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../context/AuthContext';
 import "./LoginForm.css";
 
 const Login = ({ onClose }) => {
@@ -9,12 +10,14 @@ const Login = ({ onClose }) => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
+  // handleChange 함수 추가
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [id.replace("host-", "")]: value,
+      [id.replace('host-', '')]: value
     }));
   };
 
@@ -22,7 +25,6 @@ const Login = ({ onClose }) => {
     e.preventDefault();
     setError("");
 
-    // 입력값 검증
     if (!formData.username || !formData.password) {
       setError("아이디와 비밀번호를 모두 입력해주세요.");
       return;
@@ -44,20 +46,11 @@ const Login = ({ onClose }) => {
         return;
       }
 
-      // 로그인 성공 처리
-      if (data.token) {
-        // JWT 토큰 저장
-        localStorage.setItem('accessToken', data.token.access);
-        localStorage.setItem('refreshToken', data.token.refresh);
-        
-        // 사용자 정보 저장
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-        }
-
-        // 메인 검색 페이지로 이동
-        navigate("/");
+      if (data.token && data.user) {
+        login(data.user, data.token);
+        console.log(data.user);
         onClose();
+        navigate("/");
       } else {
         setError("로그인 처리 중 오류가 발생했습니다.");
       }

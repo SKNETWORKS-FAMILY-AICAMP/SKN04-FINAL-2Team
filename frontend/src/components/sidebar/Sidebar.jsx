@@ -20,7 +20,7 @@ const Sidebar = (user) => {
   };
   
   const handleAdminPageClick = () => {
-    if (user === "is_superuser") {
+    if (user && user.is_superuser) {
       // superuser 사용자만 관리 페이지 표시
     setShowAdminPage(true); // 관리 페이지 표시
     } else {

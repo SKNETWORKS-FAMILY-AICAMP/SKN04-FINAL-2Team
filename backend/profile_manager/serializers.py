@@ -60,12 +60,12 @@ class SimpleProfileSerializer(serializers.ModelSerializer):
     job_category = serializers.SerializerMethodField()
     career_year = serializers.SerializerMethodField()
     ai_analysis = serializers.SerializerMethodField()
+    pdf_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['profile_id', 'name', 'job_category', 'career_year', 'ai_analysis']
+        fields = ['profile_id', 'name', 'job_category', 'career_year', 'ai_analysis', 'pdf_url']
         
-
     def get_name(self, obj):
         # 테스트용 임의 이름 반환
         test_names = ['김철수', '이영희', '박지민', '정민수']
@@ -85,6 +85,15 @@ class SimpleProfileSerializer(serializers.ModelSerializer):
         test_analysis = ['AI 분석 결과 1', 'AI 분석 결과 2', 'AI 분석 결과 3', 'AI 분석 결과 4']
         return random.choice(test_analysis)
     
+    def get_pdf_url(self, obj):
+        # 테스트용 PDF URL 반환
+        test_pdf_url = ['https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_08.pdf',
+                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_09.pdf', 
+                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_07.pdf', 
+                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_06.pdf']
+        return random.choice(test_pdf_url)
+    
+
 
 class BookmarkedProfileSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()

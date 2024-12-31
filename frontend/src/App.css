@@ -94,3 +94,16 @@ button {
 .menu-links a:hover {
     color: white; 
 }
+
+.logout-button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #cc0000;
+}
