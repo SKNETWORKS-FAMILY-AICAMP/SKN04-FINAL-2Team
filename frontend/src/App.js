@@ -36,12 +36,12 @@ const App = () => {
     // setIsDropdownVisible(false);
   };
 
-  const addBookmark = (resume) => {
-    setBookmarks((prevBookmarks) => [...prevBookmarks, resume]);
+  const addBookmark = (profile) => {
+    setBookmarks((prevBookmarks) => [...prevBookmarks, profile]);
   };
 
-  const removeBookmark = (resume) => {
-    setBookmarks((prevBookmarks) => prevBookmarks.filter((b) => b !== resume));
+  const removeBookmark = (profile) => {
+    setBookmarks((prevBookmarks) => prevBookmarks.filter((b) => b !== profile));
   };
 
   return (
