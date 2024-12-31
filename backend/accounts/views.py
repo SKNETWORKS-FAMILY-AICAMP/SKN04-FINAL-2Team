@@ -4,7 +4,8 @@ from django.contrib import messages
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
-from .serializers import RegisterSerializer, UserProfileSerializer, UserUpdateSerializer
+from .serializers import RegisterSerializer, UserProfileSerializer, UserUpdateSerializer, AdminUserUpdateSerializer
+from rest_framework.permissions import IsAdminUser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
 from rest_framework.response import Response
@@ -34,7 +35,7 @@ class LoginView(APIView):
             # 사용자 인증
             user = authenticate(username=username, password=password)
             
-            if user is not None:
+            if user is not None and user.is_active:
                 # JWT 토큰 생성
                 refresh = RefreshToken.for_user(user)
                 return Response({
@@ -44,8 +45,8 @@ class LoginView(APIView):
                         'refresh': str(refresh),
                     },
                     'user': {
-                        'username': user.username,
-                        'id': user.id,
+                        'username': user.username, # id
+                        'id': user.id, # 기본키
                         'email': user.email
                     }
                 }, status=status.HTTP_200_OK)
@@ -84,3 +85,15 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+class AdminUserUpdateView(generics.UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = AdminUserUpdateSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]  # 슈퍼유저 권한 체크
+
+    def get_permissions(self):
+        if not self.request.user.is_superuser:
+            return Response({
+                "message": "권한이 없습니다."
+            }, status=status.HTTP_403_FORBIDDEN)
+        return super().get_permissions()

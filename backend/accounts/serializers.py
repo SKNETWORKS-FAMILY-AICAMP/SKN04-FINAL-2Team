@@ -12,7 +12,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         
         # 토큰에 사용자 권한 정보 추가
         data.update({
-            'is_host': user.is_host,
             'is_superuser': user.is_superuser,
             'is_staff': user.is_staff,
             'username': user.username
@@ -39,7 +38,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('email', 'is_active', 'is_staff', 'is_host', 'is_superuser')
+        fields = ('email', 'is_active', 'is_staff', 'is_superuser')
 
 # 사용자 업데이트 시리얼라이저
 class UserUpdateSerializer(serializers.ModelSerializer):
@@ -48,5 +47,14 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         fields = ('email',)
         
         
+class AdminUserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'is_staff')
 
+    def update(self, instance, validated_data):
+        instance.is_staff = True  # 직접 staff 권한 부여
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+        return instance
 

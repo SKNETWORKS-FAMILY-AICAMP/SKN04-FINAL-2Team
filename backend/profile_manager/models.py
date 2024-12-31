@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Profile(models.Model):
@@ -44,7 +45,7 @@ class Career(models.Model): # 경력
     responsibilities = models.TextField(blank=True, null=True)  # 담당업무
     start_date = models.CharField(max_length=7, blank=True, null=True)      # 시작일(YYYY-MM 형식)
     end_date = models.CharField(max_length=7, null=True, blank=True)        # 종료일 (현재 재직중일 수 있음, YYYY-MM 형식)
-    is_currently_employed = models.BooleanField(default=False)  # 현재 재직중인지 여부를 확인하는 변수
+    is_currently_employed = models.BooleanField(default=False, null=True)  # 현재 재직중인지 여부를 확인하는 변수
     description = models.TextField(blank=True, null=True)       # 추가 설명
     
     class Meta:
@@ -91,3 +92,16 @@ class Language(models.Model):   # 외국어
     
     def __str__(self):
         return f"{self.language_name} ({self.description})"  # 언어명과 언어 능력으로 문자열 반환
+    
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookmarks')
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='bookmarked_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'bookmark'
+        unique_together = ('user', 'profile')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.profile.name}"
