@@ -38,7 +38,7 @@ class ResumePreprocessor:
                         "position": "직위 (예: Senior Software Engineer, Software Developer, 하나의 직위만 표현해줘)",
                         "start_date": "시작일 (YYYY-MM 형식, 예: 2018-01)",
                         "end_date": "종료일 또는 null (YYYY-MM 형식, 예: 2022-12)",
-                        "is_currently_employed": "현재 재직 여부 (Boolean 값, 예: true 또는 false)",
+                        "is_currently_employed": "현재 재직 여부 (Boolean 값, 예: True 또는 False)",
                         "responsibilities": "담당 업무 (예: 웹 애플리케이션 개발 및 유지보수)",
                         "description": "추가 설명 (예: 글로벌 팀 프로젝트를 진행)"
                         }

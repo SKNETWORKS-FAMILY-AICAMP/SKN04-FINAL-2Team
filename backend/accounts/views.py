@@ -47,7 +47,9 @@ class LoginView(APIView):
                     'user': {
                         'username': user.username, # id
                         'id': user.id, # 기본키
-                        'email': user.email
+                        'email': user.email,
+                        'is_superuser': user.is_superuser,
+                        'is_staff': user.is_staff
                     }
                 }, status=status.HTTP_200_OK)
             else:
