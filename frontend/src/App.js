@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes, Link, useLocation } from "react-router-dom";
-import Dropdown from "./components/dropdown/Dropdown";
+import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
@@ -16,6 +15,7 @@ const App = () => {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [bookmarks, setBookmarks] = useState([]);
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,8 +34,12 @@ const App = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos]);
 
-  const hideDropdown = () => {
-    // setIsDropdownVisible(false);
+  const handleSettingsClick = () => {
+    if (user && (user.is_superuser || user.is_staff)) {
+      navigate("/settings");
+    } else {
+      alert("해당 기능은 관리자만 접속이 가능합니다.");
+    }
   };
 
   const addBookmark = (profile) => {
@@ -45,6 +49,10 @@ const App = () => {
   const removeBookmark = (profile) => {
     setBookmarks((prevBookmarks) => prevBookmarks.filter((b) => b !== profile));
   };
+
+  if (!user) {
+    return <Login onClose={() => navigate("/")} />;
+  }
 
   return (
     <div>
@@ -61,7 +69,8 @@ const App = () => {
         <div className="menu">
           <div className="menu-links">
             <Link to="/bookmarks">Bookmark</Link>
-            {user ? (
+          </div>
+          {user ? (
               <>
                 <span>{user.username}</span>
                 <button onClick={logout} className="logout-button">
@@ -71,8 +80,9 @@ const App = () => {
             ) : (
               <Link to="/login">Login</Link>
             )}
-          </div>
-          <Dropdown hideDropdown={hideDropdown} user={user} />
+          <button onClick={handleSettingsClick} className="settings-button">
+            Settings
+          </button>
         </div>
         <div className="menu-btn">
           <i className="fa-solid fa-bars"></i>
@@ -90,6 +100,7 @@ const App = () => {
 const MainContent = ({ bookmarks, removeBookmark, addBookmark }) => {
   const location = useLocation();
   const { user } = useAuth();
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수 정의
 
   const showSidebar =
     location.pathname !== "/" &&
@@ -111,7 +122,7 @@ const MainContent = ({ bookmarks, removeBookmark, addBookmark }) => {
           />
           <Route
             path="/login"
-            element={<Login onClose={() => window.history.back()} />}
+            element={<Login onClose={() => navigate("/")} />}
           />
           <Route
             path="/bookmarks"
@@ -121,6 +132,10 @@ const MainContent = ({ bookmarks, removeBookmark, addBookmark }) => {
                 removeBookmark={removeBookmark}
               />
             }
+          />
+          <Route
+            path="/settings"
+            element={<Sidebar user={user} />}
           />
         </Routes>
       </div>
