@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         if (!token) return;
 
         try {
-            const response = await fetch('http://localhost:8000/auth/verify/', {
+            const response = await fetch('http://127.0.0.1:8000/auth/verify/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,7 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./BookmarkPage.css"; // BookmarkPage.css 파일 임포트
 
-const BookmarkPage = ({ bookmarks, removeBookmark }) => {
+const BookmarkPage = ({ user }) => {
+  const [bookmarks, setBookmarks] = useState([]);
+
+  // 북마크 목록 가져오기
+  const fetchBookmarks = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/profile/bookmark/`);
+      setBookmarks(response.data);
+    } catch (error) {
+      console.error('북마크 목록 가져오기 실패:', error);
+    }
+  };
+
+  // 컴포넌트 마운트 시 북마크 목록 가져오기
+  useEffect(() => {
+    if (user) {  // 로그인된 경우에만 북마크 가져오기
+      fetchBookmarks();
+    }
+  }, [user, bookmarks]);
+
+  const removeBookmark = async (profile) => {
+    try {
+      await axios.delete(
+        `http://127.0.0.1:8000/profile/bookmark/remove/${profile.profile_id}/`
+      );
+      fetchBookmarks();  // 북마크 삭제 후 목록 새로고침
+    } catch (error) {
+      console.error('북마크 삭제 실패:', error.response?.data || error.message);
+    }
+  };
+
   const viewDetails = (profile) => {
     // 상세보기 기능 구현
     console.log("Viewing details for:", profile);

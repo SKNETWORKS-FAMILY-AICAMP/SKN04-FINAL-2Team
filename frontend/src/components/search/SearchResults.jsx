@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import MainSearch from "./MainSearch";
 import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
+import axios from "axios";
 import "./SearchResults.css";
+
 
 // PDF.js 워커 경로 설정 (정적 경로 사용)
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -18,16 +20,13 @@ const SearchResults = ({ addBookmark }) => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        // Django API 호출
-        const response = await fetch(`http://localhost:8000/profile/search/?query=${query}`, {
-          method: 'GET',
+        const response = await axios.get(`http://127.0.0.1:8000/profile/search/?query=${query}`, {
           headers: {
             'Content-Type': 'application/json',
           },
         });
 
-        const data = await response.json();
-        // const { keywords, results } = data;
+        const data = response.data;
         const { results } = data;
 
         console.log("Fetched data:", data);
@@ -57,6 +56,31 @@ const SearchResults = ({ addBookmark }) => {
     }
   }, [query]);
 
+  const handleAddBookmark = async (profile) => {
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/profile/bookmark/add/`, 
+      {
+        profile_id: profile.profile_id
+      }, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+      if (response.status === 200 || response.status === 201) {
+        console.log("북마크 추가 성공:", profile);
+        addBookmark(profile);
+      } else {
+        console.error("북마크 추가 중 오류 발생:", response.statusText);
+      }
+    } catch (error) {
+      console.error("북마크 추가 중 오류 발생:", error);
+    }
+  };
+
   // 새로운 창에서 PDF 열기
   const handleViewDetails = (profile) => {
     if (profile.pdf_url) {
@@ -80,42 +104,45 @@ const SearchResults = ({ addBookmark }) => {
   };
 
   return (
-    <div className="search-results-container">
-      <MainSearch initialQuery={query} />
-      
-      {/* 키워드 표시 */}
-      <div className="keywords-container">
-        {keywords.map((keyword, index) => (
-          <span key={index} className="keyword">
-            {keyword}
-          </span>
-        ))}
+    <div className="search-results">
+      <div className="main-search-container">
+        <MainSearch initialQuery={query} />
       </div>
+      <div className="search-results-container">
+        {/* 키워드 표시 */}
+        <div className="keywords-container">
+          {keywords.map((keyword, index) => (
+            <span key={index} className="keyword">
+              {keyword}
+            </span>
+          ))}
+        </div>
 
-      {/* 검색 결과 표시 */}
-      <div className="search-results-content">
-        {resumes.map((profile, index) => (
-          <div key={index} className="resume-box-container">
-            <div key={index} className="resume-box">
-              <div className="resume-details">
-                <p>
-                  <strong>이름: </strong> {profile.name} 
-                  <strong> 직군: </strong> {profile.job_category} 
-                  <strong> 경력: </strong> {profile.career_year}
-                </p>
-                <div className="ai-analysis">
-                  <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
+        {/* 검색 결과 표시 */}
+        <div className="search-results-content">
+          {resumes.map((profile, index) => (
+            <div key={index} className="resume-box-container">
+              <div key={index} className="resume-box">
+                <div className="resume-details">
+                  <p>
+                    <strong>이름: </strong> {profile.name} 
+                    <strong> 직군: </strong> {profile.job_category} 
+                    <strong> 경력: </strong> {profile.career_year}
+                  </p>
+                  <div className="ai-analysis">
+                    <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
+                  </div>
                 </div>
               </div>
+              <div className="resume-buttons">
+                <button className="bookmark-button" onClick={() => handleAddBookmark(profile)}>Bookmark</button>
+                <button className="details-button" onClick={() => handleViewDetails(profile)}>상세보기</button>
+              </div>
             </div>
-            <div className="resume-buttons">
-              <button className="bookmark-button" onClick={() => addBookmark(profile)}>Bookmark</button>
-              <button className="details-button" onClick={() => handleViewDetails(profile)}>상세보기</button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-
+    
       {/* 히든 바 */}
       <div className="search-results-container">
         <div className={`hidden-bar ${isHiddenBarOpen ? 'open' : ''}`}>
