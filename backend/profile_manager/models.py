@@ -97,6 +97,7 @@ class Language(models.Model):   # 외국어
 class Bookmark(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookmarks')
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='bookmarked_by')
+    ai_analysis = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

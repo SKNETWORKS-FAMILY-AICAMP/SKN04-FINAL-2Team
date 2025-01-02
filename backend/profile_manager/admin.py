@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language, ProfileData
+from .models import (
+    Profile, TechStack, Career, AcademicRecord, Certificate, 
+    Language, ProfileData, Bookmark
+)
 from django.core.management import call_command
 from django.contrib import messages
 
@@ -43,3 +46,10 @@ class LanguageAdmin(admin.ModelAdmin):
     search_fields = ('language_name',)
     list_filter = ('language_name',)
 
+@admin.register(Bookmark)
+class BookmarkAdmin(admin.ModelAdmin):
+    list_display = ('user', 'profile', 'created_at')  # 관리자 목록에서 표시할 필드
+    list_filter = ('created_at',)  # 필터 옵션
+    search_fields = ('user__username', 'profile__name')  # 검색 필드
+    date_hierarchy = 'created_at'  # 날짜 기반 계층 구조
+    ordering = ('-created_at',)  # 최신 북마크가 위에 오도록 정렬

@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import Profile, ProfileData, TechStack, Career, AcademicRecord, Certificate, Language
+from .models import ( Profile, ProfileData, TechStack, Career, 
+                    AcademicRecord, Certificate, Language, Bookmark )    
+from django.conf import settings
 
 class ProfileDataSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,72 +55,70 @@ class ProfileSerializer(serializers.ModelSerializer):
             'languages'
         ]
 
-import random
-# 프론트와의 통신을 위한 테스트용 데이터 생성
 class SimpleProfileSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     job_category = serializers.SerializerMethodField()
     career_year = serializers.SerializerMethodField()
-    ai_analysis = serializers.SerializerMethodField()
+    ai_analysis = serializers.SerializerMethodField() # AI 분석 결과(임시)
     pdf_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['profile_id', 'name', 'job_category', 'career_year', 'ai_analysis', 'pdf_url']
-        
+    
     def get_name(self, obj):
-        # 테스트용 임의 이름 반환
-        test_names = ['김철수', '이영희', '박지민', '정민수']
-        return random.choice(test_names)
+        # obj는 Profile 모델의 인스턴스
+        return obj.name
 
     def get_job_category(self, obj):
-        # 테스트용 직무 카테고리 반환
-        test_categories = ['백엔드 개발자', '프론트엔드 개발자', '데이터 엔지니어', 'DevOps']
-        return random.choice(test_categories)
+        return obj.job_category
 
     def get_career_year(self, obj):
-        # 테스트용 경력 년수 반환
-        return random.randint(0, 10)
+        return obj.career_year
     
+    # AI 분석 결과(임시)
     def get_ai_analysis(self, obj):
-        # 테스트용 AI 분석 결과 반환
-        test_analysis = ['AI 분석 결과 1', 'AI 분석 결과 2', 'AI 분석 결과 3', 'AI 분석 결과 4']
-        return random.choice(test_analysis)
+        ai_analysis = f'{obj.name}의 AI 분석 결과입니다.'
+        return ai_analysis
     
     def get_pdf_url(self, obj):
-        # 테스트용 PDF URL 반환
-        test_pdf_url = ['https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_08.pdf',
-                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_09.pdf', 
-                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_07.pdf', 
-                        'https://talentbucket01.s3.ap-northeast-2.amazonaws.com/pdf/pdf_resume_052_06.pdf']
-        return random.choice(test_pdf_url)
-    
+        profile_data = obj.profile_data
+        if profile_data and profile_data.pdf_data:
+            # STORAGES 설정에서 custom_domain 가져오기
+            custom_domain = settings.STORAGES['default']['OPTIONS']['custom_domain']
+            # PDF 파일의 전체 URL 생성
+            return f"https://{custom_domain}/{profile_data.pdf_data.name}"
+        return None
 
 
 class BookmarkedProfileSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     job_category = serializers.SerializerMethodField()
     career_year = serializers.SerializerMethodField()
-    is_bookmarked = serializers.SerializerMethodField()    
+    ai_analysis = serializers.SerializerMethodField()
+    pdf_url = serializers.SerializerMethodField()
     
     class Meta:
-        model = Profile
-        fields = ['profile_id', 'name', 'job_category', 'career_year', 'is_bookmarked']
-
-    def get_bookmarked_profiles(self):
-        # return Profile.objects.filter(is_bookmarked=True)
-        return True
+        model = Bookmark  # Bookmark 모델 사용
+        fields = ['profile_id', 'name', 'job_category', 'career_year', 'ai_analysis', 'pdf_url']
     
     def get_name(self, obj):
-        # 테스트용 임의 이름 반환
-        test_names = ['김철수', '이영희', '박지민', '정민수']
-        return random.choice(test_names)
-
+        # obj는 Bookmark 인스턴스이므로 profile 속성을 통해 Profile에 접근
+        return obj.profile.name
+    
     def get_job_category(self, obj):
-        # 테스트용 직무 카테고리 반환
-        test_categories = ['백엔드 개발자', '프론트엔드 개발자', '데이터 엔지니어', 'DevOps']
-        return random.choice(test_categories)
-
+        return obj.profile.job_category
+    
     def get_career_year(self, obj):
-        # 테스트용 경력 년수 반환
-        return random.randint(0, 10)
+        return obj.profile.career_year
+    
+    def get_ai_analysis(self, obj):
+        ai_analysis = obj.ai_analysis
+        return ai_analysis
+    
+    def get_pdf_url(self, obj):
+        profile_data = obj.profile.profile_data
+        if profile_data and profile_data.pdf_data:
+            custom_domain = settings.STORAGES['default']['OPTIONS']['custom_domain']
+            return f"https://{custom_domain}/{profile_data.pdf_data.name}"
+        return None
