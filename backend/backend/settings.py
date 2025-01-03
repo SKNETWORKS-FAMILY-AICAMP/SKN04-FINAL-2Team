@@ -77,10 +77,98 @@ MIDDLEWARE = [
 
 # JWT 설정
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15), # 15분
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=3), # 3일
-    'ROTATE_REFRESH_TOKENS': True, # 리프레시 토큰 재발급
-    'BLACKLIST_AFTER_ROTATION': True, # 리프레시 토큰 블랙리스트
+    # Access Token의 유효 시간 (5분 동안 유효)
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    
+    # Refresh Token의 유효 시간 (1일 동안 유효)
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    
+    # Refresh Token 재발급 시 새로운 토큰으로 교체 여부 (False: 교체하지 않음)
+    "ROTATE_REFRESH_TOKENS": False,
+    
+    # Refresh Token이 교체될 때 이전 토큰을 블랙리스트에 추가할지 여부 (False: 추가하지 않음)
+    "BLACKLIST_AFTER_ROTATION": False,
+    
+    # 마지막 로그인 시간을 업데이트할지 여부 (False: 업데이트하지 않음)
+    "UPDATE_LAST_LOGIN": False,
+
+    # 토큰 서명에 사용할 알고리즘 (HS256: 대칭키 알고리즘)
+    "ALGORITHM": "HS256",
+    
+    # 토큰 서명에 사용할 비밀 키 (Django의 SECRET_KEY 사용)
+    "SIGNING_KEY": SECRET_KEY,
+    
+    # 토큰 검증에 사용할 공개 키 (비대칭 알고리즘 사용 시 필요, HS256에선 사용 안 함)
+    "VERIFYING_KEY": "",
+    
+    # 토큰 수신자(Audience) 검증 (None: 검증하지 않음)
+    "AUDIENCE": None,
+    
+    # 토큰 발급자(Issuer) 검증 (None: 검증하지 않음)
+    "ISSUER": None,
+    
+    # JSON 인코더 클래스 (None: 기본 인코더 사용)
+    "JSON_ENCODER": None,
+    
+    # JSON Web Key Set URL (None: 사용하지 않음)
+    "JWK_URL": None,
+    
+    # 토큰 만료 시간에 대한 허용 오차 (초 단위, 기본값: 0)
+    "LEEWAY": 0,
+
+    # HTTP Authorization 헤더에서 사용할 타입 (Bearer)
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    
+    # HTTP 요청에서 인증 정보를 가져올 헤더 키
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    
+    # 사용자 모델의 ID 필드 (id 사용)
+    "USER_ID_FIELD": "id",
+    
+    # JWT Payload에서 사용자 ID를 나타내는 클레임
+    "USER_ID_CLAIM": "user_id",
+    
+    # 사용자 인증 규칙을 정의하는 함수
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    # 사용할 토큰 클래스 (기본 AccessToken 사용)
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    
+    # JWT Payload에서 토큰 유형을 나타내는 클레임
+    "TOKEN_TYPE_CLAIM": "token_type",
+    
+    # 토큰을 통해 사용자 객체를 나타낼 때 사용할 클래스
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    # JWT 토큰의 고유 식별자 (jti: 토큰의 고유 ID)
+    "JTI_CLAIM": "jti",
+
+    # Sliding Token에서 Refresh 만료 시간을 나타내는 클레임
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    
+    # Sliding Access Token의 유효 시간 (5분)
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    
+    # Sliding Refresh Token의 유효 시간 (1일)
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+
+    # Access & Refresh Token을 발급하는 Serializer
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    
+    # Refresh Token으로 Access Token을 재발급하는 Serializer
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    
+    # JWT 토큰의 유효성을 검증하는 Serializer
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    
+    # 블랙리스트에 토큰을 등록하는 Serializer
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    
+    # Sliding Token을 발급하는 Serializer
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    
+    # Sliding Refresh Token으로 새로운 Sliding Token을 발급하는 Serializer
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
 AUTH_USER_MODEL = 'accounts.CustomUser'  # 커스텀 유저 모델 지정
