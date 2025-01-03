@@ -1,55 +1,49 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { useCookies } from 'react-cookie';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        // localStorage에서 사용자 정보와 토큰을 가져옴
-        const savedUser = localStorage.getItem('user');
-        const token = localStorage.getItem('accessToken');
-        return savedUser && token ? JSON.parse(savedUser) : null;
-    });
+    const [user, setUser] = useState(null);
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken', 'refreshToken']);
 
     const login = (userData, tokens) => {
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        localStorage.setItem('accessToken', tokens.access);
-        localStorage.setItem('refreshToken', tokens.refresh);
+        setCookie('accessToken', tokens.access, { path: '/' });
+        setCookie('refreshToken', tokens.refresh, { path: '/' });
     };
 
-    const logout = () => {
+    const logout = useCallback(() => {
         setUser(null);
-        localStorage.removeItem('user');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-    };
+        removeCookie('accessToken');
+        removeCookie('refreshToken');
+    }, [removeCookie]);
 
-    // 토큰 유효성 검사
     useEffect(() => {
         const validateToken = async () => {
-        const token = localStorage.getItem('accessToken');
-        if (!token) return;
+            const token = cookies.accessToken;
+            if (!token) return;
 
-        try {
-            const response = await fetch('http://127.0.0.1:8000/auth/verify/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-            });
+            try {
+                const response = await fetch('http://127.0.0.1:8000/auth/verify/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
-            if (!response.ok) {
-            // 토큰이 유효하지 않으면 로그아웃
-            logout();
+                if (!response.ok) {
+                    logout();
+                }
+            } catch (error) {
+                console.error('Token validation error:', error);
+                logout();
             }
-        } catch (error) {
-            console.error('Token validation error:', error);
-        }
         };
 
         validateToken();
-    }, []);
+    }, [cookies.accessToken, logout]);
 
     const value = {
         user,
@@ -59,12 +53,12 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-        {children}
+            {children}
         </AuthContext.Provider>
     );
-    };
+};
 
-    export const useAuth = () => {
+export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth는 AuthProvider 내부에서만 사용할 수 있습니다');

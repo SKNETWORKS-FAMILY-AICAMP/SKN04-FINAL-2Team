@@ -12,7 +12,6 @@ const Login = ({ onClose }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // handleChange 함수 추가
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData(prev => ({
@@ -48,7 +47,6 @@ const Login = ({ onClose }) => {
 
       if (data.token && data.user) {
         login(data.user, data.token);
-        console.log(data.user);
         onClose();
         navigate("/");
       } else {
