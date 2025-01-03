@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import MainSearch from "./MainSearch";
 import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
-import axios from "axios";
+import axiosInstance from "../../context/axiosInstance";
+import { useAuth } from '../../context/AuthContext';
 import "./SearchResults.css";
 
 
@@ -10,21 +11,19 @@ import "./SearchResults.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const SearchResults = ({ addBookmark }) => {
+  const { user } = useAuth();
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("query");
   const [resumes, setResumes] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [viewedResumes, setViewedResumes] = useState([]);
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState({}); // 북마크 로딩 상태 추가
 
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/profile/search/?query=${query}`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await axiosInstance.get(`/profile/search/?query=${query}`);
 
         const data = response.data;
         const { results } = data;
@@ -57,27 +56,34 @@ const SearchResults = ({ addBookmark }) => {
   }, [query]);
 
   const handleAddBookmark = async (profile) => {
-    try {
-      const response = await axios.post(
-        `http://127.0.0.1:8000/profile/bookmark/add/`, 
-      {
-        profile_id: profile.profile_id
-      }, 
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    if (!user) {
+      alert("북마크를 추가하려면 로그인이 필요합니다.");
+      return;
+    }
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("북마크 추가 성공:", profile);
-        addBookmark(profile);
-      } else {
-        console.error("북마크 추가 중 오류 발생:", response.statusText);
+    if (isLoading[profile.profile_id]) return;
+    setIsLoading(prev => ({ ...prev, [profile.profile_id]: true }));
+    
+    try {
+      // axiosInstance를 사용하여 북마크 추가 요청
+      const response = await axiosInstance.post('/profile/bookmark/add/', {
+        profile_id: profile.profile_id
+      });
+
+      if (response.data.success) {
+        alert("북마크가 추가되었습니다.");
       }
     } catch (error) {
+      if (error.response?.status === 401) {
+        alert("로그인이 필요한 서비스입니다.");
+      } else if (error.response?.status === 409) {
+        alert("이미 북마크된 이력서입니다.");
+      } else {
+        alert("북마크 추가 중 오류가 발생했습니다.");
+      }
       console.error("북마크 추가 중 오류 발생:", error);
+    } finally {
+      setIsLoading(prev => ({ ...prev, [profile.profile_id]: false }));
     }
   };
 

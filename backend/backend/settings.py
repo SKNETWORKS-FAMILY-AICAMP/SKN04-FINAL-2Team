@@ -78,7 +78,7 @@ MIDDLEWARE = [
 # JWT 설정
 SIMPLE_JWT = {
     # Access Token의 유효 시간 (5분 동안 유효)
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     
     # Refresh Token의 유효 시간 (1일 동안 유효)
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -97,10 +97,7 @@ SIMPLE_JWT = {
     
     # 토큰 서명에 사용할 비밀 키 (Django의 SECRET_KEY 사용)
     "SIGNING_KEY": SECRET_KEY,
-    
-    # 토큰 검증에 사용할 공개 키 (비대칭 알고리즘 사용 시 필요, HS256에선 사용 안 함)
-    "VERIFYING_KEY": "",
-    
+        
     # 토큰 수신자(Audience) 검증 (None: 검증하지 않음)
     "AUDIENCE": None,
     
@@ -133,10 +130,7 @@ SIMPLE_JWT = {
 
     # 사용할 토큰 클래스 (기본 AccessToken 사용)
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    
-    # JWT Payload에서 토큰 유형을 나타내는 클레임
-    "TOKEN_TYPE_CLAIM": "token_type",
-    
+        
     # 토큰을 통해 사용자 객체를 나타낼 때 사용할 클래스
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
 
@@ -147,16 +141,16 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     
     # Sliding Access Token의 유효 시간 (5분)
-    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=60),
     
     # Sliding Refresh Token의 유효 시간 (1일)
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
     # Access & Refresh Token을 발급하는 Serializer
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "accounts.serializers.CustomTokenObtainPairSerializer",
     
     # Refresh Token으로 Access Token을 재발급하는 Serializer
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "accounts.serializers.CustomTokenRefreshSerializer",
     
     # JWT 토큰의 유효성을 검증하는 Serializer
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
@@ -261,3 +255,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ORIGIN_ALLOW_ALL = True    # 모든 도메인에서의 CORS 요청 허용
 CORS_ALLOW_CREDENTIALS = True   # 인증된 요청(쿠키, 인증 헤더 등) 허용
+# 쿠키 옵션
+# SESSION_COOKIE_SAMESITE = 'Lax'  # Lax로 설정 (Strict는 제한적)
+# SESSION_COOKIE_SECURE = False  # 개발 환경에서는 False
+# CSRF_COOKIE_SAMESITE = 'Lax'
+# CSRF_COOKIE_SECURE = False

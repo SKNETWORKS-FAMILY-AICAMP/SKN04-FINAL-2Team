@@ -22,10 +22,10 @@ def add_bookmark(request):
     try:
         profile = Profile.objects.get(id=request.data['profile_id'])
         # request.user를 통해 현재 인증된 사용자 정보를 가져옴
-        bookmark = Bookmark.objects.create(
+        Bookmark.objects.create(
             user=request.user, 
             profile=profile,
-            ai_analysis=f"{profile.name}의 AI 분석 결과입니다."  # 임시 AI 분석 결과
+            ai_analysis=request.data['ai_analysis']
         )
         return Response({'status': 'success'}, status=status.HTTP_201_CREATED)
     except Profile.DoesNotExist:
@@ -69,9 +69,12 @@ def bookmark_list(request):
     try:
         bookmarks = Bookmark.objects.filter(user=request.user)
         serializer = BookmarkedProfileSerializer(bookmarks, many=True)
-        return Response({'bookmarks': serializer.data}, status=status.HTTP_200_OK)
+        return Response({
+            'success': True,
+            'bookmarks': serializer.data
+        }, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response(
-            {'error': str(e)}, 
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response({
+            'success': False,
+            'error': str(e)
+        }, status=status.HTTP_400_BAD_REQUEST)

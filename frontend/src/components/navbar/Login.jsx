@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
+import { setCookie } from '../../context/cookieUtils';
+import axiosInstance from '../../context/axiosInstance';
 import "./LoginForm.css";
 
 const Login = ({ onClose }) => {
@@ -23,38 +25,20 @@ const Login = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (!formData.username || !formData.password) {
-      setError("아이디와 비밀번호를 모두 입력해주세요.");
-      return;
-    }
-
+  
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "로그인에 실패했습니다.");
-        return;
-      }
-
-      if (data.token && data.user) {
-        login(data.user, data.token);
-        onClose();
+      // AuthContext의 login 함수 사용
+      const success = await login(formData.username, formData.password);
+      
+      if (success) {
         navigate("/");
+        onClose();
       } else {
-        setError("로그인 처리 중 오류가 발생했습니다.");
+        setError("로그인에 실패했습니다.");
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError("서버 연결 중 오류가 발생했습니다.");
+      setError("로그인 처리 중 오류가 발생했습니다.");
     }
   };
 
