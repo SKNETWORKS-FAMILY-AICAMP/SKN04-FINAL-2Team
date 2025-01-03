@@ -17,53 +17,15 @@ from rest_framework.permissions import AllowAny
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     
-class LoginView(APIView):
-    permission_classes = [AllowAny]  # 로그인은 인증이 필요 없음
-    
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         try:
-            username = request.data.get('username')
-            password = request.data.get('password')
-            
-            # 입력값 검증
-            if not username or not password:
-                return Response({
-                    'success': False,
-                    'message': '아이디와 비밀번호를 모두 입력해주세요.'
-                }, status=status.HTTP_400_BAD_REQUEST)
-
-            # 사용자 인증
-            user = authenticate(username=username, password=password)
-            
-            if user is not None and user.is_active:
-                # JWT 토큰 생성
-                refresh = RefreshToken.for_user(user)
-                return Response({
-                    'success': True,
-                    'token': {
-                        'access': str(refresh.access_token),
-                        'refresh': str(refresh),
-                    },
-                    'user': {
-                        'username': user.username, # id
-                        'id': user.id, # 기본키
-                        'email': user.email,
-                        'is_superuser': user.is_superuser,
-                        'is_staff': user.is_staff
-                    }
-                }, status=status.HTTP_200_OK)
-            else:
-                return Response({
-                    'success': False,
-                    'message': '아이디 또는 비밀번호가 일치하지 않습니다.'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-                
+            response = super().post(request, *args, **kwargs)
+            return Response(response.data, status=status.HTTP_200_OK)
         except Exception as e:
-            print(f"Login error: {str(e)}")  # 디버깅용 로그
             return Response({
                 'success': False,
-                'message': '로그인 처리 중 오류가 발생했습니다.'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'message': '아이디 또는 비밀번호가 일치하지 않습니다.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
 # 사용자 등록을 위한 API 뷰
 class RegisterAPIView(generics.CreateAPIView):
