@@ -81,11 +81,10 @@ class ProfileCreator:
                 profile=self.profile,
                 company_name=career_data.get('company_name'),
                 position=career_data.get('position'),
-                responsibilities=career_data.get('responsibilities'),
-                start_date=career_data.get('start_date'),
-                end_date=career_data.get('end_date'),
+                career_start_date=career_data.get('career_start_date'),
+                career_end_date=career_data.get('career_end_date'),
                 is_currently_employed=career_data.get('is_currently_employed', False),
-                description=career_data.get('description')
+                career_description=career_data.get('career_description')
             )
 
     def _create_academic_records(self):
@@ -96,7 +95,7 @@ class ProfileCreator:
                 profile=self.profile,
                 school_name=academic_data.get('school_name'),
                 major=academic_data.get('major'),
-                status=academic_data.get('status'),
+                degree=academic_data.get('degree'),
                 enrollment_date=academic_data.get('enrollment_date'),
                 graduation_date=academic_data.get('graduation_date')
             )
@@ -107,7 +106,7 @@ class ProfileCreator:
         for cert_data in certificate_datas:
             Certificate.objects.create(
                 profile=self.profile,
-                name=cert_data.get('name')
+                certificate_name=cert_data.get('certificate_name')
             )
 
     def _create_languages(self):
@@ -117,7 +116,8 @@ class ProfileCreator:
             Language.objects.create(
                 profile=self.profile,
                 language_name=lang_data.get('language_name'),
-                description=lang_data.get('description')
+                lank=lang_data.get('lank'),
+                language_description=lang_data.get('language_description')
             )
 
 def create_profile_from_json(page_id, resume_id, json_data):

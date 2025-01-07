@@ -76,7 +76,6 @@ def process_resumes(start_index=0):
             print(f"S3에 업로드 완료: {upload_key}")
 
             success_count += 1
-            print(f"성공: {resume_file}")
 
         except Exception as e:
             fail_count += 1

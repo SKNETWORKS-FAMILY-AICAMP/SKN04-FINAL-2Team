@@ -16,7 +16,7 @@ class ResumePreprocessor:
     def process_resume(self, resume_data):
         # 단일 이력서 처리
         completion = self.client.chat.completions.create(
-            model='gpt-4o-mini',
+            model='gpt-4o',
             messages=[
             {
                 'role': 'system',
@@ -36,36 +36,37 @@ class ResumePreprocessor:
                         {
                         "company_name": "회사명 (한글 회사명으로 작성해줘, 주식회사 및 (주) 등은 생략해줘, *팀 또는 *동아리 등은 회사로 표현하지 말아줘",
                         "position": "직위 (해당 직무의 업무로 추정되는 하나의 직위만 표현해줘)",
-                        "start_date": "시작일 (YYYY-MM 형식, 예: 2018-01)",
-                        "end_date": "종료일 또는 null (YYYY-MM 형식, 예: 2022-12)",
+                        "career_start_date": "시작일 (YYYY-MM 형식, 예: 2018-01)",
+                        "career_end_date": "종료일 또는 null (YYYY-MM 형식, 예: 2022-12)",
                         "is_currently_employed": "현재 재직 여부 (Boolean 값, 예: True 또는 False)",
-                        "responsibilities": "담당 업무 (예: 웹 애플리케이션 개발 및 유지보수 적혀있으면 작성해줘)",
-                        "description": "추가 설명 (예: 해당 직무에서 경험한 내용이 적혀있다면 작성해줘)"
+                        "career_description": "추가 설명 (예: 해당 직무에서 경험한 내용이 적혀있다면 작성해줘)"
                         }
                     ],
                     "AcademicRecord": [
                         {
                         "school_name": "학교명 (예: 서울대학교)",
                         "major": "전공 (예: 컴퓨터공학)",
-                        "degree": "학위 (정수 값, 예: 0(고졸), 1(전문대졸), 2(학사), 3(석사), 4(박사))",
+                        "degree": "학위 (정수 값 ,0: 고졸, 1: 전문대졸, 2: 학사, 3: 석사, 4: 박사)",
                         "enrollment_date": "입학일 (YYYY-MM 형식, 예: 2014-09)",
                         "graduation_date": "졸업일 또는 null (YYYY-MM 형식, 예: 2018-06)"
                         }
                     ],
                     "Certificate": [
                         {
-                        "name": "자격증 이름 (외국어 관련 자격증은 제외해줘, 예: 정보처리기사, ADsP, 빅데이터 분석기사)"
+                        "certificate_name": "자격증 이름 (외국어 관련 자격증은 제외해줘, 예: 정보처리기사, ADsP, 빅데이터 분석기사)"
                         }
                     ],
                     "Language": [
                         {
                         "language_name": "언어 이름 (예: 영어, 스페인어)",
-                        "lank" : "언어 수준(예: 상, 중, 하 로만 작성해줘, {상은 원어민, 중은 비즈니스, 하는 기본대화 정도를 이력서 내용으로 판단해줘})",
-                        "description": "이력서 내용을 바탕으로 언어 수준에 해당하는 이유 또는 근거 설명을 작성해줘"
+                        "lank" : "언어 수준(예: 상, 중, 하 로만 작성해줘, 상:원어민 중:비즈니스 하:기본대화 정도를 이력서 내용으로 판단해줘)",
+                        "language_description": "이력서 내용을 바탕으로 언어 수준에 해당하는 이유 또는 근거 설명을 작성해줘"
                         }
                     ]
                 }
-                key 에 대응되는 값이 없을경우 key는 남겨두고 value에는 null값을 넣어줘
+                key 에 대응되는 값이 없을경우:
+                - 단일 값의 경우 null을 넣어주고,
+                - 배열의 경우 빈 배열 []을 넣어줘
                 '''
             },
             {
