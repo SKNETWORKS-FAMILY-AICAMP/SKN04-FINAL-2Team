@@ -9,9 +9,10 @@ const BookmarkPage = ({ user }) => {
   const fetchBookmarks = async () => {
     try {
       const response = await axiosInstance.get(`/profile/bookmark/`);
-      setBookmarks(response.data);
+      setBookmarks(response.data.bookmarks || []);
     } catch (error) {
       console.error('북마크 목록 가져오기 실패:', error);
+      setBookmarks([]);
     }
   };
 
@@ -20,7 +21,7 @@ const BookmarkPage = ({ user }) => {
     if (user) {  // 로그인된 경우에만 북마크 가져오기
       fetchBookmarks();
     }
-  }, [user, bookmarks]);
+  }, [user]);
 
   const removeBookmark = async (profile) => {
     try {

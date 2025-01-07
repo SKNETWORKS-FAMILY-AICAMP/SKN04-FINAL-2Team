@@ -43,11 +43,11 @@ def add_bookmark(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-@api_view(['POST'])
+@api_view(['DELETE'])  # POST에서 DELETE로 변경
 @permission_classes([IsAuthenticated])
-def remove_bookmark(request):
+def remove_bookmark(request, profile_id):  # URL 파라미터로 profile_id를 받도록 수정
     try:
-        profile = Profile.objects.get(id=request.data['profile_id'])
+        profile = Profile.objects.get(profile_id=profile_id)  # id 대신 profile_id 사용
         bookmark = Bookmark.objects.filter(user=request.user, profile=profile)
         if bookmark.exists():
             bookmark.delete()
