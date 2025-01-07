@@ -85,6 +85,7 @@ class Certificate(models.Model): # 자격증
 class Language(models.Model):   # 외국어
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='languages')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'languages' 지정
     language_name = models.CharField(max_length=50, blank=True, null=True)  # 언어 명
+    # language_level = models.CharField(max_length=50, blank=True, null=True)  # 언어 수준
     description = models.TextField(blank=True, null=True)     # 언어 능력
     
     class Meta:
@@ -106,3 +107,15 @@ class Bookmark(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.profile.name}"
+    
+class Company(models.Model):
+    company_name = models.CharField(max_length=100)  # 회사이름
+    is_major_company = models.BooleanField(default=False)  # 대기업 유무
+    establishment_date = models.DateField()  # 설립일자
+    investment_scale = models.CharField(max_length=100, blank=True, null=True)  # 투자규모 (단위: 원)
+    
+    class Meta:
+        db_table = 'company'  # 데이터베이스 테이블 이름
+        
+    def __str__(self):
+        return self.company_name  # 회사이름으로 문자열 반환

@@ -6,26 +6,30 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-
+from .search_process import search_process
 # Create your views here.
 def search_profiles(request):
-    query = request.GET.get('query', '')
+    search_criteria = { # 테스트 용 검색 조건
+            'job_category': '백엔드',
+            'tech_stack_name': 'java',
+            'career_year': 2
+        }
     # 검색 로직 구현 (미구현)
-    
-    profiles_queryset = Profile.objects.all()[:10]  # 실제 DB에서 4개 조회
-    serializer = SimpleProfileSerializer(profiles_queryset, many=True)
+    search_results = search_process(search_criteria)
+    serializer = SimpleProfileSerializer(search_results, many=True)
     return JsonResponse({'results': serializer.data})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_bookmark(request):
     try:
-        profile = Profile.objects.get(id=request.data['profile_id'])
+        profile = Profile.objects.get(profile_id=request.data['profile_id'])
         # request.user를 통해 현재 인증된 사용자 정보를 가져옴
+        ai_analysis = request.data.get('ai_analysis', None)
         Bookmark.objects.create(
             user=request.user, 
             profile=profile,
-            ai_analysis=request.data['ai_analysis']
+            ai_analysis=ai_analysis
         )
         return Response({'status': 'success'}, status=status.HTTP_201_CREATED)
     except Profile.DoesNotExist:

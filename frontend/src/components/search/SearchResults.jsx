@@ -67,7 +67,9 @@ const SearchResults = ({ addBookmark }) => {
     try {
       // axiosInstance를 사용하여 북마크 추가 요청
       const response = await axiosInstance.post('/profile/bookmark/add/', {
-        profile_id: profile.profile_id
+        profile_id: profile.profile_id,
+        user: user,
+        ai_analysis: profile.ai_analysis
       });
 
       if (response.data.success) {
