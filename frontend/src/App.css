@@ -1,3 +1,9 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 a,
 button {
   all: unset;
@@ -17,7 +23,7 @@ button {
   align-items: center;
   transition: transform 0.5s ease;
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .navbar .logo a {
@@ -34,6 +40,17 @@ button {
   color: #999999;
   border-radius: 10px;
   transition: 0.2s;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 60px); /* Navbar 높이를 제외한 전체 높이 */
+  padding-top: 60px; /* Navbar 높이만큼 패딩 추가 */
+  box-sizing: border-box;
+  overflow: hidden; /* 스크롤 없도록 설정 */
 }
 
 @media (max-width: 768px) {
