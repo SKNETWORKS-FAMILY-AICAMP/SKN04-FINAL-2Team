@@ -113,14 +113,59 @@ button {
 }
 
 .logout-button {
-  padding: 5px 10px;
-  margin-left: 10px;
-  border: none;
-  border-radius: 4px;
-  color: white;
+  /* padding: 5px 10px; */
+  /* text-align: center; */
+  /* border: none; */
+  color: rgb(255, 255, 255);
   cursor: pointer;
 }
 
-.logout-button:hover {
-  background-color: #cc0000;
+
+/* 드롭다운 컨테이너 */
+.dropdown {
+  position: relative; /* 기준점 설정 */
+  display: inline-block;
+  cursor: pointer;
 }
+
+/* 드롭다운 토글 버튼 (username) */
+.dropdown-toggle {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 드롭다운 메뉴 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* username 바로 아래에 메뉴가 표시됨 */
+  right: 0; /* 우측 정렬 */
+  margin-top: 4px;
+  background-color: #e39393;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 120px;
+}
+
+/* 드롭다운 메뉴 항목 */
+.dropdown-menu button.logout-button {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-menu:hover {
+  background-color: #d34949;
+}
+
+
+/* 
+.dropdown-menu button.logout-button:hover {
+  background-color: #f8f9fa;
+} */

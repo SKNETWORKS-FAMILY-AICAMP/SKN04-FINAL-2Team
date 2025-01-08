@@ -91,23 +91,23 @@
 }
 
 .bookmark-button {
-  background-color: #007bff;
+  background-color: #e16868;
   border-radius: 8px;
   color: white;
 }
 
 .bookmark-button:hover {
-  background-color: #0056b3;
+  background-color: #b94f4f;
 }
 
 .details-button {
-  background-color: #28a745;
+  background-color: #606dcc;
   border-radius: 8px;
   color: white;
 }
 
 .details-button:hover {
-  background-color: #218838;
+  background-color: #515baa;
 }
 
 .hidden-bar {

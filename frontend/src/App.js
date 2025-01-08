@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef }from "react";
 import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
@@ -12,6 +12,8 @@ import "./App.css";
 
 const App = () => {
   const { user, logout } = useAuth();
+  const [showLogout, setShowLogout] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   /** ✅ 관리자 설정 페이지 접근 처리 */
@@ -23,10 +25,26 @@ const App = () => {
     }
   };
 
-  // 로그인하지 않은 경우 로그인 페이지 표시
-  if (!user) {
-    return <Login onClose={() => navigate("/")} />;
-  }
+  // // 로그인하지 않은 경우 로그인 페이지 표시
+  // if (!user) {
+  //   return <Login onClose={() => navigate("/")} />;
+  // }
+
+  const handleUsernameClick = () => {
+    setShowLogout(!showLogout);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowLogout(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div>
@@ -42,12 +60,18 @@ const App = () => {
           </div>
           {/* 사용자 인증 상태에 따른 메뉴 표시 */}
           {user ? (
-              <>
-                <span>{user.username}</span>
-                <button onClick={logout} className="logout-button">
-                  로그아웃
-                </button>
-              </>
+            <div className="dropdown" ref={dropdownRef}>
+              <span onClick={handleUsernameClick} className="dropdown-toggle">
+                {user.username}
+              </span>
+              {showLogout && (
+                <div className="dropdown-menu">
+                  <button onClick={logout} className="logout-button">
+                    로그아웃
+                  </button>
+                </div>
+              )}
+            </div>
             ) : (
               <Link to="/login">Login</Link>
             )}
