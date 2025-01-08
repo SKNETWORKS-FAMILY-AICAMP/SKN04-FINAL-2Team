@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import MainSearch from "./MainSearch";
+import { useLocation, useNavigate } from "react-router-dom";
 import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
 import axiosInstance from "../../context/axiosInstance";
 import { useAuth } from '../../context/AuthContext';
@@ -11,6 +10,7 @@ import "./SearchResults.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const SearchResults = ({ addBookmark }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const location = useLocation();
   const query = new URLSearchParams(location.search).get("query");
@@ -19,6 +19,7 @@ const SearchResults = ({ addBookmark }) => {
   const [viewedResumes, setViewedResumes] = useState([]);
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState({}); // 북마크 로딩 상태 추가
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchResumes = async () => {
@@ -111,10 +112,35 @@ const SearchResults = ({ addBookmark }) => {
     setIsHiddenBarOpen(!isHiddenBarOpen);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search-results?query=${searchQuery}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSearchSubmit(e);
+    }
+  };
+
   return (
     <div className="search-results">
-      <div className="main-search-container">
-        <MainSearch initialQuery={query} />
+      <div className="main-search-container-results">
+        <form className="main-search-bar" onSubmit={handleSearchSubmit}>
+          <textarea
+            placeholder="회사 요구사항 입력"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            className="main-search-input"
+          />
+          <button type="submit" className="main-search-button">검색</button>
+        </form>
       </div>
       <div className="search-results-container">
         {/* 키워드 표시 */}

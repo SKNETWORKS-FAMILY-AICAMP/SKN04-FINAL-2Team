@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
