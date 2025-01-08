@@ -38,8 +38,8 @@ class TechStack(models.Model):
         db_table = 'tech_stack'  # 데이터베이스 테이블 이름
 
 class Career(models.Model): # 경력
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='careers')  # Profile_Detail 모델과 외래 키 관계, related_name으로 'careers' 지정
-    company_name = models.CharField(max_length=100, blank=True, null=True)  # 회사명
+    profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='careers', )  # Profile_Detail 모델과 외래 키 관계, related_name으로 'careers' 지정
+    company_name = models.CharField(max_length=100, blank=True, null=True, db_index=True)  # 회사명
     position = models.CharField(max_length=100, blank=True, null=True)      # 직위
     career_start_date = models.CharField(max_length=7, blank=True, null=True)      # 시작일(YYYY-MM 형식)
     career_end_date = models.CharField(max_length=7, null=True, blank=True)        # 종료일 (현재 재직중일 수 있음, YYYY-MM 형식)
@@ -107,9 +107,9 @@ class Bookmark(models.Model):
         return f"{self.user.username} - {self.profile.name}"
     
 class Company(models.Model):
-    company_name = models.CharField(max_length=100)  # 회사이름
+    company_name = models.CharField(max_length=100, db_index=True)  # 회사이름
     is_major_company = models.BooleanField(default=False)  # 대기업 유무
-    establishment_date = models.DateField()  # 설립일자
+    establishment_date = models.CharField(max_length=7)  # 설립일자 (YYYY-MM 형식)
     investment_scale = models.CharField(max_length=100, blank=True, null=True)  # 투자규모 (단위: 원)
     
     class Meta:
