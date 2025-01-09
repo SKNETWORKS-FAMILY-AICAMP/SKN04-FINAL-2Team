@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
-import { setCookie } from '../../context/cookieUtils';
-import axiosInstance from '../../context/axiosInstance';
 import "./LoginForm.css";
 
 const Login = ({ onClose }) => {

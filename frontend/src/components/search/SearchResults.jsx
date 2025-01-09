@@ -159,7 +159,7 @@ const SearchResults = ({ addBookmark }) => {
                   <p>
                     <strong>이름: </strong> {profile.name} 
                     <strong> 직군: </strong> {profile.job_category} 
-                    <strong> 경력: </strong> {profile.career_year}
+                    <strong> 경력: </strong> {profile.career_year}년
                   </p>
                   <div className="ai-analysis">
                     <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>

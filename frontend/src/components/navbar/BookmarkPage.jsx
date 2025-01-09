@@ -41,56 +41,42 @@ const BookmarkPage = ({ user }) => {
 
   return (
     <div className="bookmark-page">
-      <h2 className="bookmark-title">북마크 목록</h2>
       {bookmarks.length === 0 ? (
         <p className="no-bookmarks">저장된 북마크가 없습니다.</p>
       ) : (
-        <div className="bookmark-list">
+        <div className="bookmark-list-content">
           {bookmarks.map((profile) => (
             <div key={profile.profile_id} className="bookmark-resume-box-container">
               <div className="bookmark-resume-box">
                 <div className="bookmark-resume-details">
-                  <div className="profile-basic-info">
-                    <p>
-                      <strong>이름: </strong> {profile.name}
-                    </p>
-                    <p>
-                      <strong>직군: </strong> {profile.job_category}
-                    </p>
-                    <p>
-                      <strong>경력: </strong> {profile.career_year}년
-                    </p>
-                  </div>
+                  <p>
+                    <strong>이름: </strong> {profile.name}
+                    <strong>직군: </strong> {profile.job_category}
+                    <strong>경력: </strong> {profile.career_year}년
+                  </p>
                   <div className="ai-analysis">
                     <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
                   </div>
-                  {profile.pdf_url && (
-                    <div className="resume-pdf">
-                      <a 
-                        href={profile.pdf_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="pdf-link"
-                      >
-                        이력서 PDF 보기
-                      </a>
-                    </div>
-                  )}
                 </div>
+              </div>
                 <div className="bookmark-resume-buttons">
                   <button 
-                    className="bookmark-button" 
+                    className="bookmark-bookmark-button" 
                     onClick={() => removeBookmark(profile)}
                   >
                     북마크 삭제
                   </button>
                   <button 
-                    className="details-button" 
-                    onClick={() => viewDetails(profile)}
+                    className="bookmark-details-button" 
+                    onClick={() => {
+                      viewDetails(profile);
+                      if (profile.pdf_url) {
+                        window.open(profile.pdf_url, '_blank', 'noopener noreferrer');
+                      }
+                    }}
                   >
                     상세보기
                   </button>
-                </div>
               </div>
             </div>
           ))}
