@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
 import axiosInstance from "../../context/axiosInstance";
 import { useAuth } from '../../context/AuthContext';
 import "./SearchResults.css";
 
-
 // PDF.js 워커 경로 설정 (정적 경로 사용)
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const SearchResults = ({ addBookmark }) => {
+const SearchResults = ({ query, setQuery }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const location = useLocation();
-  const query = new URLSearchParams(location.search).get("query");
   const [resumes, setResumes] = useState([]);
   const [keywords, setKeywords] = useState([]);
   const [viewedResumes, setViewedResumes] = useState([]);
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState({}); // 북마크 로딩 상태 추가
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
     const fetchResumes = async () => {
@@ -116,6 +113,7 @@ const SearchResults = ({ addBookmark }) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    setQuery(searchQuery);
     navigate(`/search-results?query=${searchQuery}`);
   };
 
@@ -140,39 +138,37 @@ const SearchResults = ({ addBookmark }) => {
           <button type="submit" className="main-search-button">검색</button>
         </form>
       </div>
-      <div className="search-results-container">
-        {/* 키워드 표시 */}
-        <div className="keywords-container">
-          {keywords.map((keyword, index) => (
-            <span key={index} className="keyword">
-              {keyword}
-            </span>
-          ))}
-        </div>
+      {/* 키워드 표시 */}
+      <div className="keywords-container">
+        {keywords.map((keyword, index) => (
+          <span key={index} className="keyword">
+            {keyword}
+          </span>
+        ))}
+      </div>
 
-        {/* 검색 결과 표시 */}
-        <div className="search-results-content">
-          {resumes.map((profile, index) => (
-            <div key={index} className="resume-box-container">
-              <div key={index} className="resume-box">
-                <div className="resume-details">
-                  <p>
-                    <strong>이름: </strong> {profile.name} 
-                    <strong> 직군: </strong> {profile.job_category} 
-                    <strong> 경력: </strong> {profile.career_year}년
-                  </p>
-                  <div className="ai-analysis">
-                    <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="resume-buttons">
-                <button className="bookmark-button" onClick={() => handleAddBookmark(profile)}>Bookmark</button>
-                <button className="details-button" onClick={() => handleViewDetails(profile)}>상세보기</button>
+      {/* 검색 결과 표시 */}
+      <div className="search-results-content">
+        {resumes.map((profile, index) => (
+          <div key={index} className="resume-box-container">
+            <div key={index} className="resume-box">
+              <div className="resume-details">
+                <p>
+                  <strong>이름: </strong> {profile.name} 
+                  <strong> 직군: </strong> {profile.job_category} 
+                  <strong> 경력: </strong> {profile.career_year}년
+                </p>
+                {/* <div className="ai-analysis">
+                  <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
+                </div> */}
               </div>
             </div>
-          ))}
-        </div>
+            <div className="resume-buttons">
+              <button className="bookmark-button" onClick={() => handleAddBookmark(profile)}>Bookmark</button>
+              <button className="details-button" onClick={() => handleViewDetails(profile)}>상세보기</button>
+            </div>
+          </div>
+        ))}
       </div>
     
       {/* 히든 바 */}

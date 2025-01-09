@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef }from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
@@ -15,6 +15,7 @@ const App = () => {
   const [showLogout, setShowLogout] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const [query, setQuery] = useState(""); // 검색어 상태 추가
 
   /** ✅ 관리자 설정 페이지 접근 처리 */
   const handleSettingsClick = () => {
@@ -24,11 +25,6 @@ const App = () => {
       alert("해당 기능은 관리자만 접속이 가능합니다.");
     }
   };
-
-  // // 로그인하지 않은 경우 로그인 페이지 표시
-  // if (!user) {
-  //   return <Login onClose={() => navigate("/")} />;
-  // }
 
   const handleUsernameClick = () => {
     setShowLogout(!showLogout);
@@ -84,13 +80,13 @@ const App = () => {
         </div>
       </nav>
       {/* 메인 컨텐츠 */}
-      <MainContent />
+      <MainContent query={query} setQuery={setQuery} />
     </div>
   );
 };
 
 /** ✅ 메인 컨텐츠 컴포넌트 */
-const MainContent = () => {
+const MainContent = ({ query, setQuery }) => {
   const location = useLocation();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -111,10 +107,10 @@ const MainContent = () => {
         <Routes>
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/admin-page" element={<AdminPage />} />
-          <Route path="/" element={<MainSearch />} />
+          <Route path="/" element={<MainSearch query={query} setQuery={setQuery} />} />
           <Route
             path="/search-results"
-            element={<SearchResults />}
+            element={<SearchResults query={query} setQuery={setQuery} />}
           />
           <Route
             path="/login"
