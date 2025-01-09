@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainSearch.css";
 
-const MainSearch = ({ initialQuery = "" }) => {
-  const [query, setQuery] = useState(initialQuery);
+const MainSearch = ({ query, setQuery }) => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
