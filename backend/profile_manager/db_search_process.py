@@ -56,8 +56,8 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         queryset = queryset.filter(job_category__icontains=search_params['job_category'])
     
     if 'career_year' in search_params and search_params['career_year'] != "None" and search_params['career_year'] != '0':
-        print(f"Filtering by career_year: {search_params['career_year']}")
-        queryset = queryset.filter(career_year=search_params['career_year'])
+        print(f"Filtering by career_year >= {search_params['career_year']}")
+        queryset = queryset.filter(career_year__gte=search_params['career_year'])
     
     if 'tech_stack_name' in search_params and search_params['tech_stack_name'] != "None":
         tech_stacks = search_params['tech_stack_name'].split(', ')
@@ -92,10 +92,41 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         print(queryset)
     if 'initial_company_experience' in search_params and search_params['initial_company_experience'] == 'True':
         print(f"Filtering by initial_company_experience: {search_params['initial_company_experience']}")
-        if search_params['initial_company_experience']:
-            early_career_profiles = find_early_career_profiles(queryset)
-            queryset = queryset.filter(profile_id__in=[profile.profile_id for profile in early_career_profiles])
-
+        early_career_profiles = []
+        for profile in queryset:
+            try:
+                for career in profile.careers.all():
+                    if not career.career_start_date:
+                        print(f"career_start_date가 None입니다: {career.career_start_date}")
+                        continue
+                    career_start_date = datetime.strptime(career.career_start_date, "%Y-%m")
+                    if not career.company:
+                        print(f"Company 객체가 설정되지 않았습니다: {career.company}")
+                        continue
+                    if not career.company.establishment_date:
+                        print(f"establishment_date가 None입니다: {career.company.establishment_date}")
+                        continue
+                    establishment_date = datetime.strptime(career.company.establishment_date, "%Y-%m")
+                    if establishment_date <= career_start_date <= establishment_date.replace(year=establishment_date.year + 2):
+                        early_career_profiles.append(profile)
+                        break  # 조건을 만족하는 Career가 있으면 다음 프로필로 이동
+                    # 현재 재직 중인 경우 설립일로부터 현재까지 2년이 지났는지 확인
+                    if career.is_currently_employed:
+                        current_date = datetime.now()
+                        if establishment_date <= current_date <= establishment_date.replace(year=establishment_date.year + 2):
+                            print(f"현재 재직 중인 경력: {career}")
+                            early_career_profiles.append(profile)
+                            break
+            except ValueError as e:
+                print(f"날짜 형식 오류: {e}")
+                continue
+        queryset = queryset.filter(profile_id__in=[profile.profile_id for profile in early_career_profiles])
+    
+    if 'top_tier_startup' in search_params and search_params['top_tier_startup'] == 'True':
+        print(f"Filtering by top_tier_startup: {search_params['top_tier_startup']}")
+        company_ids = Company.objects.filter(investment_scale__in=TOP_TIER_LIST).values_list('id', flat=True)
+        queryset = queryset.filter(careers__company__id__in=company_ids)
+    
     print("search 종료")
     print(queryset)
     return queryset.distinct()
