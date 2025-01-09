@@ -24,7 +24,8 @@ const SearchResults = ({ addBookmark }) => {
   useEffect(() => {
     const fetchResumes = async () => {
       try {
-        const response = await axiosInstance.get(`/profile/search/?query=${query}`);
+        const encodedQuery = encodeURIComponent(query);
+        const response = await axiosInstance.get(`/profile/search/?query=${encodedQuery}`);
 
         const data = response.data;
         const { results } = data;

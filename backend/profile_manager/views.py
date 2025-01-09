@@ -6,16 +6,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
-from .search_process import search_process
+from .search_process import search_process, get_openai_response
+
 # Create your views here.
 def search_profiles(request):
-    search_criteria = { # 테스트 용 검색 조건
-            'job_category': '백엔드',
-            'tech_stack_name': 'java',
-            'career_year': 2
-        }
+    gpt_response = get_openai_response(request.GET.get('query'))
+    print(gpt_response)
     # 검색 로직 구현 (미구현)
-    search_results = search_process(search_criteria)
+    search_results = search_process(gpt_response)
+    print(search_results)
     serializer = SimpleProfileSerializer(search_results, many=True)
     return JsonResponse({'results': serializer.data})
 
