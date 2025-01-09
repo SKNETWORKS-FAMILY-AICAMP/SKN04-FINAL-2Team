@@ -67,35 +67,30 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         print(f"Filtering by tech_stack_name: {tech_stacks}")
         for tech_stack in tech_stacks:
             queryset = queryset.filter(tech_stacks__tech_stack_name__icontains=tech_stack)
-            print(queryset)
             category_list.append(tech_stack)
     if 'company_name' in search_params and search_params['company_name'] != "None": # 검토중
         print(f"Filtering by company_name: {search_params['company_name']}")
         queryset = queryset.filter(careers__company_name__icontains=search_params['company_name'])
-        print(queryset)
         category_list.append(search_params['company_name'])
     if 'position' in search_params and search_params['position'] != "None": # 검토중
         print(f"Filtering by position: {search_params['position']}")
         queryset = queryset.filter(careers__position__icontains=search_params['position'])
-        print(queryset)
     if 'major' in search_params and search_params['major'] != "None": # 검토중
         print(f"Filtering by major: {search_params['major']}")
         queryset = queryset.filter(academic_records__major__icontains=search_params['major'])
-        print(queryset)
     if 'certificate_name' in search_params and search_params['certificate_name'] != "None": # 검토중
         print(f"Filtering by certificate_name: {search_params['certificate_name']}")
         queryset = queryset.filter(certificates__name__icontains=search_params['certificate_name'])
-        print(queryset)
 
     if 'language_name' in search_params and search_params['language_name'] != "None":
         print(f"Filtering by language_name: {search_params['language_name']}")
         queryset = queryset.filter(languages__language_name__icontains=search_params['language_name'])
-        print(queryset)
+
         category_list.append(search_params['language_name'])
     if 'language_lank' in search_params and search_params['language_lank'] != "None":
         print(f"Filtering by language_lank: {search_params['language_lank']}")
         queryset = queryset.filter(languages__lank__icontains=search_params['language_lank'])
-        print(queryset)
+
         category_list.append(search_params['language_lank']+" 수준")
     if 'initial_company_experience' in search_params and search_params['initial_company_experience'] == 'True':
         print(f"Filtering by initial_company_experience: {search_params['initial_company_experience']}")
@@ -134,5 +129,4 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         category_list.append("탑티어 스타트업 경험 있음")
 
     print("search 종료")
-    print(queryset)
     return queryset.distinct(), category_list
