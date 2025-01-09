@@ -28,13 +28,10 @@ const SearchResults = ({ addBookmark }) => {
         const response = await axiosInstance.get(`/profile/search/?query=${encodedQuery}`);
 
         const data = response.data;
-        const { results } = data;
+        const { results, keywords } = data;
 
         console.log("Fetched data:", data);
 
-        // 키워드 데이터 업데이트
-        // 테스트용 더미데이터 
-        const keywords = ["React", "Node.js", "Python", "Django"];
         setKeywords(keywords);
 
         // 이력서 데이터 업데이트

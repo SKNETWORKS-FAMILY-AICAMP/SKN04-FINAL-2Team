@@ -13,10 +13,10 @@ def search_profiles(request):
     gpt_response = get_openai_response(request.GET.get('query'))
     print(gpt_response)
     # 검색 로직 구현 (미구현)
-    search_results = search_process(gpt_response)
+    search_results, keywords = search_process(gpt_response)
     print(search_results)
     serializer = SimpleProfileSerializer(search_results, many=True)
-    return JsonResponse({'results': serializer.data})
+    return JsonResponse({'results': serializer.data, 'keywords': keywords})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
