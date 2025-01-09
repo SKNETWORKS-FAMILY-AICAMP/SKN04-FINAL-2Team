@@ -127,6 +127,13 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         company_ids = Company.objects.filter(investment_scale__in=TOP_TIER_LIST).values_list('id', flat=True)
         queryset = queryset.filter(careers__company__id__in=company_ids)
         category_list.append("탑티어 스타트업 경험 있음")
+        
+    if 'conglomerate' in search_params and search_params['conglomerate'] == 'True':
+        print(f"Filtering by conglomerate: {search_params['conglomerate']}")
+        company_ids = Company.objects.filter(is_major_company=True).values_list('id', flat=True)
+        queryset = queryset.filter(careers__company__id__in=company_ids)
+        category_list.append("대기업 경험 있음")
+        
 
     print("search 종료")
     return queryset.distinct(), category_list
