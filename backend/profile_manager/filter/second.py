@@ -21,6 +21,9 @@ def Second_filter(answer):
                             'language': '한국어'
                         }))
         
+    response = [item.strip('"').strip().replace('\\', '') for item in response]
+    data['tech_stack_name'] = response
+    answer = json.dumps(data, ensure_ascii=False)
 
     db = FAISS.load_local(
     folder_path='save',
@@ -34,4 +37,4 @@ def Second_filter(answer):
     for page_contents in a:
         b.append(page_contents.metadata['key'])
 
-    return response, b
+    return answer, b
