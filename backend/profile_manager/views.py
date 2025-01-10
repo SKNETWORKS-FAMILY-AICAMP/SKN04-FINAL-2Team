@@ -10,11 +10,10 @@ from .search_process import search_process, get_openai_response
 
 # Create your views here.
 def search_profiles(request):
+    print(f'request.GET.get("query"): {request.GET.get("query")}')
     gpt_response = get_openai_response(request.GET.get('query'))
-    print(gpt_response)
-    # 검색 로직 구현 (미구현)
     search_results, keywords = search_process(gpt_response)
-    print(search_results)
+    print(f'search_results: {search_results}')
     serializer = SimpleProfileSerializer(search_results, many=True)
     return JsonResponse({'results': serializer.data, 'keywords': keywords})
 

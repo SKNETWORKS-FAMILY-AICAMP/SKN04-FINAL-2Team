@@ -39,7 +39,7 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 {
                     "job_category": "직업 카테고리",
                     "career_year": "경력 연수",
-                    "tech_stack_name": "기술 스택 이름, 여러 종류라면 여러종류를 콤마로 구분해서 넣어줘",
+                    "tech_stack_name": "기술 스택 이름, 여러 종류라면 여러종류를 콤마로 구분해서 넣어줘(예: python, django)",
                     "language_name": "언어 이름",
                     "language_lank": "언어 수준",
                     "initial_company_experience": "회사 설립 초기 경험 유무",

@@ -4,6 +4,10 @@ from datetime import datetime
 from django.db.models import F, Q
 from .models import Career, Company
 import json
+from langchain_community.vectorstores import FAISS
+from langchain_openai.embeddings import OpenAIEmbeddings
+import os                                                                                   
+
 
 TOP_TIER_LIST = ["Series C","Series D","Series E","Series F","Series G","Pre-IPO","Post-IPO","IPO"]
 def find_early_career_profiles(profiles):
@@ -47,10 +51,25 @@ def find_early_career_profiles(profiles):
 
     return early_career_profiles
 
+def vectordb_filter(etc):
+    db = FAISS.load_local(
+    folder_path=os.path.join(os.path.dirname(__file__), 'save'),
+    index_name='faiss_etc_data_index',
+    embeddings=OpenAIEmbeddings(model='text-embedding-3-small'),
+    allow_dangerous_deserialization=True,
+    )
+    result_list = []
+    a = db.similarity_search(etc, k=5)
+    for page_contents in a:
+        print(f"|{page_contents.metadata['key']}: {page_contents.page_content}")
+        result_list.append(page_contents.metadata['key'])
+    return result_list
+
 def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
     queryset = Profile.objects.all()
     search_params = json.loads(search_params)
     category_list = []
+    
     print("search 진입")
     if 'job_category' in search_params and search_params['job_category'] != "None":
         print(f"Filtering by job_category: {search_params['job_category']}")
@@ -133,7 +152,12 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         company_ids = Company.objects.filter(is_major_company=True).values_list('id', flat=True)
         queryset = queryset.filter(careers__company__id__in=company_ids)
         category_list.append("대기업 경험 있음")
+    
+    if 'etc' in search_params and search_params['etc'] != "None":
+        print(f"Filtering by etc: {search_params['etc']}")
+        etc_result = vectordb_filter(search_params['etc'])
+        queryset = queryset.filter(profile_id__in=etc_result)
+        category_list.append(search_params['etc'])
         
-
     print("search 종료")
     return queryset.distinct(), category_list
