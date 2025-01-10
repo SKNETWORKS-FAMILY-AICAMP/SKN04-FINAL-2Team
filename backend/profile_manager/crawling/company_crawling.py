@@ -16,7 +16,7 @@ establishment_year = []
 company_scale = []
 invest = []
 
-company_list = ['유엔에스네트웍스', '커피팅', '더블유클럽', '인프랩', '서클플랫폼주식회사', '스타오토모빌', '이노그루']
+company_name_example = ['유엔에스네트웍스', '커피팅', '더블유클럽', '인프랩', '서클플랫폼주식회사', '스타오토모빌', '이노그루']
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 url = 'https://thevc.kr/'
 driver.get(url)
@@ -24,13 +24,13 @@ time.sleep(3)
 driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/div/header/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div/input').click()
 time.sleep(2)
 send_key = driver.find_element(By.XPATH, '/html/body/div[3]/section/div[2]/form/div[1]/input')
-send_key.send_keys('dhtpa123@naver.com')
+send_key.send_keys('본인 아이디 입력') #아이디 입력
 send_key = driver.find_element(By.XPATH, '/html/body/div[3]/section/div[2]/form/div[2]/input')
-send_key.send_keys('1q2w3e4r!')
+send_key.send_keys('본인 비밀번호 입력') #비밀번호 입력
 driver.find_element(By.XPATH, '/html/body/div[3]/section/div[2]/form/button[2]/div[2]').click()
 time.sleep(5)
 
-for i in company_list:    
+for i in company_name_example:    
     try:
         driver.get(url)
         time.sleep(5)

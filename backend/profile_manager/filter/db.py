@@ -1,6 +1,6 @@
 import os
 from langchain_openai.embeddings import OpenAIEmbeddings
-from utils import load_documents_from_folder, split_documents
+from backend.profile_manager.filter.utils import load_documents_from_folder, split_documents
 import joblib
 from dotenv import load_dotenv
 
