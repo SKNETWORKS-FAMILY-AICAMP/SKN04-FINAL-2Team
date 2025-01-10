@@ -130,6 +130,12 @@
   transform: translateX(0);
 }
 
+.hidden-bar-content {
+  margin: 50px 0 20px 0;
+  padding: 2px;
+  overflow-y: auto;
+}
+
 
 /* 숨겨진 바가 열렸을 때 토글 버튼의 위치 조정 */
 .hidden-bar.open ~ .toggle-hidden-bar-button {

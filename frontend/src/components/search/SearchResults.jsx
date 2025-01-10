@@ -96,7 +96,10 @@ const SearchResults = ({ query, setQuery }) => {
 
     // viewedResumes 상태 업데이트
     setViewedResumes((prevViewedResumes) => {
-      if (!prevViewedResumes.some((r) => r.name === profile.name)) {
+      if (!prevViewedResumes.some((r) => 
+        r.name === profile.name && 
+        r.job_category === profile.job_category && 
+        r.career_year === profile.career_year)) {
         return [...prevViewedResumes, profile];
       }
       return prevViewedResumes;
@@ -174,15 +177,17 @@ const SearchResults = ({ query, setQuery }) => {
       {/* 히든 바 */}
       <div className="search-results-container">
         <div className={`hidden-bar ${isHiddenBarOpen ? 'open' : ''}`}>
-          <ul>
-            {viewedResumes.map((profile, index) => (
-              <div key={index} className="hidden-bar-resume-box">
-                <p>이름: {profile.name}</p>
-                <p>직군: {profile.job_category}</p>
-                <p>경력: {profile.career_year}</p>
-              </div>
-            ))}
-          </ul>
+          <div className="hidden-bar-content">
+            <ul>
+              {viewedResumes.map((profile, index) => (
+                <div key={index} className="hidden-bar-resume-box">
+                  <p>이름: {profile.name}</p>
+                  <p>직군: {profile.job_category}</p>
+                  <p>경력: {profile.career_year}</p>
+                </div>
+              ))}
+            </ul>
+          </div>
         </div>
         <button 
           className={`toggle-hidden-bar-button ${isHiddenBarOpen ? 'open' : ''}`} 

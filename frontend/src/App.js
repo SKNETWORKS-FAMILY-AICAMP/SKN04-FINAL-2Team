@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import Login from "./components/navbar/Login";
 import UserManagement from "./components/management/UserManagement";
 import AdminPage from "./components/admin/AdminPage";
@@ -42,6 +42,18 @@ const App = () => {
     };
   }, []);
 
+  // user 상태가 변경될 때 showLogout 상태를 false로 설정
+  useEffect(() => {
+    setShowLogout(false);
+  }, [user]);
+
+  // 로그아웃 후 MainSearch 화면으로 이동하고 검색어 초기화
+  const handleLogout = () => {
+    logout();
+    setQuery(""); // 검색어 초기화
+    navigate("/");
+  };
+
   return (
     <div>
       {/* 네비게이션 바 */}
@@ -62,15 +74,15 @@ const App = () => {
               </span>
               {showLogout && (
                 <div className="dropdown-menu">
-                  <button onClick={logout} className="logout-button">
+                  <button onClick={handleLogout} className="logout-button">
                     로그아웃
                   </button>
                 </div>
               )}
             </div>
-            ) : (
-              <Link to="/login">Login</Link>
-            )}
+          ) : (
+            <Link to="/login" className="login-button">Login</Link>
+          )}
           <button onClick={handleSettingsClick} className="settings-button">
             Settings
           </button>
@@ -107,10 +119,10 @@ const MainContent = ({ query, setQuery }) => {
         <Routes>
           <Route path="/user-management" element={<UserManagement />} />
           <Route path="/admin-page" element={<AdminPage />} />
-          <Route path="/" element={<MainSearch query={query} setQuery={setQuery} />} />
+          <Route path="/" element={user ? <MainSearch query={query} setQuery={setQuery} /> : <Navigate to="/login" />} />
           <Route
             path="/search-results"
-            element={<SearchResults query={query} setQuery={setQuery} />}
+            element={user ? <SearchResults query={query} setQuery={setQuery} /> : <Navigate to="/login" />}
           />
           <Route
             path="/login"
@@ -118,11 +130,11 @@ const MainContent = ({ query, setQuery }) => {
           />
           <Route
             path="/bookmarks"
-            element={<BookmarkPage user={user} />}
+            element={user ? <BookmarkPage user={user} /> : <Navigate to="/login" />}
           />
           <Route
             path="/settings"
-            element={<Sidebar user={user} />}
+            element={user ? <Sidebar user={user} /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>
