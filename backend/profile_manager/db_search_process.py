@@ -82,11 +82,17 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         category_list.append(search_params['career_year']+"년차 이상")
     
     if 'tech_stack_name' in search_params and search_params['tech_stack_name'] != "None":
-        tech_stacks = search_params['tech_stack_name'].split(', ')
+        # 이미 리스트 형식이므로 바로 사용
+        tech_stacks = search_params['tech_stack_name']
         print(f"Filtering by tech_stack_name: {tech_stacks}")
-        for tech_stack in tech_stacks:
-            queryset = queryset.filter(tech_stacks__tech_stack_name__icontains=tech_stack)
-            category_list.append(tech_stack)
+        if not isinstance(tech_stacks, list):
+            queryset = queryset.filter(tech_stacks__tech_stack_name__icontains=tech_stacks)
+            category_list.append(tech_stacks)
+        else:
+            for tech_stack in tech_stacks:
+                if tech_stack != "None":
+                    queryset = queryset.filter(tech_stacks__tech_stack_name__icontains=tech_stack)
+                    category_list.append(tech_stack)
     if 'company_name' in search_params and search_params['company_name'] != "None": # 검토중
         print(f"Filtering by company_name: {search_params['company_name']}")
         queryset = queryset.filter(careers__company_name__icontains=search_params['company_name'])

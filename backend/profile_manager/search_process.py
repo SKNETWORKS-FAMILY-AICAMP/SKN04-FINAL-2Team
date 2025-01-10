@@ -39,7 +39,7 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 {
                     "job_category": "직업 카테고리",
                     "career_year": "경력 연수",
-                    "tech_stack_name": "기술 스택 이름, 여러 종류라면 여러종류를 콤마로 구분해서 넣어줘(예: python, django)",
+                    "tech_stack_name": "기술 스택 이름, 가능하면 영문 표현으로 보편적으로 표현해야 해(예: python, django)",
                     "language_name": "언어 이름",
                     "language_lank": "언어 수준",
                     "initial_company_experience": "회사 설립 초기 경험 유무",
@@ -47,7 +47,7 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                     "conglomerate": "대기업 경력 유무",
                     "major": "전공",
                     "degree": "학위",
-                    "etc": "위 항목에 포함되지 않은 키워드들"
+                    "etc": "위 항목에 포함되지 않은 중요 내용을 간결하게 넣어줘, 예를 들어 검색 시스템 구축 경험이 있는 사람이라면 검색 시스템 구축 경험이라고 넣어줘"
                 }
 
                 # **주의사항(Constraints)**  
@@ -79,19 +79,19 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 14. **AcademicRecord - degree:**  
                     - 고졸: 0, 전문학사: 1, 학사: 2, 석사: 3, 박사: 4  
                 15. **etc:**  
-                    - 키워드 추출 후 위 항목에 포함되지 않은 내용을 여기에 넣어줘.
+                    - 특이사항이 없을경우 None을 넣어줘
 
                 # **예시(Example)**  
                 ### 입력 예시:  
-                "백엔드 엔지니어 경험이 5년 이상이고, python과 django 경험이 있으며, 비즈니스 회화를 하고, 탑 티어 스타트업 경험이 있으며 컴퓨터 관련 전공자이고, 석사 이상이고, 굳은 의지를 가진 사람"
+                "백엔드 엔지니어 경험이 5년 이상이고, python과 django 경험이 있으며, 비즈니스 회화를 하고, 탑 티어 스타트업 경험이 있으며 컴퓨터 관련 전공자이고, 석사 이상이고, 검색 시스템 구축 경험이 있는 사람"
 
-                ### 출력 예시:  
-                {"job_category":"프론트 엔지니어","career_year":"5","tech_stack_name":"react, vue","language_name":"영어","language_lank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"위 항목에 포함되지 않은 키워드들"}
+                ### 출력 예시:
+                {"job_category":"백엔드 엔지니어","career_year":"5","tech_stack_name":["python","django"],"language_name":"영어","language_rank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"검색 시스템 구축 경험이 있는 사람"}  
                 '''
             },
             {
                 'role': 'assistant',
-                'content': '''{"job_category":"백엔드 엔지니어","career_year":"5","tech_stack_name":"python, django","language_name":"영어","language_lank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"굳은 의지를 가진 사람"}
+                'content': '''{"job_category":"프론트 엔지니어","career_year":"5","tech_stack_name":["react","vue"],"language_name":"영어","language_rank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"서버 구축 경험이 있는 사람"}
                 '''
             },
             {
