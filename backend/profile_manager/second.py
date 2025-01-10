@@ -12,16 +12,15 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 load_dotenv()
 
 
-def Second_filter(query):
-    answer = First_filter(query)
+def Second_filter(answer):
+    response = []
     data = json.loads(answer)
-    b = ', '.join(data.get('tech_stack_name'))
-    question = b
-    response = llm.chain.invoke({
-                        'question': question,
-                        'language': '한국어'
-                    })
-    
+    for i in data.get('tech_stack_name'):
+        response.append(llm.chain.invoke({
+                            'question': i,
+                            'language': '한국어'
+                        }))
+        
 
     db = FAISS.load_local(
     folder_path='save',
