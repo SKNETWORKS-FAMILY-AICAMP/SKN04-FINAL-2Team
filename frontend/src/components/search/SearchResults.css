@@ -23,6 +23,7 @@
 .keywords-container {
   display: flex;
   flex-wrap: wrap;
+  margin: 0 auto;
   gap: 8px;
   justify-content: center; /* 중앙 배열 */
   max-width: 700px;
@@ -40,6 +41,7 @@
 .search-results-content {
   width: 100%;
   max-width: 900px;
+  margin: 0 auto;
   text-align: center;
   background-color: white;
   padding: 20px;
@@ -53,7 +55,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 800px;
   margin-bottom: 20px;
+  margin: 0 auto;
 }
 
 .resume-box {
