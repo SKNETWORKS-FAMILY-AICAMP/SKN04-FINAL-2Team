@@ -10,6 +10,14 @@ import os
 
 
 TOP_TIER_LIST = ["Series C","Series D","Series E","Series F","Series G","Pre-IPO","Post-IPO","IPO"]
+
+FAISS_VECTOR_DB = FAISS.load_local(
+    folder_path=os.path.join(os.path.dirname(__file__), 'save'),
+    index_name='faiss_etc_data_index',
+    embeddings=OpenAIEmbeddings(model='text-embedding-3-small'),
+    allow_dangerous_deserialization=True,
+    )
+
 def find_early_career_profiles(profiles):
     # 모든 Career와 Company를 가져와서 비교
     early_career_profiles = []
@@ -52,14 +60,8 @@ def find_early_career_profiles(profiles):
     return early_career_profiles
 
 def vectordb_filter(etc):
-    db = FAISS.load_local(
-    folder_path=os.path.join(os.path.dirname(__file__), 'save'),
-    index_name='faiss_etc_data_index',
-    embeddings=OpenAIEmbeddings(model='text-embedding-3-small'),
-    allow_dangerous_deserialization=True,
-    )
     result_list = []
-    a = db.similarity_search(etc, k=5)
+    a = FAISS_VECTOR_DB.similarity_search(etc, k=5)
     for page_contents in a:
         print(f"|{page_contents.metadata['key']}: {page_contents.page_content}")
         result_list.append(page_contents.metadata['key'])
@@ -67,6 +69,7 @@ def vectordb_filter(etc):
 
 def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
     queryset = Profile.objects.all()
+    print(search_params)
     search_params = json.loads(search_params)
     category_list = []
     
@@ -82,7 +85,7 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
         category_list.append(search_params['career_year']+"년차 이상")
     
     if 'tech_stack_name' in search_params and search_params['tech_stack_name'] != "None":
-        tech_stacks = search_params['tech_stack_name'].split(', ')
+        tech_stacks = search_params['tech_stack_name']
         print(f"Filtering by tech_stack_name: {tech_stacks}")
         for tech_stack in tech_stacks:
             queryset = queryset.filter(tech_stacks__tech_stack_name__icontains=tech_stack)

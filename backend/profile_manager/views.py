@@ -7,12 +7,14 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from .search_process import search_process, get_openai_response
+from .second import second_filter
 
 # Create your views here.
 def search_profiles(request):
     print(f'request.GET.get("query"): {request.GET.get("query")}')
     gpt_response = get_openai_response(request.GET.get('query'))
-    search_results, keywords = search_process(gpt_response)
+    second_filter_response = second_filter(gpt_response)
+    search_results, keywords = search_process(second_filter_response)
     print(f'search_results: {search_results}')
     serializer = SimpleProfileSerializer(search_results, many=True)
     return JsonResponse({'results': serializer.data, 'keywords': keywords})

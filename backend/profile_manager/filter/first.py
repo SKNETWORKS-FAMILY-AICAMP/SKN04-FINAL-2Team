@@ -1,4 +1,4 @@
-import llm
+import backend.profile_manager.llm_chain as llm_chain
 from dotenv import load_dotenv
 import json
 import re

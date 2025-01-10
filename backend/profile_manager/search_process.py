@@ -30,16 +30,16 @@ def get_openai_response(user_input) -> Dict[str, Any]:
     PROMPT = [{
                 'role': 'system',
                 'content': '''
-                너는 사용자의 입력을 받아 키워드를 추출하여 아래 dictionary 형식에 key에 맞춰 알맞은 value를 넣어주는 AI Assistant 봇이야.
+                너는 사용자의 입력을 받아 키워드를 추출하여 아래 JSON 형식에 key에 맞춰 알맞은 value를 넣어주는 AI Assistant 봇이야.
 
                 # **목표(Objective)**  
-                - 사용자의 입력을 꼭 아래 틀에 맞게 dictionary 형식으로 정리해.  
+                - 사용자의 입력을 꼭 아래 틀에 맞게 JSON 형식으로 정리해.  
 
-                # **dictionary 형식**  
+                # **JSON 형식**  
                 {
                     "job_category": "직업 카테고리",
                     "career_year": "경력 연수",
-                    "tech_stack_name": "기술 스택 이름, 여러 종류라면 여러종류를 콤마로 구분해서 넣어줘(예: python, django)",
+                    "tech_stack_name": "기술 스택 이름 (예: python, django)",
                     "language_name": "언어 이름",
                     "language_lank": "언어 수준",
                     "initial_company_experience": "회사 설립 초기 경험 유무",
@@ -47,11 +47,11 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                     "conglomerate": "대기업 경력 유무",
                     "major": "전공",
                     "degree": "학위",
-                    "etc": "위 항목에 포함되지 않은 키워드들"
+                    "etc": "위 항목에 포함되지 않은 키워드들중 핵심만 넣어줘"
                 }
 
                 # **주의사항(Constraints)**  
-                1. **정확성:** 답변은 주어진 dictionary 형식과 일치해야 해.  
+                1. **정확성:** 답변은 주어진 JSON 형식과 일치해야 해.  
                 2. **언어:** 답변은 {language}로 작성해야 해.  
                 3. **유사도 참조:** 벡터DB를 활용해 가장 유사도가 높은 데이터를 찾아서 대체해서 value값에 넣어야 해  
                 4. **숫자 표현:** 이상, 이하, 초과, 미만과 같은 범위는 **숫자**로만 표현해야 해.  
@@ -86,12 +86,13 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 "백엔드 엔지니어 경험이 5년 이상이고, python과 django 경험이 있으며, 비즈니스 회화를 하고, 탑 티어 스타트업 경험이 있으며 컴퓨터 관련 전공자이고, 석사 이상이고, 굳은 의지를 가진 사람"
 
                 ### 출력 예시:  
-                {"job_category":"프론트 엔지니어","career_year":"5","tech_stack_name":"react, vue","language_name":"영어","language_lank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"위 항목에 포함되지 않은 키워드들"}
+                {"job_category":"프론트 엔지니어","career_year":"5","tech_stack_name":["react","vue"],"language_name":"영어","language_rank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"위 항목에 포함되지 않은 키워드들을 핵심만 넣어줘"}
                 '''
             },
             {
                 'role': 'assistant',
-                'content': '''{"job_category":"백엔드 엔지니어","career_year":"5","tech_stack_name":"python, django","language_name":"영어","language_lank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"굳은 의지를 가진 사람"}
+                'content': '''{"job_category":"백엔드 엔지니어","career_year":"5","tech_stack_name":["python","django"],"language_name":"영어","language_rank":"중","initial_company_experience":"False","top_tier_startup":"True","conglomerate":"False","major":"컴퓨터공학과","degree":"3","etc":"검색시스템 구축 경험이 있는사람"}
+
                 '''
             },
             {

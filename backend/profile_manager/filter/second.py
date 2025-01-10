@@ -1,4 +1,4 @@
-import llm
+import backend.profile_manager.llm_chain as llm_chain
 from dotenv import load_dotenv
 import json
 import re
@@ -16,7 +16,7 @@ def Second_filter(answer):
     response = []
     data = json.loads(answer)
     for i in data.get('tech_stack_name'):
-        response.append(llm.chain.invoke({
+        response.append(llm_chain.chain.invoke({
                             'question': i,
                             'language': '한국어'
                         }))
