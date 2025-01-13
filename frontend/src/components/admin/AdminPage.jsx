@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axiosInstance from "../../context/axiosInstance";
 import "./AdminPage.css";
 
 const AdminPage = ({ onClose }) => {
@@ -9,24 +10,22 @@ const AdminPage = ({ onClose }) => {
   const [adminPassword, setAdminPassword] = useState(""); // 관리자 비밀번호
   const [error, setError] = useState(""); // 에러 메시지 상태
 
-  // Mock 데이터 (실제 구현 시 API 호출로 대체)
-  const mockUsers = [
-    { id: "user1", name: "John Doe" },
-    { id: "user2", name: "Jane Smith" },
-    { id: "user3", name: "Alice Johnson" },
-  ];
-
   // 검색어 변경 처리
-  const handleSearch = () => {
-    const foundUser = mockUsers.find(user => user.id === searchQuery);
-    if (foundUser) {
-      setUser(foundUser);
-      setError("");
-    } else {
-      setUser(null);
-      setError("사용자를 찾을 수 없습니다");
+  const handleSearch = async () => {
+    try {
+        const response = await axiosInstance.get(`/users/${searchQuery}`);
+        setUser(response.data);
+        setError(""); // 성공 시 에러 초기화
+    } catch (error) {
+        setUser(null);
+        if (error.response?.status === 404) {
+            setError("사용자를 찾을 수 없습니다.");
+        } else {
+            setError("서버 연결 중 오류가 발생했습니다.");
+        }
     }
-  };
+};
+
 
   // 체크박스 선택 처리
   const handleCheckboxChange = () => {
@@ -34,18 +33,32 @@ const AdminPage = ({ onClose }) => {
   };
 
   // 권한 부여 처리
-  const handleGrantRole = () => {
+  const handleGrantRole = async () => {
     if (!adminId || !adminPassword) {
       setError("관리자 ID와 비밀번호를 입력해주세요.");
       return;
     }
 
-    if (user && isSelected) {
-      // 실제 권한 부여 로직 구현
-      console.log(`Granting role to user: ${user.name}`);
-      setError("");
-    } else {
-      setError("사용자를 선택하고 확인란을 체크해주세요.");
+    if (!user) {
+      setError("삭제할 사용자를 선택해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.delete(`/users/${user.id}`, {
+        data: { adminId, adminPassword }
+      });
+
+      if (response.status === 200) {
+        setError("");
+        setUser(null);
+        setIsSelected(false);
+        alert("사용자가 성공적으로 삭제되었습니다.");
+      } else {
+        setError(response.data.message || "사용자 삭제 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "사용자 삭제 중 오류가 발생했습니다.");
     }
   };
 
