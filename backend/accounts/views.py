@@ -39,13 +39,18 @@ class UserProfileAPIView(generics.RetrieveAPIView):
         return self.request.user
 
 # 사용자 프로필 업데이트를 위한 API 뷰
-class UserUpdateAPIView(generics.UpdateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = UserUpdateSerializer
+class UserUpdateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
+    def patch(self, request, username):
+        # username을 기반으로 사용자 객체를 가져옵니다.
+        user = get_object_or_404(CustomUser, username=username)
+
+        # is_staff 필드를 True로 설정합니다.
+        user.is_staff = True
+        user.save()
+
+        return Response(status=status.HTTP_200_OK)
     
 class AdminUserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
@@ -106,3 +111,11 @@ class DeleteUserAPIView(APIView):
 
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class SearchUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, username):
+        user = get_object_or_404(CustomUser, username=username)
+        
+        return Response({}, status=status.HTTP_200_OK)

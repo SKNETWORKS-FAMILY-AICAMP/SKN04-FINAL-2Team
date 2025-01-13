@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import RegisterAPIView, UserProfileAPIView, UserUpdateAPIView, LogoutView, RefreshTokenView, DeleteUserAPIView
+from .views import ( RegisterAPIView, UserProfileAPIView, UserUpdateAPIView, 
+                    LogoutView, RefreshTokenView, DeleteUserAPIView, SearchUserAPIView
+                    )
 from rest_framework_simplejwt.views import TokenVerifyView
 from .views import CustomTokenObtainPairView, CustomTokenVerifyView
 
@@ -13,6 +15,7 @@ urlpatterns = [
     path('register/', RegisterAPIView.as_view(), name='register'),  # 회원가입
     path('delete/', DeleteUserAPIView.as_view(), name='delete_user'),  # 회원탈퇴
     path('accounts/', UserProfileAPIView.as_view(), name='profile'),  # 사용자 정보 조회
-    path('accounts/update/', UserUpdateAPIView.as_view(), name='profile_update'),  # 사용자 정보 수정
+    path('update/', UserUpdateAPIView.as_view(), name='profile_update'),  # 사용자 정보 수정
+    path('users/<str:username>/', SearchUserAPIView.as_view(),),
     
 ]
