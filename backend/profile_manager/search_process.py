@@ -40,8 +40,8 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                     "job_category": "직업 카테고리",
                     "career_year": "경력 연수",
                     "tech_stack_name": "기술 스택 이름, 가능하면 영문 표현으로 보편적으로 표현해야 해(예: python, django)",
-                    "language_name": "언어 이름",
-                    "language_lank": "언어 수준",
+                    "language_name": "외국어 능력 이름",
+                    "language_lank": "외국어 능력 수준",
                     "initial_company_experience": "회사 설립 초기 경험 유무",
                     "top_tier_startup": "탑 티어 스타트업 경험 유무",
                     "conglomerate": "대기업 경력 유무",
@@ -63,7 +63,7 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 7. **tech_stack_name:**  
                 - 만약 유사한 항목이 없으면 "None"으로 넣어줘.  
                 8. **language_name:**  
-                - 언어 이름만 적어줘 (예: 영어, 중국어, 일어)  
+                - 외국어 능력 이름만 적어줘 (예: 영어, 중국어, 일어)  
                 9. **language_lank:**  
                 - `상`: 원어민 수준  
                 - `중`: 비즈니스 수준  
