@@ -22,6 +22,7 @@
   outline: none;
   font-size: 16px;
   border-radius: 50px 0 0 50px;
+  resize: none;
 }
 
 .main-search-input:focus {

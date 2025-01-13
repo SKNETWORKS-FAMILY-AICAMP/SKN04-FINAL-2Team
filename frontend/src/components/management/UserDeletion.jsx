@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axiosInstance from "../../context/axiosInstance";
 import "./UserDeletion.css";
 
 const UserDeletion = ({ onClose }) => {
@@ -9,20 +10,18 @@ const UserDeletion = ({ onClose }) => {
   const [adminPassword, setAdminPassword] = useState(""); // 관리자 비밀번호
   const [error, setError] = useState(""); // 에러 메시지 상태
 
-  // Mock 데이터 (실제 구현 시 API 호출로 대체)
-  const mockUsers = [
-    { id: "user1", name: "John Doe" },
-    { id: "user2", name: "Jane Smith" },
-    { id: "user3", name: "Alice Johnson" },
-  ];
-
   // 검색어 변경 처리
-  const handleSearch = () => {
-    const foundUser = mockUsers.find(user => user.id === searchQuery);
-    if (foundUser) {
-      setUser(foundUser);
-      setError("");
-    } else {
+  const handleSearch = async () => {
+    try {
+      const response = await axiosInstance.get(`/users/${searchQuery}`);
+      if (response.status === 200) {
+        setUser(response.data);
+        setError("");
+      } else {
+        setUser(null);
+        setError("사용자를 찾을 수 없습니다");
+      }
+    } catch (error) {
       setUser(null);
       setError("사용자를 찾을 수 없습니다");
     }
@@ -34,18 +33,32 @@ const UserDeletion = ({ onClose }) => {
   };
 
   // 사용자 삭제 처리
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!adminId || !adminPassword) {
       setError("관리자 ID와 비밀번호를 입력해주세요.");
       return;
     }
 
-    if (user && isSelected) {
-      // 실제 삭제 로직 구현
-      console.log(`Deleting user: ${user.name}`);
-      onClose();
-    } else {
-      setError("사용자를 선택하고 확인란을 체크해주세요.");
+    if (!user) {
+      setError("삭제할 사용자를 선택해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.delete(`/users/${user.id}`, {
+        data: { adminId, adminPassword }
+      });
+
+      if (response.status === 200) {
+        setError("");
+        setUser(null);
+        setIsSelected(false);
+        alert("사용자가 성공적으로 삭제되었습니다.");
+      } else {
+        setError("사용자 삭제 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      setError("사용자 삭제 중 오류가 발생했습니다.");
     }
   };
 
