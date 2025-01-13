@@ -51,11 +51,12 @@ def find_early_career_profiles(profiles):
     return early_career_profiles
 
 def vectordb_filter(etc):
+    folder_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'save'))
     db = FAISS.load_local(
-    folder_path=os.path.join(os.path.dirname(__file__), 'save'),
-    index_name='faiss_etc_data_index',
-    embeddings=OpenAIEmbeddings(model='text-embedding-3-small'),
-    allow_dangerous_deserialization=True,
+        folder_path=folder_path,
+        index_name='faiss_etc_data_index',
+        embeddings=OpenAIEmbeddings(model='text-embedding-3-small'),
+        allow_dangerous_deserialization=True,
     )
     result_list = []
     a = db.similarity_search(etc, k=5)
