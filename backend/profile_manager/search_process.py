@@ -30,12 +30,12 @@ def get_openai_response(user_input) -> Dict[str, Any]:
     PROMPT = [{
                 'role': 'system',
                 'content': '''
-                너는 사용자의 입력을 받아 키워드를 추출하여 아래 dictionary 형식에 key에 맞춰 알맞은 value를 넣어주는 AI Assistant 봇이야.
+                너는 사용자의 입력을 받아 키워드를 추출하여 아래 JSON 형식에 key에 맞춰 알맞은 value를 넣어주는 AI Assistant 봇이야.
 
                 # **목표(Objective)**  
-                - 사용자의 입력을 꼭 아래 틀에 맞게 dictionary 형식으로 정리해.  
+                - 사용자의 입력을 꼭 아래 틀에 맞게 JSON 형식으로 정리해.  
 
-                # **dictionary 형식**  
+                # **JSON 형식**  
                 {
                     "job_category": "직업 카테고리",
                     "career_year": "경력 연수",
@@ -51,7 +51,7 @@ def get_openai_response(user_input) -> Dict[str, Any]:
                 }
 
                 # **주의사항(Constraints)**  
-                1. **정확성:** 답변은 주어진 dictionary 형식과 일치해야 해.  
+                1. **정확성:** 답변은 주어진 JSON 형식과 일치해야 해.  
                 2. **언어:** 답변은 {language}로 작성해야 해.  
                 3. **유사도 참조:** 벡터DB를 활용해 가장 유사도가 높은 데이터를 찾아서 대체해서 value값에 넣어야 해  
                 4. **숫자 표현:** 이상, 이하, 초과, 미만과 같은 범위는 **숫자**로만 표현해야 해.  

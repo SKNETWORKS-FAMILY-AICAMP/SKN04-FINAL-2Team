@@ -14,6 +14,7 @@ def search_profiles(request):
     gpt_response = get_openai_response(request.GET.get('query'))
     search_results, keywords = search_process(gpt_response)
     print(f'search_results: {search_results}')
+    print(f'keywords: {keywords}')
     serializer = SimpleProfileSerializer(search_results, many=True)
     return JsonResponse({'results': serializer.data, 'keywords': keywords})
 

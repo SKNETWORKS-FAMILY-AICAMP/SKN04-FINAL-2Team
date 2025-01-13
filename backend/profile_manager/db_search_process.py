@@ -1,8 +1,7 @@
 from typing import Dict, Any, List
-from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language
+from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language, Company
 from datetime import datetime
 from django.db.models import F, Q
-from .models import Career, Company
 import json
 from langchain_community.vectorstores import FAISS
 from langchain_openai.embeddings import OpenAIEmbeddings
