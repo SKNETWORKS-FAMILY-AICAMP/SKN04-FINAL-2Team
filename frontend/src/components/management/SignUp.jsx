@@ -27,24 +27,30 @@ const SignUp = ({ onClose }) => {
       return;
     }
 
-    
     try {
       const response = await axiosInstance.post('/auth/register/', formData);
-  
-      const data = response.data;
-  
-      if (response.status !== 200) {
-        setError(data.message || "회원가입 중 오류가 발생했습니다.");
-        return;
-      }
 
-      console.log("회원가입 완료:", data);
+      console.log("회원가입 완료:", response.data);
       onClose();
     } catch (error) {
-      setError("서버 연결 중 오류가 발생했습니다.");
+      if (error.response) {
+        // 백엔드에서 반환한 에러 메시지 처리
+        const serverErrors = error.response.data;
+        let errorMessage = "회원가입 중 오류가 발생했습니다.";
+
+        if (serverErrors.username) {
+          errorMessage = `ID 오류: ${serverErrors.username.join(", ")}`;
+        } else if (serverErrors.email) {
+          errorMessage = `이메일 오류: ${serverErrors.email.join(", ")}`;
+        }
+        setError(errorMessage);
+      } else {
+        setError("서버 연결 중 오류가 발생했습니다.");
+      }
       console.error("회원가입 오류:", error);
     }
-  };
+};
+
 
   return (
     <div className="signup-overlay">
