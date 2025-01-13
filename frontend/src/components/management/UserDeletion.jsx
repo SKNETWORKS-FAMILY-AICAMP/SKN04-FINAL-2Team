@@ -6,15 +6,13 @@ const UserDeletion = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
   const [user, setUser] = useState(null); // 검색된 사용자 (단일 사용자)
   const [isSelected, setIsSelected] = useState(false); // 체크박스 선택 여부
-  const [adminId, setAdminId] = useState(""); // 관리자 ID
-  const [adminPassword, setAdminPassword] = useState(""); // 관리자 비밀번호
   const [error, setError] = useState(""); // 에러 메시지 상태
 
   // 검색어 변경 처리
   const handleSearch = async () => {
     try {
-      const response = await axiosInstance.get(`/users/${searchQuery}`);
-      if (response.status === 200) {
+      const response = await axiosInstance.get(`auth/users/${searchQuery}`);
+      if (response.status === 200 && response.data.username) {
         setUser(response.data);
         setError("");
       } else {
@@ -34,19 +32,14 @@ const UserDeletion = ({ onClose }) => {
 
   // 사용자 삭제 처리
   const handleDelete = async () => {
-    if (!adminId || !adminPassword) {
-      setError("관리자 ID와 비밀번호를 입력해주세요.");
-      return;
-    }
-
     if (!user) {
       setError("삭제할 사용자를 선택해주세요.");
       return;
     }
 
     try {
-      const response = await axiosInstance.delete(`/users/${user.id}`, {
-        data: { adminId, adminPassword }
+      const response = await axiosInstance.delete('auth/delete/', {
+        data: { username: searchQuery }
       });
 
       if (response.status === 200) {
@@ -83,35 +76,21 @@ const UserDeletion = ({ onClose }) => {
           className="user-deletion-input"
         />
         <button onClick={handleSearch} className="user-deletion-button">검색</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         {user && (
           <div className="user-box">
+            <p>사용자 이름: {user.username}</p>
             <input
               type="checkbox"
               checked={isSelected}
               onChange={handleCheckboxChange}
               className="user-checkbox"
             />
-            <div className="user-info">
-              <p>{user.name}</p>
-            </div>
           </div>
         )}
-        <input
-          type="text"
-          placeholder="관리자 ID"
-          value={adminId}
-          onChange={(e) => setAdminId(e.target.value)}
-          className="user-deletion-input"
-        />
-        <input
-          type="password"
-          placeholder="관리자 비밀번호"
-          value={adminPassword}
-          onChange={(e) => setAdminPassword(e.target.value)}
-          className="user-deletion-input"
-        />
-        <button onClick={handleDelete} className="user-deletion-button">삭제</button>
-        {error && <div className="user-deletion-error-message">{error}</div>}
+        <p>
+          <button onClick={handleDelete} className="user-deletion-button">삭제</button>
+        </p>
       </div>
     </div>
   );
