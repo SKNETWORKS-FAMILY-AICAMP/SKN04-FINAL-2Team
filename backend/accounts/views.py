@@ -14,6 +14,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenVerifyView
+from django.shortcuts import get_object_or_404
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -88,4 +90,19 @@ class CustomTokenVerifyView(TokenVerifyView):
 
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+    
+class DeleteUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def delete(self, request):
+        username = request.data.get('username')
+        print(f'username: {username}')
+        if not username:
+            return Response({"error": "User ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = get_object_or_404(CustomUser, username=username)
+        # 추가적인 권한 검사를 여기에 추가할 수 있습니다.
+        # 예: 관리자가 아닌 사용자가 다른 사용자를 삭제할 수 없도록 제한
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
