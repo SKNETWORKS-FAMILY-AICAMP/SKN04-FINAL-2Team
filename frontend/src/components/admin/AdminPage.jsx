@@ -25,6 +25,13 @@ const AdminPage = ({ onClose }) => {
     }
   };
 
+  // 엔터 키로 검색 처리
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
 
   // 체크박스 선택 처리
   const handleCheckboxChange = () => {
@@ -34,32 +41,26 @@ const AdminPage = ({ onClose }) => {
   // 권한 부여 처리
   const handleGrantRole = async () => {
     if (!user) {
-      setError("삭제할 사용자를 선택해주세요.");
+      setError("권한을 부여할 사용자를 선택해주세요.");
       return;
     }
 
     try {
-      const response = await axiosInstance.authorize(`/auth/update`, {
-        data: { username: searchQuery }
+      const response = await axiosInstance.patch(`/auth/grant-role/${searchQuery}/`, {
+        username: searchQuery
       });
 
       if (response.status === 200) {
         setError("");
         setUser(null);
         setIsSelected(false);
-        alert("사용자가 성공적으로 삭제되었습니다.");
+        alert("사용자에게 권한이 성공적으로 부여되었습니다.");
+        onClose();
       } else {
-        setError(response.data.message || "사용자 삭제 중 오류가 발생했습니다.");
+        setError(response.data.message || "사용자 권한 부여 중 오류가 발생했습니다.");
       }
     } catch (error) {
-      setError(error.response?.data?.message || "사용자 삭제 중 오류가 발생했습니다.");
-    }
-  };
-
-  // 엔터 키로 검색 처리
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
+      setError(error.response?.data?.message || "사용자 권한 부여 중 오류가 발생했습니다.");
     }
   };
 
