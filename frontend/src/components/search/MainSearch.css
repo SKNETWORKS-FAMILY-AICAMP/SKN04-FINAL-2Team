@@ -16,6 +16,9 @@
 }
 
 .main-search-input {
+  font-family: "Pretendard-ExtraBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   flex: 1;
   padding: 10px 15px;
   border: none;
@@ -42,7 +45,7 @@
 }
 
 .main-search-button {
-  background: #828b8f;
+  background: #9ecae0;
   color: white;
   border: none;
   padding: 10px 20px;

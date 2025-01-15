@@ -42,11 +42,12 @@ const UserDeletion = ({ onClose }) => {
         data: { username: searchQuery }
       });
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         setError("");
         setUser(null);
         setIsSelected(false);
         alert("사용자가 성공적으로 삭제되었습니다.");
+        onClose();
       } else {
         setError("사용자 삭제 중 오류가 발생했습니다.");
       }

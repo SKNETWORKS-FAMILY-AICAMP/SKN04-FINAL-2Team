@@ -120,7 +120,7 @@
   top: 0;
   width: 300px;
   height: 100%;
-  background-color: hsl(0, 0%, 12%);
+  background-color: #fbf9f9;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   color: white;
   padding: 20px;
@@ -148,7 +148,8 @@
 
 .hidden-bar-resume-box {
   padding: 10px;
-  border: 2px solid #ccc;
+  color: #57676f;
+  border: 2px solid #57676f;
   align-items: center;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -160,7 +161,7 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 10px 8px;
-  background-color: hsl(0, 0%, 12%);
+  background-color: #9ecae0;
   color: white;
   border: none;
   border-radius: 10px 0 0 10px;
