@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../context/axiosInstance";
 import "./UserDeletion.css";
+import logo from "../../images/logo_v2.png";
 
 const UserDeletion = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
@@ -66,17 +67,25 @@ const UserDeletion = ({ onClose }) => {
   return (
     <div className="user-deletion-overlay">
       <div className="user-deletion-container">
-        <button className="user-deletion-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2>사용자 삭제</h2>
-        <input
-          type="text"
-          placeholder="사용자 ID 검색"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
-          className="user-deletion-input"
-        />
-        <button onClick={handleSearch} className="user-deletion-button">검색</button>
+        <button className="user-deletion-close-button" onClick={onClose}>×</button>
+        <div className="user-deletion-top-bar">
+          <img src={logo} alt="Logo" className="user-deletion-logo-image" />
+        </div>
+        <div className="user-deletion-form">
+          <div className="user-deletion-inputs">
+            <input
+              type="text"
+              placeholder="사용자 ID 검색"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
+              className="user-deletion-input"
+            />
+          </div>
+          <div className="user-deletion-search-button-container">
+            <button onClick={handleSearch} className="user-deletion-search-button">검색</button>
+          </div>
+        </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {user && (
           <div className="user-box">
@@ -89,9 +98,9 @@ const UserDeletion = ({ onClose }) => {
             />
           </div>
         )}
-        <p>
+        <div className="user-deletion-button-container">
           <button onClick={handleDelete} className="user-deletion-button">삭제</button>
-        </p>
+        </div>
       </div>
     </div>
   );

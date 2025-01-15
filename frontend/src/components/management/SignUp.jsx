@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../context/axiosInstance";
 import "./SignUpForm.css";
+import logo from "../../images/logo_v2.png";
 
 const SignUp = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -56,10 +57,12 @@ const SignUp = ({ onClose }) => {
     <div className="signup-overlay">
       <div className="signup-form-container">
         <button className="signup-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2>Sign Up</h2>
+        <div className="signup-top-bar">
+          <img src={logo} alt="Logo" className="signup-logo-image" />
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="signup-form-group">
-            <label htmlFor="host-username">ID</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-username">ID</label> */}
             <input
               type="text"
               id="host-username"
@@ -70,8 +73,8 @@ const SignUp = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          <div className="signup-form-group">
-            <label htmlFor="host-password">Password</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-password">Password</label> */}
             <input
               type="password"
               id="host-password"
@@ -82,8 +85,8 @@ const SignUp = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          <div className="signup-form-group">
-            <label htmlFor="host-email">Email</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-email">Email</label> */}
             <input
               type="email"
               id="host-email"
@@ -95,7 +98,9 @@ const SignUp = ({ onClose }) => {
             />
           </div>
           {error && <div className="signup-error-message">{error}</div>}
-          <button type="submit" className="signup-button">회원등록</button>
+          <div className="signup-button-container">
+            <button type="submit" className="signup-button">회원등록</button>
+          </div>
         </form>
       </div>
     </div>
