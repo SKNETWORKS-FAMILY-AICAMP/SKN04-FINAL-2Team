@@ -111,11 +111,25 @@ class DeleteUserAPIView(APIView):
 
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class GrantRoleAPIView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]  # 관리자 권한 필요
+
+    def patch(self, request, username):
+        user = get_object_or_404(CustomUser, username=username)
+        user.is_staff = True  # 권한 부여
+        user.save()
+        return Response({"message": "권한이 성공적으로 부여되었습니다."}, status=status.HTTP_200_OK)
+
+
 
 class SearchUserAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, username):
         user = get_object_or_404(CustomUser, username=username)
+        user_data = {
+            "username": user.username,
+        }
         
-        return Response({}, status=status.HTTP_200_OK)
+        return Response(user_data, status=status.HTTP_200_OK)
