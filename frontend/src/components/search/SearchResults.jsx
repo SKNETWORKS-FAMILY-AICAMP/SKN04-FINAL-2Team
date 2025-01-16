@@ -180,7 +180,7 @@ const SearchResults = ({ query, setQuery }) => {
           <div className="hidden-bar-content">
             <ul>
               {viewedResumes.map((profile, index) => (
-                <div key={index} className="hidden-bar-resume-box">
+                <div key={index} className="hidden-bar-resume-box" onClick={() => handleViewDetails(profile)}>
                   <p>이름: {profile.name}</p>
                   <p>직군: {profile.job_category}</p>
                   <p>경력: {profile.career_year}</p>
