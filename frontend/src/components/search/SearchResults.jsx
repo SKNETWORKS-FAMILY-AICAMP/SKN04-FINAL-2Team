@@ -161,9 +161,9 @@ const SearchResults = ({ query, setQuery }) => {
                   <strong> 직군: </strong> {profile.job_category} 
                   <strong> 경력: </strong> {profile.career_year}년
                 </p>
-                {/* <div className="ai-analysis">
+                <div className="ai-analysis">
                   <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
-                </div> */}
+                </div>
               </div>
             </div>
             <div className="resume-buttons">
