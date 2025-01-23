@@ -4,10 +4,10 @@ import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
 import axiosInstance from "../../context/axiosInstance";
 import { useAuth } from '../../context/AuthContext';
 import "./SearchResults.css";
-import search from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/search_icon.png";
-import logo from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/logo_v2.png";
-import PDF from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/PDF_icon.png";
-import bookmark from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/bookmark_icon.png";
+import search from "../../images/search_icon.png";
+import logo from  "../../images/logo_v2.png";
+import PDF from "../../images/PDF_icon.png";
+import bookmark from "../../images/bookmark_icon.png";
 
 // PDF.js 워커 경로 설정 (정적 경로 사용)
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;

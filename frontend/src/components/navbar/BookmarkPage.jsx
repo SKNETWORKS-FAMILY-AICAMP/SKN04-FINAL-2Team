@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from '../../context/axiosInstance';
 import "./BookmarkPage.css";
-import logo from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/logo_v2.png";
-import PDF from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/PDF_icon.png";
-import deleteIcon from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/delete_icon.png";
+import logo from "../../images/logo_v2.png";
+import PDF from  "../../images/PDF_icon.png";
+import deleteIcon from "../../images/delete_icon.png";
 
 const BookmarkPage = ({ user }) => {
   const [bookmarks, setBookmarks] = useState([]);

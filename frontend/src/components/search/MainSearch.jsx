@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./MainSearch.css";
-import search from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/search_icon.png";
+import search from "../../images/search_icon.png";
 
 const MainSearch = ({ query, setQuery }) => {
   const navigate = useNavigate();

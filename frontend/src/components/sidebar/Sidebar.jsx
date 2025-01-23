@@ -43,8 +43,8 @@ const Sidebar = () => {
           <div className="user-management-container" onClick={toggleUserManagement}>
             <img src={manageIcon} alt="Icon" className="member-icon" />
             <h3>회원관리</h3>
-            {/* <p> <li onClick={handleSignUpClick}>회원등록</li> </p>
-            <p> <li onClick={() => setIsDeletingUser(true)}>회원삭제</li> </p> */}
+            <p> <li onClick={handleSignUpClick}>회원등록</li> </p>
+            <p> <li onClick={() => setIsDeletingUser(true)}>회원삭제</li> </p>
           </div>
       </aside>
 
