@@ -4,6 +4,10 @@ import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
 import axiosInstance from "../../context/axiosInstance";
 import { useAuth } from '../../context/AuthContext';
 import "./SearchResults.css";
+import search from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/search_icon.png";
+import logo from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/logo_v2.png";
+import PDF from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/PDF_icon.png";
+import bookmark from "C:/Users/gusgm/Documents/SKN04-FINAL-2Team-1/frontend/src/images/bookmark_icon.png";
 
 // PDF.js 워커 경로 설정 (정적 경로 사용)
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -68,7 +72,7 @@ const SearchResults = ({ query, setQuery }) => {
         ai_analysis: profile.ai_analysis
       });
 
-      if (response.data.success) {
+      if (response.status === 201) {
         alert("북마크가 추가되었습니다.");
       }
     } catch (error) {
@@ -130,15 +134,18 @@ const SearchResults = ({ query, setQuery }) => {
   return (
     <div className="search-results">
       <div className="main-search-container-results">
-        <form className="main-search-bar" onSubmit={handleSearchSubmit}>
+        <form className="main-search-bar-results" onSubmit={handleSearchSubmit}>
           <textarea
-            placeholder="회사 요구사항 입력"
+            placeholder="찾으시는 인재상을 입력해 주세요."
             value={searchQuery}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
-            className="main-search-input"
+            className="main-search-input-results"
+            rows="2"
           />
-          <button type="submit" className="main-search-button">검색</button>
+          <button type="submit">
+            <img src={search} alt="Logo" className="main-search-button-results"/>
+          </button>
         </form>
       </div>
       {/* 키워드 표시 */}
@@ -156,19 +163,22 @@ const SearchResults = ({ query, setQuery }) => {
           <div key={index} className="resume-box-container">
             <div key={index} className="resume-box">
               <div className="resume-details">
-                <p>
-                  <strong>이름: </strong> {profile.name} 
-                  <strong> 직군: </strong> {profile.job_category} 
-                  <strong> 경력: </strong> {profile.career_year}년
-                </p>
-                <div className="ai-analysis">
-                  <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
+                <img src={logo} alt="Logo" className="profile-logo-image" />
+                <div className="profile-details">
+                  {profile.name} | {profile.job_category} | {profile.career_year}년차
                 </div>
               </div>
-            </div>
-            <div className="resume-buttons">
-              <button className="bookmark-button" onClick={() => handleAddBookmark(profile)}>Bookmark</button>
-              <button className="details-button" onClick={() => handleViewDetails(profile)}>상세보기</button>
+              <div className="resume-buttons">
+                <button onClick={() => handleAddBookmark(profile)}>
+                  <img src={bookmark} alt="bookmark" className="bookmark-button"/>
+                </button>
+                <button onClick={() => handleViewDetails(profile)}>
+                  <img src={PDF} alt="PDF" className="details-button" />
+                </button>
+              </div>
+              <div className="ai-analysis">
+                <p> {profile.ai_analysis} </p>
+              </div>
             </div>
           </div>
         ))}

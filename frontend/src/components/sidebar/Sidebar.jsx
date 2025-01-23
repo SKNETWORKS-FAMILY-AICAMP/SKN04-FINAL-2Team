@@ -4,18 +4,15 @@ import UserDeletion from "../management/UserDeletion"; // 회원삭제 컴포넌
 import SignUp from "../management/SignUp"; // 회원가입 컴포넌트
 import AdminPage from "../admin/AdminPage"; // AdminPage 임포트
 import { useAuth } from '../../context/AuthContext'; // useAuth 임포트
+import adminIcon from "../../images/manage_icon.png"; // 관리자 아이콘 이미지
+import manageIcon from "../../images/member_icon.png"; // 회원관리 아이콘 이미지
 
 const Sidebar = () => {
-  const [activeMenu, setActiveMenu] = useState("");
   const [isDeletingUser, setIsDeletingUser] = useState(false); // 회원삭제 모달 상태
   const [showSignUp, setShowSignUp] = useState(false); // 회원가입 폼 표시 상태
   const [isUserManagementOpen, setIsUserManagementOpen] = useState(false); // 회원관리 드롭다운 상태
   const [showAdminPage, setShowAdminPage] = useState(false); // 관리 페이지 상태 추가
   const { user } = useAuth(); // useAuth 훅 사용
-
-  const toggleMenu = (menu) => {
-    setActiveMenu(activeMenu === menu ? "" : menu);
-  };
 
   const handleSignUpClick = () => {
     setShowSignUp(true); // 회원가입 폼 표시
@@ -39,45 +36,16 @@ const Sidebar = () => {
         <header>
           <h1>Settings</h1>
         </header>
-        <ul>
-          <li>
-            <input
-              type="radio"
-              id="dashboard"
-              name="sidebar"
-              checked={activeMenu === "dashboard"}
-              onChange={() => toggleMenu("dashboard")}
-            />
-            <label htmlFor="dashboard">
-              <i className="ai-dashboard"></i>
-              <p><button onClick={handleAdminPageClick}>관리페이지</button></p>
-            </label>
-          </li>
-          <li>
-            <input
-              type="radio"
-              id="userManagement"
-              name="sidebar"
-              checked={activeMenu === "userManagement"}
-              onChange={() => toggleMenu("userManagement")}
-            />
-            <label htmlFor="userManagement" onClick={toggleUserManagement}>
-              <i className="ai-user-management"></i>
-              <p>회원관리</p>
-              <i className={`ai-chevron-${isUserManagementOpen ? "up" : "down"}-small`}></i>
-            </label>
-            {isUserManagementOpen && (
-              <ul className="dropdown">
-                <li>
-                  <button onClick={handleSignUpClick}>회원등록</button>
-                </li>
-                <li>
-                  <button onClick={() => setIsDeletingUser(true)}>회원삭제</button>
-                </li>
-              </ul>
-            )}
-          </li>
-        </ul>
+          <div className="admin-container">
+            <img src={adminIcon} alt="Icon" className="admin-icon" />
+            <h3> <button className="admin-form" onClick={handleAdminPageClick}>관리페이지</button> </h3>
+          </div>
+          <div className="user-management-container" onClick={toggleUserManagement}>
+            <img src={manageIcon} alt="Icon" className="member-icon" />
+            <h3>회원관리</h3>
+            {/* <p> <li onClick={handleSignUpClick}>회원등록</li> </p>
+            <p> <li onClick={() => setIsDeletingUser(true)}>회원삭제</li> </p> */}
+          </div>
       </aside>
 
       {/* 관리 페이지 모달 표시 */}
