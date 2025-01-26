@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from '../../context/axiosInstance';
-import "./BookmarkPage.css"; // BookmarkPage.css 파일 임포트
+import "./BookmarkPage.css";
+import logo from "../../images/logo_v2.png";
+import PDF from  "../../images/PDF_icon.png";
+import deleteIcon from "../../images/delete_icon.png";
 
 const BookmarkPage = ({ user }) => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -49,34 +52,28 @@ const BookmarkPage = ({ user }) => {
             <div key={profile.profile_id} className="bookmark-resume-box-container">
               <div className="bookmark-resume-box">
                 <div className="bookmark-resume-details">
-                  <p>
-                    <strong>이름: </strong> {profile.name}
-                    <strong>직군: </strong> {profile.job_category}
-                    <strong>경력: </strong> {profile.career_year}년
-                  </p>
-                  {/* <div className="ai-analysis">
-                    <p><strong>AI 분석 결과: </strong>{profile.ai_analysis}</p>
-                  </div> */}
+                  <img src={logo} alt="Logo" className="profile-logo-image" />
+                  <div className="bookmark-profile-details">
+                    {profile.name} | {profile.job_category} | {profile.career_year}년차
+                  </div>
+                  <div className="bookmark-resume-buttons">
+                    <button onClick={() => removeBookmark(profile)}>
+                      <img src={deleteIcon} alt="Delete" className="bookmark-delete-button" />
+                    </button>
+                    <button onClick={() => {
+                        viewDetails(profile);
+                        if (profile.pdf_url) {
+                          window.open(profile.pdf_url, '_blank', 'noopener noreferrer');
+                        }
+                      }}
+                    >
+                      <img src={PDF} alt="PDF" className="bookmark-details-button"  />
+                    </button>
+                  </div>
+                  <div className="ai-analysis">
+                    <p> {profile.ai_analysis} </p>
+                  </div>
                 </div>
-              </div>
-                <div className="bookmark-resume-buttons">
-                  <button 
-                    className="bookmark-bookmark-button" 
-                    onClick={() => removeBookmark(profile)}
-                  >
-                    북마크 삭제
-                  </button>
-                  <button 
-                    className="bookmark-details-button" 
-                    onClick={() => {
-                      viewDetails(profile);
-                      if (profile.pdf_url) {
-                        window.open(profile.pdf_url, '_blank', 'noopener noreferrer');
-                      }
-                    }}
-                  >
-                    상세보기
-                  </button>
               </div>
             </div>
           ))}
