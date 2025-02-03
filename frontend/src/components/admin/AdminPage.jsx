@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../context/axiosInstance";
 import "./AdminPage.css";
+import logo from "../../images/logo_v2.png";
 
 const AdminPage = ({ onClose }) => {
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
@@ -67,35 +68,39 @@ const AdminPage = ({ onClose }) => {
   return (
     <div className="admin-page-overlay">
       <div className="admin-page-container">
-        <button className="admin-page-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2 className="admin-page-header">권리자 권한 부여</h2>
-        <input
-          type="text"
-          placeholder="사용자 ID 검색"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
-          className="admin-page-input"
-        />
-        <button onClick={handleSearch} className="admin-page-button">검색</button>
-        {error && <div className="admin-page-error">{error}</div>}
-        {user && (
-          <div className="user-box">
-            <div>
-              <p>사용자 이름: {user.username}</p>
-            <input
-              type="checkbox"
-              checked={isSelected}
-              onChange={handleCheckboxChange}
-              className="user-checkbox"
-            />
-            <label>사용자 선택</label>
+        <button className="admin-close-button" onClick={onClose}>×</button>
+        <div className="admin-top-bar">
+          <img src={logo} alt="Logo" className="admin-logo-image" />
+        </div>
+        <div className="admin-form-inputs">
+          <input
+            type="text"
+            placeholder="사용자 ID 검색"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
+            className="admin-form-input"
+          />
+          <button onClick={handleSearch} className="admin-search-button">검색</button>
+          {error && <div className="admin-page-error">{error}</div>}
+          {user && (
+            <div className="user-box">
+              <div>
+                <p>사용자 이름: {user.username}</p>
+              <input
+                type="checkbox"
+                checked={isSelected}
+                onChange={handleCheckboxChange}
+                className="user-checkbox"
+              />
+              <label>사용자 선택</label>
+              </div>
             </div>
-          </div>
-        )}
-        <p>
-          <button onClick={handleGrantRole} className="admin-page-button">권한 부여</button>
-        </p>
+          )}
+        </div>
+        <div className="admin-button-container">
+          <button onClick={handleGrantRole} className="admin-button">권한 부여</button>
+        </div>
       </div>
     </div>
   );

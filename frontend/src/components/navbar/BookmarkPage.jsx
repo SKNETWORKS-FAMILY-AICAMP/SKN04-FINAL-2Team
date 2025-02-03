@@ -54,7 +54,7 @@ const BookmarkPage = ({ user }) => {
                 <div className="bookmark-resume-details">
                   <img src={logo} alt="Logo" className="profile-logo-image" />
                   <div className="bookmark-profile-details">
-                    {profile.name} | {profile.job_category} | {profile.career_year}년차
+                    {profile.name} | {profile.total_career_year}년차
                   </div>
                   <div className="bookmark-resume-buttons">
                     <button onClick={() => removeBookmark(profile)}>

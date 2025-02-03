@@ -40,7 +40,7 @@ const SearchResults = ({ query, setQuery }) => {
           profile_id: profile.profile_id,
           name: profile.name,
           job_category: profile.job_category,
-          career_year: profile.career_year,
+          total_career_year: profile.total_career_year,
           ai_analysis: profile.ai_analysis,
           pdf_url: profile.pdf_url // 백엔드에서 제공된 PDF URL 포함
         })));
@@ -103,7 +103,7 @@ const SearchResults = ({ query, setQuery }) => {
       if (!prevViewedResumes.some((r) => 
         r.name === profile.name && 
         r.job_category === profile.job_category && 
-        r.career_year === profile.career_year)) {
+        r.total_career_year === profile.total_career_year)) {
         return [...prevViewedResumes, profile];
       }
       return prevViewedResumes;
@@ -165,7 +165,7 @@ const SearchResults = ({ query, setQuery }) => {
               <div className="resume-details">
                 <img src={logo} alt="Logo" className="profile-logo-image" />
                 <div className="profile-details">
-                  {profile.name} | {profile.job_category} | {profile.career_year}년차
+                  {profile.name} | {profile.job_category || '직업 카테고리 없음'} | {profile.total_career_year}년차
                 </div>
               </div>
               <div className="resume-buttons">
@@ -193,7 +193,7 @@ const SearchResults = ({ query, setQuery }) => {
                 <div key={index} className="hidden-bar-resume-box" onClick={() => handleViewDetails(profile)}>
                   <p>이름: {profile.name}</p>
                   <p>직군: {profile.job_category}</p>
-                  <p>경력: {profile.career_year}</p>
+                  <p>경력: {profile.total_career_year} 년차</p>
                 </div>
               ))}
             </ul>

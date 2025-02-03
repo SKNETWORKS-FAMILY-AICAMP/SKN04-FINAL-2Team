@@ -37,7 +37,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
-    background-color: #9ecae0;
+    border-bottom: 2px solid #ccc;
     height: 50px;
   }
 
@@ -74,21 +74,19 @@
     color: red;
     margin-bottom: 15px;
   }
-  
-  /* .signup-success-message {
-    color: green;
-    margin-top: 15px;
-  } */
 
   .signup-button-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    background-color: #9ecae0;
+    background-color: #ccc;
     border-radius: 40px;
     width: calc(100% - 95px);
     padding: 10px;
-    margin-left: auto; /* 중앙 정렬을 위해 추가 */
-    margin-right: auto; /* 중앙 정렬을 위해 추가 */
-    
+    margin-left: auto; 
+    margin-right: auto; 
+  }
+
+  .signup-button-container:hover {
+    background-color: #c4c4c4;
   }

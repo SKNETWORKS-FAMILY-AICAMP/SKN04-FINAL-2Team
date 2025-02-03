@@ -10,7 +10,6 @@ import manageIcon from "../../images/member_icon.png"; // 회원관리 아이콘
 const Sidebar = () => {
   const [isDeletingUser, setIsDeletingUser] = useState(false); // 회원삭제 모달 상태
   const [showSignUp, setShowSignUp] = useState(false); // 회원가입 폼 표시 상태
-  const [isUserManagementOpen, setIsUserManagementOpen] = useState(false); // 회원관리 드롭다운 상태
   const [showAdminPage, setShowAdminPage] = useState(false); // 관리 페이지 상태 추가
   const { user } = useAuth(); // useAuth 훅 사용
 
@@ -26,10 +25,6 @@ const Sidebar = () => {
     }
   };
 
-  const toggleUserManagement = () => {
-    setIsUserManagementOpen(!isUserManagementOpen);
-  };
-
   return (
     <>
       <aside className="sidebar">
@@ -40,11 +35,13 @@ const Sidebar = () => {
             <img src={adminIcon} alt="Icon" className="admin-icon" />
             <h3> <button className="admin-form" onClick={handleAdminPageClick}>관리페이지</button> </h3>
           </div>
-          <div className="user-management-container" onClick={toggleUserManagement}>
+          <div className="user-management-container">
             <img src={manageIcon} alt="Icon" className="member-icon" />
             <h3>회원관리</h3>
-            <p> <li onClick={handleSignUpClick}>회원등록</li> </p>
-            <p> <li onClick={() => setIsDeletingUser(true)}>회원삭제</li> </p>
+          </div>
+          <div className="user-management-list">
+            <button className="user-management-button" onClick={handleSignUpClick}>회원등록</button>
+            <button className="user-management-button" onClick={() => setIsDeletingUser(true)}>회원삭제</button>
           </div>
       </aside>
 

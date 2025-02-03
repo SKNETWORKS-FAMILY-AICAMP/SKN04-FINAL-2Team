@@ -16,7 +16,7 @@
   background-color: white;
   border-radius: 10px;
   margin-top: 20px;
-  width: 400px;
+  width: 350px;
   height: 300px;
   overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
   position: relative; /* 엑스 버튼 위치를 위해 추가 */
@@ -37,7 +37,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
-  background-color: #9ecae0;
+  border-bottom: 2px solid #ccc;
   height: 50px;
 }
 
@@ -70,7 +70,7 @@
 
 .user-deletion-search-button-container {
   padding: 10px 20px;
-  background-color: #9ecae0;
+  background-color: #ccc;
   border-radius: 40px;
   color: white;
   border: none;
@@ -95,7 +95,7 @@
   display: flex;
   justify-content: center;
   margin-top: 10px;
-  background-color: #9ecae0;
+  background-color: #ccc;
   border-radius: 40px;
   width: calc(100% - 80px);
   margin-left: auto; /* 중앙 정렬을 위해 추가 */
@@ -103,13 +103,13 @@
   
 }
 
-.user-deletion-button {
+/* .user-deletion-button {
   padding: 10px 60px;
   background-color: #9ecae0;
   color: white;
   border: none;
   cursor: pointer;
-}
+} */
 
 .user-deletion-button:hover {
   background-color: #9ecae0;
