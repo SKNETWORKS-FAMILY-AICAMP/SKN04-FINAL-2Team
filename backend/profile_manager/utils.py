@@ -1,6 +1,6 @@
 import os
 import re
-
+import boto3
 from langchain.schema import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_transformers import LongContextReorder
@@ -74,7 +74,7 @@ VALID_JOB_CATEGORIES = [
 
 
 def get_embedding(text: str) -> np.ndarray:
-    client = OpenAI.Client(api_key=api_key)
+    client = OpenAI(api_key=api_key)
     
     response = client.embeddings.create(
         input=text,
@@ -101,3 +101,49 @@ def get_best_match(input_category: str) -> str:
     # 가장 높은 유사도를 가진 직업 카테고리 선택
     best_match = max(similarities, key=similarities.get)
     return best_match if similarities[best_match] > 0.75 else 'None'
+
+
+def process_company_information(data_path):
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    # S3에서 파일 내용 가져오기
+    s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=AWS_REGION_NAME)
+    data_path_ = f'{data_path}'
+    obj = s3.get_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=data_path_)
+    file_content = obj['Body'].read().decode('utf-8')  # 파일 내용을 문자열로 읽기  
+    return file_content
+    # 파일 내용을 줄 단위로 분리
+
+
+def candidate_validation(query, candidate_data):
+    client = OpenAI(api_key=api_key)
+
+    completion = client.chat.completions.create(
+        model='gpt-4o-mini',
+        messages=[
+            {
+                'role': 'system',
+                'content': '''
+                너는 헤드헌터 맞춤형 데이터 검색엔진에서 candidate 선정 이유를 알려주는 AI 봇이야.
+                사용자가 입력한 쿼리와 candidate의 정보를 담은 JSON 데이터를 분석하고, 후보자가 선택된 이유를 한 줄로 설명해야 해.
+                
+                **출력 형식 예시 (반드시 따를 것!)**
+                "후보자 (이름)는 ~~같은 이유들로 인하여 선정"
+                
+                반드시 위와 같은 포맷으로 응답하되, (이름) 부분에는 후보자의 실제 이름을, ~~에는 주요 선정 이유를 포함해야 해.
+                '''
+            },
+            {
+                'role': 'user',
+                'content': f"사용자 쿼리: {query}, candidate_json 데이터: {candidate_data}"
+            }
+        ],
+        temperature=0.2
+    )
+    
+    # API 응답에서 변환된 결과를 추출
+    result = completion.choices[0].message.content.strip()
+
+    return result
