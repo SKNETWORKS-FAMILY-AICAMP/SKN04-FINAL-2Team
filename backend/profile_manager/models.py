@@ -19,6 +19,7 @@ class ProfileData(models.Model):
     original_data = models.FileField(upload_to='', blank=True, null=True)  # 원본 데이터 파일
     processed_data = models.FileField(upload_to='', blank=True, null=True)  # JSON 처리된 데이터 파일
     pdf_data = models.FileField(upload_to='', blank=True, null=True)  # PDF 파일
+    ai_analysis = models.TextField(blank=True, null=True)  # AI 분석 결과
 
     def delete(self, *args, **kwargs):
         # 파일 삭제를 방지하기 위해 `FileField`의 `delete` 메서드를 호출하지 않음

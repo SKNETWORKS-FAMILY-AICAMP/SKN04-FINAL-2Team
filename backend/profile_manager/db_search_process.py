@@ -1,12 +1,13 @@
 from typing import Dict, Any, List
-from .models import Profile, TechStack, Career, AcademicRecord, Certificate, Language, Company
+from .models import Profile, ProfileData, TechStack, Career, AcademicRecord, Certificate, Language, Company
 from datetime import datetime
 from django.db.models import F, Q
 import json
 from langchain_community.vectorstores import FAISS
 from langchain_openai.embeddings import OpenAIEmbeddings
 import os          
-from collections import defaultdict                                                                         
+from collections import defaultdict       
+from .utils import process_company_information, candidate_validation                                                           
 
 
 TOP_TIER_LIST = ["Series C","Series D","Series E","Series F","Series G","Pre-IPO","Post-IPO","IPO"]
@@ -70,7 +71,7 @@ def str_to_int_safe(value):
     try:
         return int(value)
     except ValueError:
-        return 'None'  # 변환 실패 시 기본값 반환
+        return None  # 변환 실패 시 기본값 반환
 
 def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
     queryset = Profile.objects.all()
@@ -143,10 +144,35 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
     threshold = int(filter_count * 0.7)  # 70% 기준값
     
     filtered_profiles = [profile for profile in queryset if profile_scores[profile.profile_id] >= threshold]
-    
-    
-    
-    print("search 종료")
+
+    if len(filtered_profiles) > 15:
+            print("🔹 검색된 이력서가 15개 이상이므로 AI 분석을 생략합니다.")
+            return Profile.objects.filter(profile_id__in=[p.profile_id for p in filtered_profiles]).distinct(), category_list, True  # AI 분석 생략 여부 반환
+
+    # 🔹 15개 이하일 경우 AI 분석 실행
+    updated_profiles = []
+    for profile in filtered_profiles:
+        profile_data, _ = ProfileData.objects.get_or_create(profile=profile)
+
+        # 🔹 S3에서 데이터 가져오기 (예외 처리 추가)
+        processed_data = "{}"
+        if profile_data.processed_data:
+            try:
+                processed_data = process_company_information(profile_data.processed_data)
+            except Exception as e:
+                print(f"⚠️ S3 데이터 로드 실패: {str(e)}")
+
+        # 🔹 AI 분석 실행 및 저장 (예외 처리 추가)
+        try:
+            ai_result = candidate_validation(search_params, processed_data)
+            profile_data.ai_analysis = ai_result
+            profile_data.save()
+        except Exception as e:
+            print(f"⚠️ AI 분석 오류: {str(e)}")
+
+        updated_profiles.append(profile)
+
+    print("🔹 AI 분석을 완료했습니다.")
     return Profile.objects.filter(profile_id__in=[p.profile_id for p in filtered_profiles]).distinct(), category_list
 
 

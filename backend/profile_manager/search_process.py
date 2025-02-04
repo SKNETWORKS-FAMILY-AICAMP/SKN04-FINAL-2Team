@@ -1,22 +1,28 @@
 from .db_search_process import search_profiles
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
 from .models import Profile
 import os
+import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def search_process(search_criteria : Dict[str, Any]) -> List[Profile]: 
+def search_process(search_criteria: Dict[str, Any]) -> Tuple[List[Profile], List[str]]:
+    """
+    검색 프로세스 실행.
+    - `search_profiles()`가 항상 (search_results, keywords, ai_analysis_skipped)를 반환하도록 수정
+    """
     try:
-        # db_search_process의 search_profiles 함수 호출
-        search_results = search_profiles(search_criteria)
-        return search_results
-        
+        # 🔹 db_search_process의 search_profiles 함수 호출
+        search_results, keywords, ai_analysis_skipped = search_profiles(search_criteria)
+
+        return search_results, keywords
+
     except Exception as e:
-        # 에러 처리
-        print(f"검색 중 오류 발생: {str(e)}")
-        return []
+        # 🔹 예외 발생 시 빈 리스트 반환
+        print(f"⚠️ 검색 중 오류 발생: {str(e)}")
+        return [], []
 
 
 def get_openai_response(user_input) -> Dict[str, Any]:
