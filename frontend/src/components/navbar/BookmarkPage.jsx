@@ -70,9 +70,6 @@ const BookmarkPage = ({ user }) => {
                   </button>
                 </div>
               </div>
-              <div className="ai-analysis">
-                <p> {profile.ai_analysis} </p>
-              </div>
             </div>
           ))}
         </div>

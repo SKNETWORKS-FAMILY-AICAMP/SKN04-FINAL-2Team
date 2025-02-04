@@ -71,6 +71,18 @@
   margin-bottom: 20px;
 }
 
+.analysis-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ffeeba;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+}
+
 .resume-box {
   display: flex;
   flex-direction: column; 

@@ -19,10 +19,10 @@ const SearchResults = ({ query, setQuery }) => {
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState({}); 
   const [searchQuery, setSearchQuery] = useState(query);
+  const [aiAnalysisSkipped, setAiAnalysisSkipped] = useState(false);
 
   useEffect(() => {
     const fetchResumes = async () => {
-      setIsLoading(true);
       try {
         const encodedQuery = encodeURIComponent(query);
         const response = await axiosInstance.get(`/profile/search/?query=${encodedQuery}`);
@@ -40,6 +40,8 @@ const SearchResults = ({ query, setQuery }) => {
           ai_analysis: profile.ai_analysis,
           pdf_url: profile.pdf_url 
         })));
+
+        setAiAnalysisSkipped(data.ai_analysis_skipped || false);
 
       } catch (error) {
         console.error("검색 결과 로딩 중 오류 발생:", error);
@@ -144,6 +146,11 @@ const SearchResults = ({ query, setQuery }) => {
         <div className="search-results-count"> 
           <p> 총 {resumes.length}건의 검색 결과 </p>
         </div>
+        {aiAnalysisSkipped && (
+          <div className="analysis-warning">
+            ⚠️ 총 결과가 15개 이상이 되어 분석 결과가 생략됩니다.
+          </div>
+        )}
         {resumes.map((profile, index) => (
           <div key={index} className="resume-box">
             <div className="resume-header">
@@ -161,7 +168,7 @@ const SearchResults = ({ query, setQuery }) => {
               </div>
             </div>
             <div className="ai-analysis">
-              <p> {profile.ai_analysis} </p>
+              {profile.ai_analysis ? <p>{profile.ai_analysis}</p> : null}
             </div>
           </div>
         ))}
