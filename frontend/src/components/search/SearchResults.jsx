@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { pdfjs } from "react-pdf"; // react-pdf 라이브러리
+import { pdfjs } from "react-pdf"; 
 import axiosInstance from "../../context/axiosInstance";
 import { useAuth } from '../../context/AuthContext';
 import "./SearchResults.css";
 import search from "../../images/search_icon.png";
-import logo from  "../../images/logo_v2.png";
+import logo from "../../images/logo_v2.png";
 import PDF from "../../images/PDF_icon.png";
 import bookmark from "../../images/bookmark_icon.png";
 
@@ -17,22 +17,21 @@ const SearchResults = ({ query, setQuery }) => {
   const [resumes, setResumes] = useState([]);
   const [viewedResumes, setViewedResumes] = useState([]);
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState({}); 
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(query);
   const [aiAnalysisSkipped, setAiAnalysisSkipped] = useState(false);
 
   useEffect(() => {
     const fetchResumes = async () => {
+      setIsLoading(true);
       try {
         const encodedQuery = encodeURIComponent(query);
         const response = await axiosInstance.get(`/profile/search/?query=${encodedQuery}`);
 
         const data = response.data;
-        const { results } = data;
-
         console.log("Fetched data:", data);
 
-        setResumes(results.map(profile => ({
+        setResumes(data.results.map(profile => ({
           profile_id: profile.profile_id,
           name: profile.name,
           job_category: profile.job_category,
@@ -42,9 +41,10 @@ const SearchResults = ({ query, setQuery }) => {
         })));
 
         setAiAnalysisSkipped(data.ai_analysis_skipped || false);
-
       } catch (error) {
         console.error("검색 결과 로딩 중 오류 발생:", error);
+      } finally {
+        setIsLoading(false); // 🔹 검색 완료 즉시 로딩 해제
       }
     };
 
@@ -143,12 +143,24 @@ const SearchResults = ({ query, setQuery }) => {
         </form>
       </div>
       <div className="search-results-content">
-        <div className="search-results-count"> 
-          <p> 총 {resumes.length}건의 검색 결과 </p>
-        </div>
-        {aiAnalysisSkipped && (
+        {isLoading ? (
+          <div className="search-results-count loading">
+            <p> 🔍 검색 진행 중...</p>
+          </div>
+        ) : (
+          <div className="search-results-count">
+            <p> 총 {resumes.length}건의 검색 결과 </p>
+          </div>
+        )}
+        {aiAnalysisSkipped && !isLoading && (
           <div className="analysis-warning">
             ⚠️ 총 결과가 15개 이상이 되어 분석 결과가 생략됩니다.
+          </div>
+        )}
+
+        {!isLoading && resumes.length === 0 && (
+          <div className="no-results">
+            😔 검색 결과가 없습니다.
           </div>
         )}
         {resumes.map((profile, index) => (
