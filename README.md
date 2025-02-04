@@ -36,18 +36,13 @@
 # 🔨 기술 스택
 
 ### 🕹️ Frontend
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
 
 ### 🕹️ Backend
-<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white">
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-<img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white">
+<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"><img src="https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white">
 
 ### 🕹️ AI & LLM
-<img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white">
-<img src="https://img.shields.io/badge/LangChain-0052CC?style=for-the-badge&logo=langchain&logoColor=white">
-<img src="https://img.shields.io/badge/FAISS-0096FF?style=for-the-badge&logo=meta&logoColor=white">
+<img src="https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white"><img src="https://img.shields.io/badge/LangChain-0052CC?style=for-the-badge&logo=langchain&logoColor=white"><img src="https://img.shields.io/badge/FAISS-0096FF?style=for-the-badge&logo=meta&logoColor=white">
 
 
 ### 🕹️ Infra
@@ -65,22 +60,29 @@
   </a>
 </div>
 
-# ✅ 요구사항 명세서
+<br>
+<br>
+
+# ✅ 요구사항 명세서 및 테스트 결과
 <img src="./docs/images/Requirement.png">
 <div style="text-align: center; font-size: 20px;">
   <a href="https://docs.google.com/spreadsheets/d/1TT68v488uhnggTSg5VvVn4JCz9T2NmqKsRPr9YBqMao/edit?gid=1408960755#gid=1408960755">
-    요구사항 명세서
+    요구사항 명세서 및 테스트 결과
   </a>
 </div>
 
+<br>
+
 # 💻 ERD
 ![alt text](./docs/images/image-1.png)
+
 <br>
 <br>
 
 
 # 📚 시스템 아키텍처
 ![alt text](./docs/images/image.png)
+
 <br>
 <br>
 
@@ -100,20 +102,32 @@
 
   <img src="https://cdn.discordapp.com/attachments/1336180066874429493/1336180081088921681/image.png?ex=67a2de2c&is=67a18cac&hm=fd4f9800e13f7dd3c9350d67c208b5c979e59833d758d1ccc727b25185c58ab3&">
 </details>
-<br> <br/>
 
-# 📝 프로젝트 회고
+<details>
+  <summary>3. 검색 결과 화면</summary>
 
-- 권오셈
-    - 회고
+  - 메인화면에서 요구사항을 검색했을 때 나오는 화면으로 이동
 
-- 고유림 
-    - 회고
-- 신원영
-    - Django를 처음 접하면서 프로젝트에 JWT 인증과 DRF를 도입하는 과정에서 여러 가지 문제에 직면했습니다. 게다가 익숙하지 않은 ORM 사용법 때문에 기존의 SQL 접근 방식과는 다른 어려움도 겪었지만, 지속적인 문제 해결 노력과 학습을 통해 이를 점차 극복해 나갔습니다. 특히 ORM이 제공하는 코드의 간결성과 유지보수의 용이함을 경험하면서 그 강력함을 실감할 수 있었습니다.
+  <img src="">
+</details>
 
-- 전욱진
-    - 회고
+<details>
+  <summary>4. 북마크 화면</summary>
+
+  - 검색 결과 화면에서 이력서 담아주기 기능을 실행한 결과 화면으로 이동
+
+  <img src="">
+</details>
+
+<details>
+  <summary>5. 설정 화면</summary>
+
+  - 관리페이지, 회원관리 등
+
+  <img src="">
+</details>
+
+
 
 
 
