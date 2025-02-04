@@ -78,7 +78,7 @@ const UserDeletion = ({ onClose }) => {
               placeholder="사용자 ID 검색"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
+              onKeyPress={handleKeyPress} 
               className="user-deletion-input"
             />
           </div>
@@ -86,16 +86,15 @@ const UserDeletion = ({ onClose }) => {
             <button onClick={handleSearch} className="user-deletion-search-button">검색</button>
           </div>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="user-deletion-error-message" style={{ color: "red" }}>{error}</p>}
         {user && (
-          <div className="user-box">
-            <p>사용자 이름: {user.username}</p>
+          <div className="user-deletion-checkbox">
             <input
               type="checkbox"
               checked={isSelected}
               onChange={handleCheckboxChange}
-              className="user-checkbox"
             />
+            <p>사용자 이름: {user.username}</p>
           </div>
         )}
         <div className="user-deletion-button-container">

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect, useCallback } from 'react';
 import axiosInstance from './axiosInstance';
 import { getCookie, setCookie, removeCookie } from './cookieUtils';
 
@@ -15,11 +15,12 @@ export const AuthProvider = ({ children }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     /** ✅ 쿠키 기본 옵션 */
-    const cookieOptions = {
+    const cookieOptions = useMemo(() => ({
         path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax'
-    };
+        maxAge: 3600, // 1 hour
+        sameSite: 'strict',
+        secure: true,
+      }), []);
 
     /** ✅ 토큰 저장 함수 */
     const saveTokens = useCallback((access, refresh) => {
