@@ -72,32 +72,32 @@ const AdminPage = ({ onClose }) => {
         <div className="admin-top-bar">
           <img src={logo} alt="Logo" className="admin-logo-image" />
         </div>
-        <div className="admin-form-inputs">
-          <input
-            type="text"
-            placeholder="사용자 ID 검색"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyPress={handleKeyPress} // 엔터 키로 검색 처리
-            className="admin-form-input"
-          />
-          <button onClick={handleSearch} className="admin-search-button">검색</button>
-          {error && <div className="admin-page-error">{error}</div>}
-          {user && (
-            <div className="user-box">
-              <div>
-                <p>사용자 이름: {user.username}</p>
-              <input
-                type="checkbox"
-                checked={isSelected}
-                onChange={handleCheckboxChange}
-                className="user-checkbox"
-              />
-              <label>사용자 선택</label>
-              </div>
-            </div>
-          )}
+        <div className="admin-page-form">
+          <div className="admin-page-inputs">
+            <input
+              type="text"
+              placeholder="사용자 ID 검색"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress} 
+              className="admin-page-input"
+            />
+          </div>
+          <div className="admin-search-button-container">
+            <button onClick={handleSearch} className="admin-search-button">검색</button>
+          </div>
         </div>
+        {error && <p className="admin-page-error-message" style={{ color: "red" }}>{error}</p>}
+        {user && (
+          <div className="admin-user-checkbox">
+            <input
+              type="checkbox"
+              checked={isSelected}
+              onChange={handleCheckboxChange}
+            />
+            <p>사용자 이름: {user.username}</p>
+          </div>
+        )}
         <div className="admin-button-container">
           <button onClick={handleGrantRole} className="admin-button">권한 부여</button>
         </div>

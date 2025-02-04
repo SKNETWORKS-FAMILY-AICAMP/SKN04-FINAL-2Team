@@ -17,9 +17,9 @@
   border-radius: 10px;
   margin-top: 20px;
   width: 350px;
-  height: 300px;
-  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
-  position: relative; /* 엑스 버튼 위치를 위해 추가 */
+  height: 250px;
+  overflow-y: auto; 
+  position: relative; 
 }
 
 .user-deletion-close-button {
@@ -44,7 +44,7 @@
 .user-deletion-logo-image {
   height: 35px;
   width: auto;
-  position: absolute; /* 중앙 정렬을 위해 절대 위치 */
+  position: absolute; 
   left: 50%;
   transform: translateX(-50%);
 }
@@ -53,70 +53,81 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .user-deletion-inputs {
-  margin-bottom: 5px;
-  padding: 10px 40px 10px 40px;
+  margin-right: 20px;
 }
 
 .user-deletion-input {
   width: calc(100% - 20px);
   padding: 10px 10px;
   border-radius: 40px;
-  border: 2px solid #ccc; /* 기본 테두리 색상 */
+  border: 2px solid #ccc; 
 }
 
 .user-deletion-search-button-container {
-  padding: 10px 20px;
+  padding: 10px 15px;
   background-color: #ccc;
   border-radius: 40px;
-  color: white;
+  color: #555;
   border: none;
   cursor: pointer;
 }
 
-.user-box {
+.user-deletion-search-button-container:hover {
+  background-color: #c4c4c4;
+}
+
+.user-deletion-checkbox {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+  color: #555;
 }
 
-.user-checkbox {
-  margin-right: 10px;
-}
-
-.user-info {
-  flex-grow: 1;
+.user-deletion-checkbox input{
+  display: flex;
+  align-items: center;
+  margin: 0px 20px 0px 35px;
 }
 
 .user-deletion-button-container {
   display: flex;
   justify-content: center;
   margin-top: 10px;
+  align-content: center;
   background-color: #ccc;
   border-radius: 40px;
-  width: calc(100% - 80px);
-  margin-left: auto; /* 중앙 정렬을 위해 추가 */
-  margin-right: auto; /* 중앙 정렬을 위해 추가 */
-  
+  width: 270px;
+  margin: 40px;
+  position: fixed;
+  bottom: 210px;
 }
 
-/* .user-deletion-button {
+.user-deletion-button {
   padding: 10px 60px;
-  background-color: #9ecae0;
-  color: white;
+  background-color: #ccc;
+  color: #555;
   border: none;
   cursor: pointer;
-} */
+}
+
+.user-deletion-button-container:hover{
+  background-color: #c4c4c4;
+}
 
 .user-deletion-button:hover {
-  background-color: #9ecae0;
-  color: black;
+  background-color: #c4c4c4;
 }
 
 .user-deletion-error-message {
   color: red;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-left: auto; 
+  margin-right: auto; 
 }

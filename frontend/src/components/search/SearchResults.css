@@ -32,9 +32,9 @@
   font-size: 14px;
   resize: none;
   min-width: 0;
-  height: auto; /* Allow height to adjust */
-  max-height: 5em; /* Allow up to 2 lines of text */
-  overflow-y: auto; /* Show scrollbar if content exceeds */
+  height: auto; 
+  max-height: 5em; 
+  overflow-y: auto; 
   white-space: pre-wrap;
 }
 
@@ -49,25 +49,6 @@
   margin-top: 5px;
 }
 
-.keywords-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  margin-top: 45px;
-  gap: 8px;
-  justify-content: center; /* 중앙 배열 */
-  max-width: 700px;
-  box-sizing: border-box;
-}
-
-.keyword {
-  background-color: #f0f0f0;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 5px;
-  text-align: center;
-}
-
 .search-results-content {
   width: 100%;
   max-width: 900px;
@@ -77,41 +58,42 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+  margin-top: 70px;
   box-sizing: border-box;
 }
 
-.resume-box-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 800px;
+.search-results-count p {
+  font-family: "Pretendard-SemiBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  color: #555;
+  font-size: 13px;
   margin-bottom: 20px;
-  margin: 0 auto;
 }
 
 .resume-box {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: 1;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%;
+  flex-direction: column; 
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 35px;
 }
 
-.resume-details {
+.resume-header {
   display: flex;
-  flex-grow: 1;
   align-items: center;
+  justify-content: space-between; 
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .profile-logo-image {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  /* margin: 0px 10px 0px 10px; */
   margin-right: 10px;
 }
 
@@ -128,15 +110,12 @@
   padding: 10px;
   background-color: #f0f0f0;
   border-radius: 4px;
-  width: 100%;
+  font-size: 14px;
 }
 
 .resume-buttons {
-  /* flex-direction: column; */
   gap: 10px;
   display: flex;
-  /* padding: 20px;
-  align-items: right; */
 }
 
 .bookmark-button,
@@ -144,8 +123,8 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  width: 60px;
-  height: 60px;
+  width: 35px;
+  height: 35px;
   color: white;
 }
 
@@ -176,8 +155,8 @@
   color: white;
   padding: 20px;
   overflow-y: auto;
-  transform: translateX(100%);  /* 기본적으로 화면 밖으로 숨김 */
-  transition: transform 0.3s ease;  /* 부드럽게 열림/닫힘 */
+  transform: translateX(100%); 
+  transition: transform 0.3s ease; 
   z-index: 1000;
 }
 
@@ -192,9 +171,8 @@
 }
 
 
-/* 숨겨진 바가 열렸을 때 토글 버튼의 위치 조정 */
 .hidden-bar.open ~ .toggle-hidden-bar-button {
-  right: 340px; /* 숨겨진 바의 너비만큼 이동 */
+  right: 340px; 
 }
 
 .hidden-bar-resume-box {
@@ -219,7 +197,7 @@
   cursor: pointer;
   height: 100px;
   z-index: 1000;
-  transition: right 0.3s ease; /*부드럽게 이동*/
+  transition: right 0.3s ease; 
 }
 
 .pdf-modal {

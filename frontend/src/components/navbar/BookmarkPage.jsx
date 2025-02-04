@@ -49,31 +49,29 @@ const BookmarkPage = ({ user }) => {
       ) : (
         <div className="bookmark-list-content">
           {bookmarks.map((profile) => (
-            <div key={profile.profile_id} className="bookmark-resume-box-container">
-              <div className="bookmark-resume-box">
-                <div className="bookmark-resume-details">
-                  <img src={logo} alt="Logo" className="profile-logo-image" />
-                  <div className="bookmark-profile-details">
-                    {profile.name} | {profile.total_career_year}년차
-                  </div>
-                  <div className="bookmark-resume-buttons">
-                    <button onClick={() => removeBookmark(profile)}>
-                      <img src={deleteIcon} alt="Delete" className="bookmark-delete-button" />
-                    </button>
-                    <button onClick={() => {
-                        viewDetails(profile);
-                        if (profile.pdf_url) {
-                          window.open(profile.pdf_url, '_blank', 'noopener noreferrer');
-                        }
-                      }}
-                    >
-                      <img src={PDF} alt="PDF" className="bookmark-details-button"  />
-                    </button>
-                  </div>
-                  <div className="ai-analysis">
-                    <p> {profile.ai_analysis} </p>
-                  </div>
+            <div key={profile.profile_id} className="bookmark-resume-box">
+              <div className="bookmark-resume-header">
+                <img src={logo} alt="Logo" className="profile-logo-image" />
+                <div className="bookmark-profile-details">
+                  {profile.name} | {profile.job_category} | {profile.career_year}년차
                 </div>
+                <div className="bookmark-resume-buttons"  style={{ marginLeft: "auto" }}>
+                  <button onClick={() => removeBookmark(profile)}>
+                    <img src={deleteIcon} alt="Delete" className="bookmark-delete-button" />
+                  </button>
+                  <button onClick={() => {
+                    viewDetails(profile);
+                    if (profile.pdf_url) {
+                      window.open(profile.pdf_url, '_blank', 'noopener noreferrer');
+                      }
+                    }}
+                  >
+                    <img src={PDF} alt="PDF" className="bookmark-details-button"  />
+                  </button>
+                </div>
+              </div>
+              <div className="ai-analysis">
+                <p> {profile.ai_analysis} </p>
               </div>
             </div>
           ))}

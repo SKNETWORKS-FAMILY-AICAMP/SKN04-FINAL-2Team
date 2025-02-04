@@ -9,40 +9,36 @@ import logo from  "../../images/logo_v2.png";
 import PDF from "../../images/PDF_icon.png";
 import bookmark from "../../images/bookmark_icon.png";
 
-// PDF.js 워커 경로 설정 (정적 경로 사용)
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const SearchResults = ({ query, setQuery }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [resumes, setResumes] = useState([]);
-  const [keywords, setKeywords] = useState([]);
   const [viewedResumes, setViewedResumes] = useState([]);
   const [isHiddenBarOpen, setIsHiddenBarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState({}); // 북마크 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState({}); 
   const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
     const fetchResumes = async () => {
+      setIsLoading(true);
       try {
         const encodedQuery = encodeURIComponent(query);
         const response = await axiosInstance.get(`/profile/search/?query=${encodedQuery}`);
 
         const data = response.data;
-        const { results, keywords } = data;
+        const { results } = data;
 
         console.log("Fetched data:", data);
 
-        setKeywords(keywords);
-
-        // 이력서 데이터 업데이트
         setResumes(results.map(profile => ({
           profile_id: profile.profile_id,
           name: profile.name,
           job_category: profile.job_category,
-          total_career_year: profile.total_career_year,
+          career_year: profile.career_year,
           ai_analysis: profile.ai_analysis,
-          pdf_url: profile.pdf_url // 백엔드에서 제공된 PDF URL 포함
+          pdf_url: profile.pdf_url 
         })));
 
       } catch (error) {
@@ -65,7 +61,6 @@ const SearchResults = ({ query, setQuery }) => {
     setIsLoading(prev => ({ ...prev, [profile.profile_id]: true }));
     
     try {
-      // axiosInstance를 사용하여 북마크 추가 요청
       const response = await axiosInstance.post('/profile/bookmark/add/', {
         profile_id: profile.profile_id,
         user: user,
@@ -89,21 +84,18 @@ const SearchResults = ({ query, setQuery }) => {
     }
   };
 
-  // 새로운 창에서 PDF 열기
   const handleViewDetails = (profile) => {
     if (profile.pdf_url) {
-      // 새 창에서 해당 이력서의 PDF 열기
       window.open(profile.pdf_url, "_blank");
     } else {
       console.error("PDF URL이 존재하지 않습니다.");
     }
 
-    // viewedResumes 상태 업데이트
     setViewedResumes((prevViewedResumes) => {
       if (!prevViewedResumes.some((r) => 
         r.name === profile.name && 
         r.job_category === profile.job_category && 
-        r.total_career_year === profile.total_career_year)) {
+        r.career_year === profile.career_year)) {
         return [...prevViewedResumes, profile];
       }
       return prevViewedResumes;
@@ -148,25 +140,16 @@ const SearchResults = ({ query, setQuery }) => {
           </button>
         </form>
       </div>
-      {/* 키워드 표시 */}
-      <div className="keywords-container">
-        {keywords.map((keyword, index) => (
-          <span key={index} className="keyword">
-            {keyword}
-          </span>
-        ))}
-      </div>
-
-      {/* 검색 결과 표시 */}
       <div className="search-results-content">
+        <div className="search-results-count"> 
+          <p> 총 {resumes.length}건의 검색 결과 </p>
+        </div>
         {resumes.map((profile, index) => (
-          <div key={index} className="resume-box-container">
-            <div key={index} className="resume-box">
-              <div className="resume-details">
-                <img src={logo} alt="Logo" className="profile-logo-image" />
-                <div className="profile-details">
-                  {profile.name} | {profile.job_category || '직업 카테고리 없음'} | {profile.total_career_year}년차
-                </div>
+          <div key={index} className="resume-box">
+            <div className="resume-header">
+              <img src={logo} alt="Logo" className="profile-logo-image" />
+              <div className="profile-details">
+                {profile.name} | {profile.job_category} | {profile.career_year}년차
               </div>
               <div className="resume-buttons">
                 <button onClick={() => handleAddBookmark(profile)}>
@@ -176,15 +159,13 @@ const SearchResults = ({ query, setQuery }) => {
                   <img src={PDF} alt="PDF" className="details-button" />
                 </button>
               </div>
-              <div className="ai-analysis">
-                <p> {profile.ai_analysis} </p>
-              </div>
+            </div>
+            <div className="ai-analysis">
+              <p> {profile.ai_analysis} </p>
             </div>
           </div>
         ))}
       </div>
-    
-      {/* 히든 바 */}
       <div className="search-results-container">
         <div className={`hidden-bar ${isHiddenBarOpen ? 'open' : ''}`}>
           <div className="hidden-bar-content">
@@ -193,7 +174,7 @@ const SearchResults = ({ query, setQuery }) => {
                 <div key={index} className="hidden-bar-resume-box" onClick={() => handleViewDetails(profile)}>
                   <p>이름: {profile.name}</p>
                   <p>직군: {profile.job_category}</p>
-                  <p>경력: {profile.total_career_year} 년차</p>
+                  <p>경력: {profile.career_year}</p>
                 </div>
               ))}
             </ul>
