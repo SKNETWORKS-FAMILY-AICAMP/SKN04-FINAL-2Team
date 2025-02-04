@@ -141,7 +141,7 @@ def search_profiles(search_params: Dict[str, Any]) -> List[Profile]:
     apply_filter(queryset, search_params.get('conglomerate') == 'True',
                  lambda x: x.filter(careers__company_name__in=Company.objects.filter(is_major_company=True).values_list('company_name', flat=True)), "대기업 경험 있음")
     
-    threshold = int(filter_count * 0.7)  # 70% 기준값
+    threshold = int(filter_count * 0.9)  # 90% 기준값
     
     filtered_profiles = [profile for profile in queryset if profile_scores[profile.profile_id] >= threshold]
 
