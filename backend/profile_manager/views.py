@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Profile, Bookmark
+from .models import Profile, Bookmark, ProfileData
 from .serializers import SimpleProfileSerializer, BookmarkedProfileSerializer
 from django.http import JsonResponse
 from rest_framework.response import Response
@@ -7,12 +7,21 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from .search_process import search_process, get_openai_response
+from .second import Second_filter
+from .utils import process_company_information, candidate_validation
 
 # Create your views here.
 def search_profiles(request):
     print(f'request.GET.get("query"): {request.GET.get("query")}')
     gpt_response = get_openai_response(request.GET.get('query'))
+    print(f'gpt_response: {gpt_response}')
+    # a, b = Second_filter(gpt_response)
     search_results, keywords = search_process(gpt_response)
+    for i in search_results:
+        profile = Profile.objects.get(profile_id=i.profile_id)
+        profile_data = ProfileData.objects.filter(profile=profile).first()
+        if profile_data:
+            print(candidate_validation(request.GET.get("query"), process_company_information(profile_data.processed_data)))
     print(f'search_results: {search_results}')
     print(f'keywords: {keywords}')
     serializer = SimpleProfileSerializer(search_results, many=True)
