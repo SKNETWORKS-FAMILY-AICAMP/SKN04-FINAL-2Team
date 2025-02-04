@@ -260,3 +260,4 @@ CORS_ALLOW_CREDENTIALS = True   # 인증된 요청(쿠키, 인증 헤더 등) �
 # SESSION_COOKIE_SECURE = False  # 개발 환경에서는 False
 # CSRF_COOKIE_SAMESITE = 'Lax'
 # CSRF_COOKIE_SECURE = False
+

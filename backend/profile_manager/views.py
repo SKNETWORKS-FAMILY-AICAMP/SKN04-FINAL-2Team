@@ -7,32 +7,58 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from .search_process import search_process, get_openai_response
-from .second import Second_filter
 from .utils import process_company_information, candidate_validation
 
-# Create your views here.
+from django.http import JsonResponse
+from .models import Profile, ProfileData
+from .serializers import SimpleProfileSerializer
+from .search_process import search_process, get_openai_response
+from .utils import process_company_information, candidate_validation  # ⬅️ utils에서 가져오기
+
 def search_profiles(request):
-    print(f'request.GET.get("query"): {request.GET.get("query")}')
-    gpt_response = get_openai_response(request.GET.get('query'))
-    print(f'gpt_response: {gpt_response}')
-    # a, b = Second_filter(gpt_response)
-    search_results, keywords = search_process(gpt_response)
+    query = request.GET.get('query')
+    gpt_response = get_openai_response(query)
+    search_results, keywords = search_process(gpt_response) if isinstance(search_process(gpt_response), tuple) else (search_process(gpt_response), [])
+
+    if len(search_results) > 15:
+        print("🔹 검색된 이력서가 15개 이상이므로 AI 분석을 생략합니다.")
+        for profile in search_results:
+            profile_data, _ = ProfileData.objects.get_or_create(profile=profile)
+            profile_data.ai_analysis = None 
+            profile_data.save()
+
+        serializer = SimpleProfileSerializer(search_results, many=True)
+        return JsonResponse({'results': serializer.data, 'keywords': keywords, 'ai_analysis_skipped': True})
+    
+    updated_profiles = []
     for i in search_results:
         profile = Profile.objects.get(profile_id=i.profile_id)
-        profile_data = ProfileData.objects.filter(profile=profile).first()
-        if profile_data:
-            print(candidate_validation(request.GET.get("query"), process_company_information(profile_data.processed_data)))
-    print(f'search_results: {search_results}')
-    print(f'keywords: {keywords}')
-    serializer = SimpleProfileSerializer(search_results, many=True)
-    return JsonResponse({'results': serializer.data, 'keywords': keywords})
+        profile_data, _ = ProfileData.objects.get_or_create(profile=profile)
+
+        processed_data = "{}"
+        if profile_data.processed_data:
+            try:
+                processed_data = process_company_information(profile_data.processed_data)
+            except Exception as e:
+                print(f"S3 데이터 로드 실패: {str(e)}")
+
+        try:
+            ai_result = candidate_validation(query, processed_data)
+            profile_data.ai_analysis = ai_result
+            profile_data.save()
+        except Exception as e:
+            print(f"AI 분석 오류: {str(e)}")
+
+        updated_profiles.append(profile)
+
+    serializer = SimpleProfileSerializer(updated_profiles, many=True)
+    return JsonResponse({'results': serializer.data, 'keywords': keywords, 'ai_analysis_skipped': True})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def add_bookmark(request):
     try:
         profile = Profile.objects.get(profile_id=request.data['profile_id'])
-        # request.user를 통해 현재 인증된 사용자 정보를 가져옴
         ai_analysis = request.data.get('ai_analysis', None)
         Bookmark.objects.create(
             user=request.user, 
@@ -51,11 +77,11 @@ def add_bookmark(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-@api_view(['DELETE'])  # POST에서 DELETE로 변경
+@api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def remove_bookmark(request, profile_id):  # URL 파라미터로 profile_id를 받도록 수정
+def remove_bookmark(request, profile_id): 
     try:
-        profile = Profile.objects.get(profile_id=profile_id)  # id 대신 profile_id 사용
+        profile = Profile.objects.get(profile_id=profile_id) 
         bookmark = Bookmark.objects.filter(user=request.user, profile=profile)
         if bookmark.exists():
             bookmark.delete()
