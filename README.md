@@ -1,12 +1,5 @@
 # SKN04-FINAL-2Team
 
-# 👥 팀 소개
-
-|**권오셈**|**고유림**|**신원영**|**전욱진**|
-|:-------:|:-------:|:-------:|:-------:|
-| ![](https://your-image-url.com/team-logo.png) | ![](https://your-image-url.com/member1.png) | ![](https://your-image-url.com/member2.png) | ![](https://your-image-url.com/member5.png) |
-| **LLM** | **Frontend** | **Backend** | **Design** |
-
 <br>
 <br>
 
@@ -18,6 +11,12 @@
 
 ### 프로젝트 목표
 - 헤드헌터 맞춤형 LLM 활용 데이터 검색엔진
+
+### 문제 정의
+- 후보군 탐색/평가 파트에 있어서 효율적인 리소스 분배를 방해
+- 기본 수시간 소모(이력서 당 약 8분)
+- 검토/컨택까지 영업일 기준 1일 소요
+- 수작업으로 발생하는 높은 업무 피로
 
 ### 서비스 목표
 - 헤드헌터가 요구하는 인재상을 입력하면, 이에 부합하는 후보자들의 이력서를 정확하고 효율적으로 검색 
@@ -86,48 +85,39 @@
 <br>
 <br>
 
-# 🖥️ 수행결과
-<details>
-  <summary>1. 로그인 화면</summary>
+# 🔗 바로가기
+<div style="text-align: left; font-size: 20px;">
+  <a href="http://15.164.151.207:3000/"> Web Service </a>
+</div>
 
-  - 서비스 접속 시 로그인 후에 서비스 이용
+### 접속
+- ID: guest / Password: 환영!! 
 
-  <img src="https://cdn.discordapp.com/attachments/1336177837186613258/1336177849115218022/image.png?ex=67a2dc18&is=67a18a98&hm=7e8ae34329d59c289902262c0d4fef1b8575b6d87b416dbb97e9bb3878b7ac90&">
-</details>
+<br>
+<br>
 
-<details>
-  <summary>2. 메인화면</summary>
+# 👥 팀 소개
 
-  - 로그인 후에 메인화면으로 이동
-
-  <img src="https://cdn.discordapp.com/attachments/1336180066874429493/1336180081088921681/image.png?ex=67a2de2c&is=67a18cac&hm=fd4f9800e13f7dd3c9350d67c208b5c979e59833d758d1ccc727b25185c58ab3&">
-</details>
-
-<details>
-  <summary>3. 검색 결과 화면</summary>
-
-  - 메인화면에서 요구사항을 검색했을 때 나오는 화면으로 이동
-
-  <img src="">
-</details>
-
-<details>
-  <summary>4. 북마크 화면</summary>
-
-  - 검색 결과 화면에서 이력서 담아주기 기능을 실행한 결과 화면으로 이동
-
-  <img src="">
-</details>
-
-<details>
-  <summary>5. 설정 화면</summary>
-
-  - 관리페이지, 회원관리 등
-
-  <img src="">
-</details>
-
-
+<table>
+  <tr align="center">
+    <th>권오셈</th>
+    <th>고유림</th>
+    <th>신원영</th>
+    <th>전욱진</th>
+  </tr>
+  <tr align="center">
+    <td>데이터 수집 <br> LLM </td>
+    <td>Front-end</td>
+    <td>AWS <br> Back-end</td>
+    <td>Design <br> Planning </td>
+  </tr>
+  <tr align="center">
+    <td><a href="https://github.com/Kwonohs">@Kwonohs</a></td>
+    <td><a href="https://github.com/urim02">@urim02</a></td>
+    <td><a href="https://github.com/WonYoungShin">@WonYoungShin</a></td>
+    <td><a href="https://github.com/oochie-ch">@oochie-ch</a></td>
+  </tr>
+</table>
 
 
 
