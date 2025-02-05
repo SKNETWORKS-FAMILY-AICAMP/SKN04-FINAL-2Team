@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../context/AuthContext';
 import "./LoginForm.css";
+import logo from "../../images/logo_v2.png";
 
 const Login = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -44,26 +45,26 @@ const Login = ({ onClose }) => {
     <div className="login-overlay">
       <div className="login-form-container">
         <button className="login-close-button" onClick={onClose}>×</button>
-        <h2>Login</h2>
+        <div className="login-top-bar">
+          <img src={logo} alt="Logo" className="login-logo-image" />
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="login-form-group">
-            <label htmlFor="host-username">ID</label>
+          <div className="login-form-inputs">
+            <label className="login-form-id" htmlFor="host-username">ID</label>
             <input
               type="text"
               id="host-username"
-              placeholder="아이디 입력"
               value={formData.username}
               onChange={handleChange}
               required
               className={error ? "error" : ""}
             />
           </div>
-          <div className="login-form-group">
+          <div className="login-form-inputs">
             <label htmlFor="host-password">Password</label>
             <input
               type="password"
               id="host-password"
-              placeholder="비밀번호 입력"
               value={formData.password}
               onChange={handleChange}
               required
@@ -71,7 +72,9 @@ const Login = ({ onClose }) => {
             />
           </div>
           {error && <div className="login-error-message">{error}</div>}
-          <button type="submit" className="login-button">로그인</button>
+          <div className="login-button-container">
+            <button type="submit" className="login-button">로그인</button>
+          </div>
         </form>
       </div>
     </div>

@@ -26,65 +26,64 @@
   box-sizing: border-box;
 }
 
-.bookmark-resume-box-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .bookmark-resume-box {
+  display: flex;
+  flex-direction: column; 
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.bookmark-resume-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile-logo-image {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.bookmark-profile-details {
   flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
+  text-align: left;
 }
-
-.bookmark-resume-details {
-  text-align: center;
-}
-
-/* .bookmark-resume-details p {
-  margin: 0;
-  line-height: 1.5;
-} */
 
 .ai-analysis {
+  font-family: "Pretendard-ExtraBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   margin-top: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .bookmark-resume-buttons {
-  display: flex;
-  flex-direction: column;
   gap: 10px;
-  padding: 20px;
+  display: flex;
 }
 
-.bookmark-bookmark-button,
+.bookmark-delete-button,
 .bookmark-details-button {
-  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-}
-
-.bookmark-bookmark-button {
-  background-color: #e16868;
-  border-radius: 8px;
+  width: 35px;
+  height: 35px;
   color: white;
 }
 
-.bookmark-bookmark-button:hover {
-  background-color: #b94f4f;
-}
-
-.bookmark-details-button {
-  background-color: #606dcc;
-  border-radius: 8px;
-  color: white;
-}
-
-.bookmark-details-button:hover {
-  background-color: #515baa;
+.bookmark-delete-button:hover,
+.bookmark-details-button:hover{
+  background-color: #dddddd;
 }

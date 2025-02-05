@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import axiosInstance from "../../context/axiosInstance";
 import "./SignUpForm.css";
+import logo from "../../images/logo_v2.png";
 
 const SignUp = ({ onClose }) => {
   const [formData, setFormData] = useState({
@@ -27,37 +29,40 @@ const SignUp = ({ onClose }) => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auth/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+      const response = await axiosInstance.post('/auth/register/', formData);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "회원가입 중 오류가 발생했습니다.");
-        return;
-      }
-
-      console.log("회원가입 완료:", data);
+      console.log("회원가입 완료:", response.data);
       onClose();
     } catch (error) {
-      setError("서버 연결 중 오류가 발생했습니다.");
+      if (error.response) {
+        // 백엔드에서 반환한 에러 메시지 처리
+        const serverErrors = error.response.data;
+        let errorMessage = "회원가입 중 오류가 발생했습니다.";
+
+        if (serverErrors.username) {
+          errorMessage = `ID 오류: ${serverErrors.username.join(", ")}`;
+        } else if (serverErrors.email) {
+          errorMessage = `이메일 오류: ${serverErrors.email.join(", ")}`;
+        }
+        setError(errorMessage);
+      } else {
+        setError("서버 연결 중 오류가 발생했습니다.");
+      }
       console.error("회원가입 오류:", error);
     }
-  };
+};
+
 
   return (
     <div className="signup-overlay">
       <div className="signup-form-container">
         <button className="signup-close-button" onClick={onClose}>×</button> {/* 엑스 버튼 */}
-        <h2>Sign Up</h2>
+        <div className="signup-top-bar">
+          <img src={logo} alt="Logo" className="signup-logo-image" />
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="signup-form-group">
-            <label htmlFor="host-username">ID</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-username">ID</label> */}
             <input
               type="text"
               id="host-username"
@@ -68,8 +73,8 @@ const SignUp = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          <div className="signup-form-group">
-            <label htmlFor="host-password">Password</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-password">Password</label> */}
             <input
               type="password"
               id="host-password"
@@ -80,8 +85,8 @@ const SignUp = ({ onClose }) => {
               className={error ? "error" : ""}
             />
           </div>
-          <div className="signup-form-group">
-            <label htmlFor="host-email">Email</label>
+          <div className="signup-form-inputs">
+            {/* <label htmlFor="host-email">Email</label> */}
             <input
               type="email"
               id="host-email"
@@ -93,7 +98,9 @@ const SignUp = ({ onClose }) => {
             />
           </div>
           {error && <div className="signup-error-message">{error}</div>}
-          <button type="submit" className="signup-button">회원등록</button>
+          <div className="signup-button-container">
+            <button type="submit" className="signup-button">회원등록</button>
+          </div>
         </form>
       </div>
     </div>

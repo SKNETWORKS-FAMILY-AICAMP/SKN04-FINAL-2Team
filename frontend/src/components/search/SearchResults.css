@@ -1,12 +1,148 @@
 .main-search-container-results {
   width: 100%;
-  margin: 80px 0 20px 0;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
   height: 50px;
+  margin-top: 100px;
   box-sizing: border-box;
+}
+
+.main-search-bar-results {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.main-search-input-results {
+  font-family: "Pretendard-SemiBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  background: transparent;
+  font-size: 14px;
+  resize: none;
+  min-width: 0;
+  height: auto; 
+  max-height: 5em; 
+  overflow-y: auto; 
+  white-space: pre-wrap;
+}
+
+.main-search-button-results {
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  transition: background 0.3s ease;
+  margin-top: 5px;
+}
+
+.search-results-content {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 70px;
+  box-sizing: border-box;
+}
+
+.search-results-count p {
+  font-family: "Pretendard-SemiBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  color: #555;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.analysis-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 8px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ffeeba;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+}
+
+.resume-box {
+  display: flex;
+  flex-direction: column; 
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 35px;
+}
+
+.resume-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  width: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.profile-logo-image {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profile-details {
+  flex-grow: 1;
+  text-align: left;
+}
+
+.ai-analysis {
+  font-family: "Pretendard-ExtraBold", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.resume-buttons {
+  gap: 10px;
+  display: flex;
+}
+
+.bookmark-button,
+.details-button {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  color: white;
+}
+
+.bookmark-button:hover,
+.details-button:hover {
+  background-color: #dddddd;
 }
 
 .search-results-container {
@@ -20,113 +156,19 @@
   gap: 20px;
 }
 
-.keywords-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  gap: 8px;
-  justify-content: center; /* 중앙 배열 */
-  max-width: 700px;
-  box-sizing: border-box;
-}
-
-.keyword {
-  background-color: #f0f0f0;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 5px;
-  text-align: center;
-}
-
-.search-results-content {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  box-sizing: border-box;
-}
-
-.resume-box-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 800px;
-  margin-bottom: 20px;
-  margin: 0 auto;
-}
-
-.resume-box {
-  flex-grow: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-.resume-details {
-  text-align: center;
-}
-
-.ai-analysis {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
-}
-
-.resume-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-}
-
-.bookmark-button,
-.details-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.bookmark-button {
-  background-color: #e16868;
-  border-radius: 8px;
-  color: white;
-}
-
-.bookmark-button:hover {
-  background-color: #b94f4f;
-}
-
-.details-button {
-  background-color: #606dcc;
-  border-radius: 8px;
-  color: white;
-}
-
-.details-button:hover {
-  background-color: #515baa;
-}
-
 .hidden-bar {
   position: fixed;
   right: 0;
   top: 0;
   width: 300px;
   height: 100%;
-  background-color: hsl(0, 0%, 12%);
+  background-color: #fbf9f9;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   color: white;
   padding: 20px;
   overflow-y: auto;
-  transform: translateX(100%);  /* 기본적으로 화면 밖으로 숨김 */
-  transition: transform 0.3s ease;  /* 부드럽게 열림/닫힘 */
+  transform: translateX(100%); 
+  transition: transform 0.3s ease; 
   z-index: 1000;
 }
 
@@ -141,14 +183,14 @@
 }
 
 
-/* 숨겨진 바가 열렸을 때 토글 버튼의 위치 조정 */
 .hidden-bar.open ~ .toggle-hidden-bar-button {
-  right: 340px; /* 숨겨진 바의 너비만큼 이동 */
+  right: 340px; 
 }
 
 .hidden-bar-resume-box {
   padding: 10px;
-  border: 2px solid #ccc;
+  color: #57676f;
+  border: 2px solid #57676f;
   align-items: center;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -160,14 +202,14 @@
   top: 50%;
   transform: translateY(-50%);
   padding: 10px 8px;
-  background-color: hsl(0, 0%, 12%);
+  background-color: #ddd;
   color: white;
   border: none;
   border-radius: 10px 0 0 10px;
   cursor: pointer;
   height: 100px;
   z-index: 1000;
-  transition: right 0.3s ease; /*부드럽게 이동*/
+  transition: right 0.3s ease; 
 }
 
 .pdf-modal {

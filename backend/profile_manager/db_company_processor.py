@@ -64,8 +64,8 @@ def process_company_information():
             )
             if created:
                 print(f"새로운 회사 정보가 저장되었습니다: {company_name}")
-                with open('saved_company_info.log', 'a', encoding='utf-8'백엔드 엔지니어 경험이 5년 이상이고, python과 django 경험이 있으며, 비즈니스 회화) as log_file:
-                        log_file.write(f"{company_name}\n")
+                with open('saved_company_info.log', 'a', encoding='utf-8') as log_file:
+                    log_file.write(f"{company_name}\n")
             else:
                 print(f"이미 존재하는 회사 정보입니다: {company_name}")
                 

@@ -59,7 +59,7 @@ class SimpleProfileSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     job_category = serializers.SerializerMethodField()
     career_year = serializers.SerializerMethodField()
-    ai_analysis = serializers.SerializerMethodField() # AI 분석 결과(임시)
+    ai_analysis = serializers.SerializerMethodField() 
     pdf_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -76,10 +76,10 @@ class SimpleProfileSerializer(serializers.ModelSerializer):
     def get_career_year(self, obj):
         return obj.career_year
     
-    # AI 분석 결과(임시)
     def get_ai_analysis(self, obj):
-        ai_analysis = f'{obj.name}의 AI 분석 결과입니다.'
-        return ai_analysis
+        if hasattr(obj, 'profile_data') and obj.profile_data:
+            return obj.profile_data.ai_analysis
+        return None
     
     def get_pdf_url(self, obj):
         profile_data = obj.profile_data
@@ -113,8 +113,9 @@ class BookmarkedProfileSerializer(serializers.ModelSerializer):
         return obj.profile.career_year
     
     def get_ai_analysis(self, obj):
-        ai_analysis = obj.ai_analysis
-        return ai_analysis
+        if hasattr(obj, 'profile_data') and obj.profile_data:
+            return obj.profile_data.ai_analysis
+        return None
     
     def get_pdf_url(self, obj):
         profile_data = obj.profile.profile_data

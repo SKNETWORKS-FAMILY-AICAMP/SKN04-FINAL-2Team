@@ -9,6 +9,8 @@ import SearchResults from "./components/search/SearchResults";
 import BookmarkPage from "./components/navbar/BookmarkPage";
 import { useAuth } from './context/AuthContext';
 import "./App.css";
+import logo from "./images/logo_v2.png";
+import user_icon from "./images/user_icon.png";
 
 const App = () => {
   const { user, logout } = useAuth();
@@ -56,24 +58,30 @@ const App = () => {
 
   return (
     <div>
-      {/* 네비게이션 바 */}
       <nav className="navbar">
         <div className="logo">
-          <i className="fa-solid fa-font-awesome"></i>
-          <Link to="/">LOGO</Link>
+          <Link to="/">
+            <img src={logo} alt="Logo" className="logo-image" />
+          </Link>
         </div>
         <div className="menu">
-          <div className="menu-links">
-            <Link to="/bookmarks">Bookmark</Link>
-          </div>
-          {/* 사용자 인증 상태에 따른 메뉴 표시 */}
+          <Link to="/">
+            <button className="home-button">Home</button>
+          </Link>
+          <Link to="/bookmarks">
+            <button className="bookmark-link">Bookmark</button>
+          </Link>
+          <button onClick={handleSettingsClick} className="settings-button">
+            Settings
+          </button>
           {user ? (
             <div className="dropdown" ref={dropdownRef}>
               <span onClick={handleUsernameClick} className="dropdown-toggle">
-                {user.username}
+                <img src={user_icon} alt="User Avatar" className="user-icon"/>
               </span>
               {showLogout && (
                 <div className="dropdown-menu">
+                  <h4>{user.username}</h4>
                   <button onClick={handleLogout} className="logout-button">
                     로그아웃
                   </button>
@@ -83,27 +91,18 @@ const App = () => {
           ) : (
             <Link to="/login" className="login-button">Login</Link>
           )}
-          <button onClick={handleSettingsClick} className="settings-button">
-            Settings
-          </button>
-        </div>
-        <div className="menu-btn">
-          <i className="fa-solid fa-bars"></i>
         </div>
       </nav>
-      {/* 메인 컨텐츠 */}
       <MainContent query={query} setQuery={setQuery} />
     </div>
   );
 };
 
-/** ✅ 메인 컨텐츠 컴포넌트 */
 const MainContent = ({ query, setQuery }) => {
   const location = useLocation();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // 사이드바 표시 여부 결정
   const showSidebar =
     location.pathname !== "/" &&
     location.pathname !== "/search-results" &&
@@ -112,7 +111,6 @@ const MainContent = ({ query, setQuery }) => {
 
   return (
     <div>
-      {/* 조건부 사이드바 렌더링 */}
       {showSidebar && <Sidebar user={user} />}
       <div style={{ flex: 1, padding: "20px" }}>
         {/* 라우트 설정 */}
